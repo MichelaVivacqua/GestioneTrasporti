@@ -3,17 +3,16 @@ package team4.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "mezzo")
 public class Mezzo {
-    @Id
-    @OneToMany(mappedBy = "Mezzo") // La relazione inversa
-    private List<Biglietto> biglietti;
 
-    @GeneratedValue
-    private Long id_mezzo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "capienza")
     private int capienza;
@@ -23,29 +22,29 @@ public class Mezzo {
 
     @Column(name = "data_ultima_manutenzione")
     private LocalDate dataUltimaManutenzione;
-    public List<Biglietto> getBiglietti() {
-        return biglietti;
-    }
 
-    public void setBiglietti(List<Biglietto> biglietti) {
-        this.biglietti = biglietti;
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_tratta_in_servizio", nullable = false)
+    private Tratta tratta; //FK tratta in servizio
+
+    @OneToMany(mappedBy = "mezzoVidimazione", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Biglietto> biglietti = new HashSet<>();
 
     public Mezzo() {}
 
-    public Mezzo(Long id_mezzo, int capienza, boolean inManutenzione, LocalDate dataUltimaManutenzione) {
-        this.id_mezzo = id_mezzo;
+    public Mezzo(int capienza, boolean inManutenzione, LocalDate dataUltimaManutenzione, Set<Biglietto> biglietti) {
         this.capienza = capienza;
         this.inManutenzione = inManutenzione;
         this.dataUltimaManutenzione = dataUltimaManutenzione;
+        this.biglietti = biglietti;
     }
 
-    public Long getId_mezzo() {
-        return id_mezzo;
+    public Long getId() {
+        return id;
     }
 
-    public void setId_mezzo(Long id_mezzo) {
-        this.id_mezzo = id_mezzo;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getCapienza() {
@@ -72,14 +71,11 @@ public class Mezzo {
         this.dataUltimaManutenzione = dataUltimaManutenzione;
     }
 
-    @Override
-    public String toString() {
-        return "Mezzo{" +
-                "numero biglietti=" + biglietti.size() +
-                ", id_mezzo=" + id_mezzo +
-                ", capienza=" + capienza +
-                ", inManutenzione=" + inManutenzione +
-                ", dataUltimaManutenzione=" + dataUltimaManutenzione +
-                '}';
+    public Set<Biglietto> getBiglietti() {
+        return biglietti;
+    }
+
+    public void setBiglietti(Set<Biglietto> biglietti) {
+        this.biglietti = biglietti;
     }
 }

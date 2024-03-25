@@ -4,37 +4,41 @@ import java.time.LocalDate;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "biglietto")
-public class Biglietto {
+@Table(name = "titolo_di_viaggio")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Biglietto implements Controllabile{
 
     @Id
     @GeneratedValue
+    @Column(name = "id_titolo_di_viaggio")
     private Long id;
-    @Column(name = "durata")
-    private int durata;
 
     @ManyToOne
     @JoinColumn(name = "id_mezzo", nullable = false)
-    private Mezzo mezzo;//FK Mezzo di trasporto
+    private Mezzo mezzo; //FK Mezzo di trasporto in cui si timbra il biglietto
 
     @ManyToOne
     @JoinColumn(name = "id", nullable = false)
     @Column(name = "emesso_da")
-
     private long emessoDa;
     @Column(name = "data_di_vidimazione")
 
     private LocalDate dataDiVidimazione;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "id_tessera", nullable = false)
     @Column(name = "tessera")
-    private long tessera;
+    private Tessera tessera;
+
+    @ManyToOne
+    @JoinColumn(name = "id_distributore", nullable = false)
+    @Column(name = "distributore")
+    private Distributore dist;
+
 
     public Biglietto() {}
 
-    public Biglietto(int durata, Mezzo mezzo, long emessoDa, LocalDate dataDiVidimazione, long tessera) {
-        this.durata = durata;
+    public Biglietto(Mezzo mezzo, long emessoDa, LocalDate dataDiVidimazione, Tessera tessera) {
         this.mezzo = mezzo;
         this.emessoDa = emessoDa;
         this.dataDiVidimazione = dataDiVidimazione;
@@ -57,14 +61,6 @@ public class Biglietto {
         this.id = id;
     }
 
-    public int getDurata() {
-        return durata;
-    }
-
-    public void setDurata(int durata) {
-        this.durata = durata;
-    }
-
     public long getEmessoDa() {
         return emessoDa;
     }
@@ -81,23 +77,17 @@ public class Biglietto {
         this.dataDiVidimazione = dataDiVidimazione;
     }
 
-    public long getTessera() {
+    public Tessera getTessera() {
         return tessera;
     }
 
-    public void setTessera(long tessera) {
+    public void setTessera(Tessera tessera) {
         this.tessera = tessera;
     }
 
+
     @Override
-    public String toString() {
-        return "Biglietto{" +
-                "id=" + id +
-                ", durata=" + durata +
-                ", mezzo=" + mezzo +
-                ", emessoDa=" + emessoDa +
-                ", dataDiVidimazione=" + dataDiVidimazione +
-                ", tessera=" + tessera +
-                '}';
+    public boolean isValido() {
+        return false;
     }
 }
