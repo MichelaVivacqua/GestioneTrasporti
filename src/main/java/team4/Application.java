@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import team4.dao.BigliettoDAO;
+import team4.dao.TessereDAO;
 import team4.entities.Abbonamento;
 import team4.entities.Biglietto;
 import team4.entities.Mezzo;
@@ -35,7 +36,7 @@ public class Application {
         bigliettoDAO.emettiAbbonamentoMensile(abbonamentoMensile);
 
 
-
+        TessereDAO tessereDAO = new TessereDAO(em);
         Tessera tessera1 = new Tessera("Michela","Vivacqua", LocalDate.parse("2024-03-26"));
         tessereDAO.save(tessera1);
     }
