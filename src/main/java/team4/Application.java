@@ -6,6 +6,7 @@ import jakarta.persistence.Persistence;
 import team4.dao.BigliettoDAO;
 import team4.dao.MezzoDAO;
 import team4.dao.TessereDAO;
+import team4.dao.TrattaDAO;
 import team4.entities.Abbonamento;
 import team4.entities.Biglietto;
 import team4.entities.Mezzo;
@@ -13,13 +14,21 @@ import team4.entities.Tessera;
 import team4.entities.Tratta;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
         EntityManager em = emf.createEntityManager();
+        TessereDAO tessereDAO = new TessereDAO(em);
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
+        TrattaDAO trattaDAO= new TrattaDAO(em);
+
+
+//        Tratta tratta = new Tratta(2,"Milano","Roma",);
+//        trattaDAO.saveTratta(tratta);
 
         // Emissione di un biglietto
         Biglietto biglietto = new Biglietto();
