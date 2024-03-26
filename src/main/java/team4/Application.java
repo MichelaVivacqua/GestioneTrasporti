@@ -25,15 +25,16 @@ public class Application {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
         EntityManager em = emf.createEntityManager();
-       
+
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
         TrattaDAO trattaDAO= new TrattaDAO(em);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
 
 //        Tratta tratta = new Tratta(2,"Milano","Roma",);
 //        trattaDAO.saveTratta(tratta);
 
-        // Emissione di un biglietto
+//         Emissione di un biglietto
         Biglietto biglietto = new Biglietto();
         // Imposta i dettagli del biglietto...
         bigliettoDAO.emettiBiglietto(biglietto);
@@ -66,11 +67,11 @@ public class Application {
         }
 
 // Esempio di utilizzo di un  distributore
-        LocalDate startDate = LocalDate.of(2024, 3, 1); // Data di inizio del periodo
-        LocalDate endDate = LocalDate.of(2024, 3, 31); // Data di fine del periodo
+//        LocalDate startDate = LocalDate.of(2024, 3, 1); // Data di inizio del periodo
+//        LocalDate endDate = LocalDate.of(2024, 3, 31); // Data di fine del periodo
 
-        long bigliettiEmessi = bigliettoDAO.countBigliettiEmessiPerDistributore(distributore, startDate, endDate);
-        long abbonamentiEmessi = bigliettoDAO.countAbbonamentiEmessiPerDistributore(distributore, startDate, endDate);
+        long bigliettiEmessi = bigliettoDAO.countBigliettiEmessiPerDistributore(distributore, LocalDate.parse("01-03-2024",formatter), LocalDate.parse("31-03-2024",formatter));
+        long abbonamentiEmessi = bigliettoDAO.countAbbonamentiEmessiPerDistributore(distributore, LocalDate.parse("01-03-2024",formatter), LocalDate.parse("31-03-2024",formatter));
 
         System.out.println("Numero di biglietti emessi: " + bigliettiEmessi);
         System.out.println("Numero di abbonamenti emessi: " + abbonamentiEmessi);
@@ -78,17 +79,29 @@ public class Application {
         boolean abbonamentoValido = bigliettoDAO.verificaValiditaAbbonamento(numeroTessera);
         System.out.println("L'abbonamento dell'utente è valido? " + abbonamentoValido);
 
-        em.close();
+
 
 
         TessereDAO tessereDAO = new TessereDAO(em);
-        Tessera tessera1 = new Tessera("Michela","Vivacqua", LocalDate.parse("2024-03-26"));
-        tessereDAO.save(tessera1);
+
+        try {
+            Tessera tessera1 = new Tessera("Michela ", "Vivacqua", LocalDate.parse("25-03-2024", formatter));
+            tessereDAO.save(tessera1);
+            System.out.println("Tessera salvata con successo.");
+        } catch (DateTimeParseException e) {
+            System.out.println("Attenzione! Errore durante il parsing della data, formato errato.");
+
+        } catch (Exception e) {
+            System.out.println("Errore durante il salvataggio della tessera.");
+
+        }
 
         MezzoDAO mezzoDAO = new MezzoDAO(em);
 
 //        Mezzo mezzo1 = new Mezzo(58,true,LocalDate.parse("2024-03-26"),
 //                tratta
 //        );
+
+        em.close();
     }
 }
