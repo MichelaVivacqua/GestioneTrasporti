@@ -4,10 +4,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import team4.entities.Biglietto;
-import team4.entities.Abbonamento;
-import team4.entities.Distributore;
-import team4.entities.Mezzo;
+import team4.entities.*;
 
 import java.time.LocalDate;
 
@@ -31,6 +28,12 @@ public class BigliettoDAO {
             System.out.println("Errore durante l'emissione del biglietto: " + e.getMessage());
         }
     }
+
+    public Biglietto findById(long id) {
+        return em.find(Biglietto.class, id);
+    }
+
+
 
     // Metodo per l'emissione di un abbonamento settimanale
     public void emettiAbbonamentoSettimanale(Abbonamento abbonamento) {

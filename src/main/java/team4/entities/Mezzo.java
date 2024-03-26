@@ -105,7 +105,6 @@ public class Mezzo {
                 ", capienza=" + capienza +
                 ", inManutenzione=" + inManutenzione +
                 ", dataManutenzione=" + dataManutenzione +
-                ", trattaServita=" + trattaServita +
                 ", numeroDiVolte=" + numeroDiVolte +
                 ", tempoEffettivo=" + tempoEffettivo +
                 '}';

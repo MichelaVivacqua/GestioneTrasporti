@@ -3,12 +3,8 @@ package team4;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import team4.dao.BigliettoDAO;
-import team4.dao.MezzoDAO;
-import team4.dao.TessereDAO;
-import team4.dao.TrattaDAO;
-import team4.entities.Mezzo;
-import team4.entities.Tratta;
+import team4.dao.*;
+import team4.entities.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,29 +21,67 @@ public class Application {
         MezzoDAO mezzoDAO = new MezzoDAO(em);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+
+        //! CREAZIONE TESSERA
+        TessereDAO tessereDAO = new TessereDAO(em);
+        Tessera tessera1 = new Tessera("Jonhatan", "Joestar", LocalDate.parse("25-03-2024", formatter));
+
+//        try {
+//            tessereDAO.save(tessera1);
+//
+//            System.out.println("Tessera salvata con successo.");
+//
+//        } catch (DateTimeParseException e) {
+//
+//            System.out.println("Attenzione! Errore durante il parsing della data, formato errato.");
+//
+//        } catch (Exception e) {
+//
+//            System.out.println("Errore durante il salvataggio della tessera.");
+//
+//        }
+
+
+
+        //! CREAZIONE TRATTA
         Tratta milano_roma = new Tratta(2, "Milano", "Roma");
         Tratta veronaNapoli = new Tratta(4, "Verona", "Napoli");
         Tratta abruzzoVerona = new Tratta(5, "Abruzzo", "Verona");
 //        trattaDAO.saveTratta(milano_roma,10,2);
 //        trattaDAO.saveTratta(veronaNapoli,2,5);
 //        trattaDAO.saveTratta(abruzzoVerona,6,10);
-//        trattaDAO.deleteTratta(milano_roma);
 //        System.out.println( trattaDAO.findTrattaById(7));
 //        System.out.println(trattaDAO.findTrattaByPartenza("Milano"));
-//        trattaDAO.findTrattaByIdAndDelete(1);
+//        trattaDAO.findTrattaByIdAndDelete(7);
+        //! CREAZIONE MEZZO
+            Mezzo bus = new Mezzo(80, false, LocalDate.parse("26-03-2024", formatter), milano_roma, 1, 1);
+//            mezzoDAO.save(bus);
 
-            Mezzo bus = new Mezzo(80, true, LocalDate.parse("10-01-2024", formatter), milano_roma, 1, 1);
-            mezzoDAO.save(bus);
+//        System.out.println(mezzoDAO.findById(20));
 
 
 
+
+//                 Ottenere il conteggio dei biglietti e degli abbonamenti emessi da un distributore in un dato periodo di tempo
+//        DistributoriDAO distributoriDAO= new DistributoriDAO(em);
+//        Distributore distributore = new Distributore();
+//        distributoriDAO.save(distributore);
 
 
 
 //        Emissione di un biglietto
-//        Biglietto biglietto = new Biglietto();
+//        Biglietto biglietto = new Biglietto(bus,distributore,LocalDate.parse("27-03-2024",formatter),LocalDate.parse("28-03-2024",formatter),tessera1);
 //        // Imposta i dettagli del biglietto...
+
 //        bigliettoDAO.emettiBiglietto(biglietto);
+//        bigliettoDAO.vidimaBiglietto(biglietto,bus);
+
+
+
+//        bigliettoDAO.findById(1);
+
+
 //
 //        // Emissione di un abbonamento settimanale
 //        Abbonamento abbonamentoSettimanale = new Abbonamento();
@@ -60,10 +94,7 @@ public class Application {
 //        bigliettoDAO.emettiAbbonamentoMensile(abbonamentoMensile);
 //
 //
-//        // Ottenere il conteggio dei biglietti e degli abbonamenti emessi da un distributore in un dato periodo di tempo
-//        DistributoriDAO distributoriDAO= new DistributoriDAO(em);
-//        Distributore distributore = new Distributore();
-//        distributoriDAO.save(distributore);
+
 
 
 // Esempio di utilizzo di un  distributore
@@ -80,25 +111,6 @@ public class Application {
 //        System.out.println("L'abbonamento dell'utente è valido? " + abbonamentoValido);
 
 
-        TessereDAO tessereDAO = new TessereDAO(em);
-
-//        try {
-//
-//            Tessera tessera1 = new Tessera("Jonhatan", "Joestar", LocalDate.parse("25-03-2024", formatter));
-//            tessereDAO.save(tessera1);
-//
-//            System.out.println("Tessera salvata con successo.");
-//
-//        } catch (DateTimeParseException e) {
-//
-//            System.out.println("Attenzione! Errore durante il parsing della data, formato errato.");
-//
-//        } catch (Exception e) {
-//
-//            System.out.println("Errore durante il salvataggio della tessera.");
-//
-//        }
-
 
 //        MezzoDAO mezzoDAO = new MezzoDAO(em);
 
@@ -110,12 +122,12 @@ public class Application {
 
 
         // Utilizzo del metodo countBigliettiVidimatiPerMezzo con l'istanza salvata di Mezzo
-        long bigliettiVidimatiPerMezzo = bigliettoDAO.countBigliettiVidimatiPerMezzo(bus, startDate, endDate);
-        System.out.println("Numero di biglietti vidimati su questo mezzo: " + bus + bigliettiVidimatiPerMezzo);
-
-     // Conteggio dei biglietti vidimati in totale in un periodo di tempo
-        long bigliettiVidimatiTotali = bigliettoDAO.countBigliettiVidimatiTotali(startDate, endDate);
-        System.out.println("Numero di biglietti vidimati in totale: " + bigliettiVidimatiTotali);
+//        long bigliettiVidimatiPerMezzo = bigliettoDAO.countBigliettiVidimatiPerMezzo(, startDate, endDate);
+//        System.out.println("Numero di biglietti vidimati su questo mezzo: " + bus + bigliettiVidimatiPerMezzo);
+//
+//     // Conteggio dei biglietti vidimati in totale in un periodo di tempo
+//        long bigliettiVidimatiTotali = bigliettoDAO.countBigliettiVidimatiTotali(startDate, endDate);
+//        System.out.println("Numero di biglietti vidimati in totale: " + bigliettiVidimatiTotali);
 
 
 

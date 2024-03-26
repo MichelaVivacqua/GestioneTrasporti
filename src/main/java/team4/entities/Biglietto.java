@@ -25,6 +25,18 @@ public class Biglietto {
     @JoinColumn(name = "tesseraId")
     private Tessera tessera;
 
+    public Biglietto(Mezzo mezzoDiVidimazione, Distributore emessoDa, LocalDate dataDiEmissione, LocalDate dataDiVidimazione, Tessera tessera) {
+        this.mezzoDiVidimazione = mezzoDiVidimazione;
+        this.emessoDa = emessoDa;
+        this.dataDiEmissione = dataDiEmissione;
+        this.dataDiVidimazione = dataDiVidimazione;
+        this.tessera = tessera;
+    }
+
+    public Biglietto() {
+
+    }
+
     public Mezzo getMezzoDiVidimazione() {
         return mezzoDiVidimazione;
     }
