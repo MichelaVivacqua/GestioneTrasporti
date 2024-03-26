@@ -25,10 +25,11 @@ public class Application {
         TessereDAO tessereDAO = new TessereDAO(em);
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
         TrattaDAO trattaDAO= new TrattaDAO(em);
+        MezzoDAO mezzoDAO = new MezzoDAO(em);
 
 
-//        Tratta tratta = new Tratta(2,"Milano","Roma",);
-//        trattaDAO.saveTratta(tratta);
+        Tratta tratta = new Tratta(2,"Milano","Roma",);
+        trattaDAO.saveTratta(tratta);
 
         // Emissione di un biglietto
         Biglietto biglietto = new Biglietto();
@@ -46,11 +47,10 @@ public class Application {
         bigliettoDAO.emettiAbbonamentoMensile(abbonamentoMensile);
 
 
-        TessereDAO tessereDAO = new TessereDAO(em);
         Tessera tessera1 = new Tessera("Michela","Vivacqua", LocalDate.parse("2024-03-26"));
         tessereDAO.save(tessera1);
 
-        MezzoDAO mezzoDAO = new MezzoDAO(em);
+
 
 //        Mezzo mezzo1 = new Mezzo(58,true,LocalDate.parse("2024-03-26"),
 //                tratta
