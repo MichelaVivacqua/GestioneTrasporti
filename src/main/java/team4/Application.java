@@ -12,6 +12,8 @@ import team4.dao.TessereDAO;
 import team4.entities.Tessera;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
@@ -37,8 +39,18 @@ public class Application {
         bigliettoDAO.emettiAbbonamentoMensile(abbonamentoMensile);
 
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        Tessera tessera1 = new Tessera("Michela","Vivacqua", LocalDate.parse("25-03-2024"));
-        tessereDAO.save(tessera1);
+        try {
+            Tessera tessera1 = new Tessera("Jonathan ", "Joestar", LocalDate.parse("30-12-2003", formatter));
+            tessereDAO.save(tessera1);
+            System.out.println("Tessera salvata con successo.");
+        } catch (DateTimeParseException e) {
+            System.out.println("Attenzione! Errore durante il parsing della data, formato errato.");
+
+        } catch (Exception e) {
+            System.out.println("Errore durante il salvataggio della tessera.");
+
+        }
     }
 }

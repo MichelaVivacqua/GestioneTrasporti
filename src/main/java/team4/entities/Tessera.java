@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "tessera")
 public class Tessera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,18 +56,18 @@ public class Tessera {
     }
 
     public LocalDate getDataEmissione() {
-        return dataEmissione;
+        return dataDiEmissione;
     }
 
     public void setDataEmissione(LocalDate dataEmissione) {
-        this.dataEmissione = dataEmissione;
+        this.dataDiEmissione = dataEmissione;
     }
 
     public LocalDate getDataScadenza() {
-        return dataScadenza;
+        return dataDiEmissione;
     }
 
     public void setDataScadenza(LocalDate dataScadenza) {
-        this.dataScadenza = dataScadenza;
+        this.dataDiEmissione = dataScadenza;
     }
 }
