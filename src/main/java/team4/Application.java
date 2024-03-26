@@ -35,15 +35,10 @@ public class Application {
 //        trattaDAO.findTrattaById(2);
 //        System.out.println(trattaDAO.findTrattaByPartenza("Milano"));
 //        trattaDAO.findTrattaByIdAndDelete(1);
-        try {
+
             Mezzo bus = new Mezzo(80, true, LocalDate.parse("10-01-2024", formatter), milano_roma, 1, 1);
             mezzoDAO.save(bus);
-        } catch (DateTimeParseException e) {
-            System.out.println("ERRORE: Formato data non valido.");
-        } catch (Exception e) {
-           
-            System.out.println("ERRORE NELLA CREAZIONE O SALVATAGGIO DEL MEZZO: " + e.getMessage());
-        }
+
 
 
 
@@ -112,12 +107,11 @@ public class Application {
 //        Mezzo mezzo1 = new Mezzo(58,true,LocalDate.parse("2024-03-26"),
 //                tratta
 //        );
-        Mezzo mezzo = new Mezzo(/* fornire i dettagli del Mezzo */);
-        mezzoDAO.save(mezzo);
+
 
         // Utilizzo del metodo countBigliettiVidimatiPerMezzo con l'istanza salvata di Mezzo
-        long bigliettiVidimatiPerMezzo = bigliettoDAO.countBigliettiVidimatiPerMezzo(mezzo, startDate, endDate);
-        System.out.println("Numero di biglietti vidimati su questo mezzo: " + bigliettiVidimatiPerMezzo);
+        long bigliettiVidimatiPerMezzo = bigliettoDAO.countBigliettiVidimatiPerMezzo(bus, startDate, endDate);
+        System.out.println("Numero di biglietti vidimati su questo mezzo: " + bus + bigliettiVidimatiPerMezzo);
 
      // Conteggio dei biglietti vidimati in totale in un periodo di tempo
         long bigliettiVidimatiTotali = bigliettoDAO.countBigliettiVidimatiTotali(startDate, endDate);
