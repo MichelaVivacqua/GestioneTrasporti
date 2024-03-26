@@ -5,39 +5,29 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tessera")
 public class Tessera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "nome")
+    @Column(name = "Nome")
     private String nome;
-    @Column(name = "cognome")
+    @Column(name = "Cognome")
+
     private String cognome;
+    @Column(name = "Data_emissione")
+    private LocalDate dataDiEmissione;
 
-    @Column(name = "data_emissione")
+    @Column(name = "Data_scandeza")
+    private LocalDate dataDiScadenza;
 
-    private LocalDate dataEmissione;
-
-    @Column(name = "data_scadenza")
-    private LocalDate dataScadenza;
 
     public Tessera() {}
 
-    public Tessera(String nome, String cognome, LocalDate dataEmissione) {
+    public Tessera(String nome, String cognome, LocalDate dataDiEmissione) {
         this.nome = nome;
         this.cognome = cognome;
-        this.dataEmissione = dataEmissione;
-        this.dataScadenza = dataEmissione.plusYears(1);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.dataDiEmissione = dataDiEmissione;
+        this.dataDiScadenza = dataDiEmissione.plusYears(1);
     }
 
     public String getNome() {
@@ -56,19 +46,20 @@ public class Tessera {
         this.cognome = cognome;
     }
 
-    public LocalDate getDataEmissione() {
-        return dataEmissione;
+    public LocalDate getDataDiEmissione() {
+        return dataDiEmissione;
     }
 
-    public void setDataEmissione(LocalDate dataEmissione) {
-        this.dataEmissione = dataEmissione;
+    public void setDataDiEmissione(LocalDate dataDiEmissione) {
+        this.dataDiEmissione = dataDiEmissione;
     }
 
-    public LocalDate getDataScadenza() {
-        return dataScadenza;
+    public LocalDate getDataDiScadenza() {
+        return dataDiScadenza;
     }
 
-    public void setDataScadenza(LocalDate dataScadenza) {
-        this.dataScadenza = dataScadenza;
+    public void setDataDiScadenza(LocalDate dataDiScadenza) {
+        this.dataDiScadenza = dataDiScadenza;
     }
+
 }
