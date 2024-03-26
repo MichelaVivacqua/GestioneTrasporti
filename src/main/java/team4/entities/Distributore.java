@@ -14,5 +14,6 @@ public class Distributore {
         return id;
     }
 
-
+    public Distributore() {
+    }
 }
