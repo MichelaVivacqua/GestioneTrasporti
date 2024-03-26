@@ -24,9 +24,8 @@ public class Mezzo {
 
     public Mezzo() {}
 
-    public Mezzo(Long id, int capienza, boolean inManutenzione, LocalDate dataManutenzione, Tratta trattaServita) {
-        this.id = id;
-        this.capienza = capienza;
+    public Mezzo(int capienza, boolean inManutenzione, LocalDate dataManutenzione, Tratta trattaServita) {
+       this.capienza = capienza;
         this.inManutenzione = inManutenzione;
         this.dataManutenzione = dataManutenzione;
         this.trattaServita = trattaServita;
