@@ -13,4 +13,9 @@ public class Distributore {
     public Long getId() {
         return id;
     }
+
+    public Distributore() {
+    }
+
+
 }

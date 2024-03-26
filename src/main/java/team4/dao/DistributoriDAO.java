@@ -49,13 +49,18 @@ import team4.entities.Mezzo;
             }
         }
 //------------DISTRIBUTORE AUTOMATICO (avrà anche il metodo di verifica)--------------------
-public void save(DistributoreAutomatico da) {
+public void save(DistributoreAutomatico da, boolean attivo) {
     try {
+        if (attivo){
         EntityTransaction e = em.getTransaction();
         e.begin();
+        da.setAttivo(true);
         em.persist(da);
         e.commit();
         System.out.println("Distributore automatico con id: " + da.getId() + " creato!");
+        } else {
+            System.out.println("Impossibile emettere i biglietti, distributore automatico non in funzione");
+        }
     } catch (Exception e) {
         System.out.println(e.getMessage());
     }

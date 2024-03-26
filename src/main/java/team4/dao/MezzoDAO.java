@@ -32,6 +32,7 @@ public class MezzoDAO {
 
     public void findByIdAndDelete(long id) {
         try {
+
             EntityTransaction t = em.getTransaction();
             t.begin();
             Mezzo found = em.find(Mezzo.class, id);
@@ -41,9 +42,10 @@ public class MezzoDAO {
                 System.out.println("Mezzo eliminato");
             } else System.out.println("Mezzo non trovato");
 
-
         } catch (Exception e) {
+
             System.out.println(e.getMessage());
+
         }
     }
 

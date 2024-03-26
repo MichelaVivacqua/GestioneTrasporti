@@ -24,4 +24,58 @@ public class Biglietto {
     @ManyToOne
     @JoinColumn(name = "tesseraId")
     private Tessera tessera;
+
+    public Biglietto(Mezzo mezzoDiVidimazione, Distributore emessoDa, LocalDate dataDiEmissione, LocalDate dataDiVidimazione, Tessera tessera) {
+        this.mezzoDiVidimazione = mezzoDiVidimazione;
+        this.emessoDa = emessoDa;
+        this.dataDiEmissione = dataDiEmissione;
+        this.dataDiVidimazione = dataDiVidimazione;
+        this.tessera = tessera;
+    }
+
+    public Biglietto() {
+
+    }
+
+    public Mezzo getMezzoDiVidimazione() {
+        return mezzoDiVidimazione;
+    }
+
+    public void setMezzoDiVidimazione(Mezzo mezzoDiVidimazione) {
+        this.mezzoDiVidimazione = mezzoDiVidimazione;
+    }
+
+    public Distributore getEmessoDa() {
+        return emessoDa;
+    }
+
+    public void setEmessoDa(Distributore emessoDa) {
+        this.emessoDa = emessoDa;
+    }
+
+    public LocalDate getDataDiEmissione() {
+        return dataDiEmissione;
+    }
+
+    public void setDataDiEmissione(LocalDate dataDiEmissione) {
+        this.dataDiEmissione = dataDiEmissione;
+    }
+
+    public LocalDate getDataDiVidimazione() {
+        return dataDiVidimazione;
+    }
+
+    public void setDataDiVidimazione(LocalDate dataDiVidimazione) {
+        this.dataDiVidimazione = dataDiVidimazione;
+    }
+
+    public Tessera getTessera() {
+        return tessera;
+    }
+
+    public void setTessera(Tessera tessera) {
+        this.tessera = tessera;
+    }
 }
+
+
