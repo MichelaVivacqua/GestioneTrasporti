@@ -62,5 +62,4 @@ public class Tessera {
         this.dataDiScadenza = dataDiScadenza;
     }
 
-
 }

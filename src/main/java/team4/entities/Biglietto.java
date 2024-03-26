@@ -10,8 +10,6 @@ public class Biglietto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long durata;
-
     @ManyToOne
     @JoinColumn(name = "mezzoDiVidimazioneId")
     private Mezzo mezzoDiVidimazione;
