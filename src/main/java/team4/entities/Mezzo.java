@@ -1,17 +1,15 @@
 package team4.entities;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "mezzo")
 public class Mezzo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "capienza")
@@ -20,23 +18,19 @@ public class Mezzo {
     @Column(name = "in_manutenzione")
     private boolean inManutenzione;
 
-    @Column(name = "data_ultima_manutenzione")
-    private LocalDate dataUltimaManutenzione;
+    @Column(name = "data_manutenzione")
+    private LocalDate dataManutenzione;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tratta_in_servizio", nullable = false)
-    private Tratta tratta; //FK tratta in servizio
+    @ManyToMany
+    @JoinTable(
+            name = "mezzo_tratta",
+            joinColumns = @JoinColumn(name = "mezzo_id"),
+            inverseJoinColumns = @JoinColumn(name = "tratta_id")
+    )
+    private Set<Tratta> tratteServite;
 
-    @OneToMany(mappedBy = "mezzoVidimazione", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Biglietto> biglietti = new HashSet<>();
-
-    public Mezzo() {}
-
-    public Mezzo(int capienza, boolean inManutenzione, LocalDate dataUltimaManutenzione, Set<Biglietto> biglietti) {
-        this.capienza = capienza;
-        this.inManutenzione = inManutenzione;
-        this.dataUltimaManutenzione = dataUltimaManutenzione;
-        this.biglietti = biglietti;
+    public Mezzo() {
+        this.tratteServite = new HashSet<>();
     }
 
     public Long getId() {
@@ -63,19 +57,19 @@ public class Mezzo {
         this.inManutenzione = inManutenzione;
     }
 
-    public LocalDate getDataUltimaManutenzione() {
-        return dataUltimaManutenzione;
+    public LocalDate getDataManutenzione() {
+        return dataManutenzione;
     }
 
-    public void setDataUltimaManutenzione(LocalDate dataUltimaManutenzione) {
-        this.dataUltimaManutenzione = dataUltimaManutenzione;
+    public void setDataManutenzione(LocalDate dataManutenzione) {
+        this.dataManutenzione = dataManutenzione;
     }
 
-    public Set<Biglietto> getBiglietti() {
-        return biglietti;
+    public Set<Tratta> getTratteServite() {
+        return tratteServite;
     }
 
-    public void setBiglietti(Set<Biglietto> biglietti) {
-        this.biglietti = biglietti;
+    public void setTratteServite(Set<Tratta> tratteServite) {
+        this.tratteServite = tratteServite;
     }
 }
