@@ -97,4 +97,17 @@ public class Mezzo {
     public void setTrattaServita(Tratta trattaServita) {
         this.trattaServita = trattaServita;
     }
+
+    @Override
+    public String toString() {
+        return "Mezzo{" +
+                "id=" + id +
+                ", capienza=" + capienza +
+                ", inManutenzione=" + inManutenzione +
+                ", dataManutenzione=" + dataManutenzione +
+                ", trattaServita=" + trattaServita +
+                ", numeroDiVolte=" + numeroDiVolte +
+                ", tempoEffettivo=" + tempoEffettivo +
+                '}';
+    }
 }
