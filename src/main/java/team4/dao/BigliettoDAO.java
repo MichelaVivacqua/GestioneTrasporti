@@ -1,10 +1,14 @@
 package team4.dao;
-
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import team4.entities.Biglietto;
 import team4.entities.Abbonamento;
+import team4.entities.Distributore;
+
+import java.time.LocalDate;
 
 
 public class BigliettoDAO {
@@ -50,6 +54,56 @@ public class BigliettoDAO {
             System.out.println("Abbonamento mensile emesso!");
         } catch (Exception e) {
             System.out.println("Errore durante l'emissione dell'abbonamento mensile: " + e.getMessage());
+        }
+    }
+    // Metodo per il conteggio dei biglietti emessi per un distributore in un dato periodo di tempo
+    public long countBigliettiEmessiPerDistributore(Distributore distributore, LocalDate startDate, LocalDate endDate) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<Biglietto> root = query.from(Biglietto.class);
+
+        query.select(cb.count(root));
+        query.where(cb.and(
+                cb.equal(root.get("emessoDa"), distributore),
+                cb.between(root.get("dataDiEmissione"), startDate, endDate)
+        ));
+
+        return em.createQuery(query).getSingleResult();
+    }
+
+    // Metodo per il conteggio degli abbonamenti emessi per un distributore in un dato periodo di tempo
+    public long countAbbonamentiEmessiPerDistributore(Distributore distributore, LocalDate startDate, LocalDate endDate) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<Abbonamento> root = query.from(Abbonamento.class);
+
+        query.select(cb.count(root));
+        query.where(cb.and(
+                cb.equal(root.get("emessoDa"), distributore),
+                cb.between(root.get("dataDiEmissione"), startDate, endDate)
+        ));
+
+        return em.createQuery(query).getSingleResult();
+    }
+
+    // Metodo per verificare la validità dell'abbonamento associato a una tessera
+    public boolean verificaValiditaAbbonamento(String numeroTessera) {
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Long> query = cb.createQuery(Long.class);
+            Root<Abbonamento> root = query.from(Abbonamento.class);
+
+            query.select(cb.count(root));
+            query.where(cb.and(
+                    cb.equal(root.get("tessera").get("numeroTessera"), numeroTessera),
+                    cb.greaterThanOrEqualTo(root.get("dataDiScadenza"), LocalDate.now())
+            ));
+
+            Long count = em.createQuery(query).getSingleResult();
+            return count > 0;
+        } catch (Exception e) {
+            System.out.println("Errore durante la verifica della validità dell'abbonamento: " + e.getMessage());
+            return false;
         }
     }
 }
