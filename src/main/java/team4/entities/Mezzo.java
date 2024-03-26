@@ -2,14 +2,11 @@ package team4.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Mezzo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "capienza")
@@ -21,16 +18,18 @@ public class Mezzo {
     @Column(name = "data_manutenzione")
     private LocalDate dataManutenzione;
 
-    @ManyToMany
-    @JoinTable(
-            name = "mezzo_tratta",
-            joinColumns = @JoinColumn(name = "mezzo_id"),
-            inverseJoinColumns = @JoinColumn(name = "tratta_id")
-    )
-    private Set<Tratta> tratteServite;
+    @ManyToOne
+    @JoinColumn(name = "tratta_id") // FK nel DB
+    private Tratta trattaServita;
 
-    public Mezzo() {
-        this.tratteServite = new HashSet<>();
+    public Mezzo() {}
+
+    public Mezzo(Long id, int capienza, boolean inManutenzione, LocalDate dataManutenzione, Tratta trattaServita) {
+        this.id = id;
+        this.capienza = capienza;
+        this.inManutenzione = inManutenzione;
+        this.dataManutenzione = dataManutenzione;
+        this.trattaServita = trattaServita;
     }
 
     public Long getId() {
@@ -65,11 +64,11 @@ public class Mezzo {
         this.dataManutenzione = dataManutenzione;
     }
 
-    public Set<Tratta> getTratteServite() {
-        return tratteServite;
+    public Tratta getTrattaServita() {
+        return trattaServita;
     }
 
-    public void setTratteServite(Set<Tratta> tratteServite) {
-        this.tratteServite = tratteServite;
+    public void setTrattaServita(Tratta trattaServita) {
+        this.trattaServita = trattaServita;
     }
 }

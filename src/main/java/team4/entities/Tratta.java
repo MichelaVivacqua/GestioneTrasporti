@@ -14,16 +14,24 @@ public class Tratta {
     private int durata;
 
     @Column(name = "partenza")
+
     private String partenza;
 
     @Column(name = "arrivo")
+
     private String arrivo;
 
-    @ManyToMany(mappedBy = "tratteServite")
-    private Set<Mezzo> mezzi;
+    @OneToMany(mappedBy = "trattaServita")
+    private Set<Mezzo> mezziServenti = new HashSet<>();
 
-    public Tratta() {
-        this.mezzi = new HashSet<>();
+    public Tratta() {}
+
+    public Tratta(Long id, int durata, String partenza, String arrivo, Set<Mezzo> mezziServenti) {
+        this.id = id;
+        this.durata = durata;
+        this.partenza = partenza;
+        this.arrivo = arrivo;
+        this.mezziServenti = mezziServenti;
     }
 
     public Long getId() {
@@ -58,11 +66,11 @@ public class Tratta {
         this.arrivo = arrivo;
     }
 
-    public Set<Mezzo> getMezzi() {
-        return mezzi;
+    public Set<Mezzo> getMezziServenti() {
+        return mezziServenti;
     }
 
-    public void setMezzi(Set<Mezzo> mezzi) {
-        this.mezzi = mezzi;
+    public void setMezziServenti(Set<Mezzo> mezziServenti) {
+        this.mezziServenti = mezziServenti;
     }
 }
