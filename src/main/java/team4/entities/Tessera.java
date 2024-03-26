@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "tessera")
 public class Tessera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +31,14 @@ public class Tessera {
         this.dataDiScadenza = dataDiEmissione.plusYears(1);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -50,16 +59,15 @@ public class Tessera {
         return dataDiEmissione;
     }
 
-    public void setDataDiEmissione(LocalDate dataDiEmissione) {
-        this.dataDiEmissione = dataDiEmissione;
+    public void setDataEmissione(LocalDate dataEmissione) {
+        this.dataDiEmissione = dataEmissione;
     }
 
-    public LocalDate getDataDiScadenza() {
-        return dataDiScadenza;
+    public LocalDate getDataScadenza() {
+        return dataDiEmissione;
     }
 
-    public void setDataDiScadenza(LocalDate dataDiScadenza) {
-        this.dataDiScadenza = dataDiScadenza;
+    public void setDataScadenza(LocalDate dataScadenza) {
+        this.dataDiEmissione = dataScadenza;
     }
-
 }

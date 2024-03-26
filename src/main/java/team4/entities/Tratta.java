@@ -26,8 +26,8 @@ public class Tratta {
 
     public Tratta() {}
 
-    public Tratta(Long id, int durata, String partenza, String arrivo, Set<Mezzo> mezziServenti) {
-        this.id = id;
+    public Tratta( int durata, String partenza, String arrivo, Set<Mezzo> mezziServenti) {
+
         this.durata = durata;
         this.partenza = partenza;
         this.arrivo = arrivo;
