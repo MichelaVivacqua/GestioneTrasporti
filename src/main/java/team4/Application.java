@@ -67,8 +67,8 @@ public class Application {
         }
 
 // Esempio di utilizzo di un  distributore
-//        LocalDate startDate = LocalDate.of(2024, 3, 1); // Data di inizio del periodo
-//        LocalDate endDate = LocalDate.of(2024, 3, 31); // Data di fine del periodo
+       LocalDate startDate = LocalDate.of(2024, 3, 1); // Data di inizio del periodo
+       LocalDate endDate = LocalDate.of(2024, 3, 31); // Data di fine del periodo
 
         long bigliettiEmessi = bigliettoDAO.countBigliettiEmessiPerDistributore(distributore, LocalDate.parse("01-03-2024",formatter), LocalDate.parse("31-03-2024",formatter));
         long abbonamentiEmessi = bigliettoDAO.countAbbonamentiEmessiPerDistributore(distributore, LocalDate.parse("01-03-2024",formatter), LocalDate.parse("31-03-2024",formatter));
@@ -98,9 +98,23 @@ public class Application {
 
         MezzoDAO mezzoDAO = new MezzoDAO(em);
 
+
+
 //        Mezzo mezzo1 = new Mezzo(58,true,LocalDate.parse("2024-03-26"),
 //                tratta
 //        );
+        Mezzo mezzo = new Mezzo(/* fornire i dettagli del Mezzo */);
+        mezzoDAO.save(mezzo);
+
+        // Utilizzo del metodo countBigliettiVidimatiPerMezzo con l'istanza salvata di Mezzo
+        long bigliettiVidimatiPerMezzo = bigliettoDAO.countBigliettiVidimatiPerMezzo(mezzo, startDate, endDate);
+        System.out.println("Numero di biglietti vidimati su questo mezzo: " + bigliettiVidimatiPerMezzo);
+
+     // Conteggio dei biglietti vidimati in totale in un periodo di tempo
+        long bigliettiVidimatiTotali = bigliettoDAO.countBigliettiVidimatiTotali(startDate, endDate);
+        System.out.println("Numero di biglietti vidimati in totale: " + bigliettiVidimatiTotali);
+
+
 
         em.close();
     }
