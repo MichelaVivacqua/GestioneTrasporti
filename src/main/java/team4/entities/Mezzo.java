@@ -20,15 +20,42 @@ public class Mezzo {
 
     @ManyToOne
     @JoinColumn(name = "tratta_id") // FK nel DB
+
     private Tratta trattaServita;
+
+
+    @Column(name = "numero_di_volte")
+    private int numeroDiVolte;
+
+    @Column(name = "tempo_effettivo")
+    private int tempoEffettivo;
 
     public Mezzo() {}
 
-    public Mezzo(int capienza, boolean inManutenzione, LocalDate dataManutenzione, Tratta trattaServita) {
+    public Mezzo(int capienza, boolean inManutenzione, LocalDate dataManutenzione, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
        this.capienza = capienza;
         this.inManutenzione = inManutenzione;
         this.dataManutenzione = dataManutenzione;
         this.trattaServita = trattaServita;
+        this.tempoEffettivo= tempoEffettivo;
+        this.numeroDiVolte= numeroDiVolte;
+    }
+
+
+    public int getNumeroDiVolte() {
+        return numeroDiVolte;
+    }
+
+    public void setNumeroDiVolte(int numeroDiVolte) {
+        this.numeroDiVolte = numeroDiVolte;
+    }
+
+    public int getTempoEffettivo() {
+        return tempoEffettivo;
+    }
+
+    public void setTempoEffettivo(int tempoEffettivo) {
+        this.tempoEffettivo = tempoEffettivo;
     }
 
     public Long getId() {

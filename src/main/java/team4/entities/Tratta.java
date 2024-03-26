@@ -24,14 +24,24 @@ public class Tratta {
     @OneToMany(mappedBy = "trattaServita")
     private Set<Mezzo> mezziServenti = new HashSet<>();
 
+    @Override
+    public String toString() {
+        return "Tratta{" +
+                "id=" + id +
+                ", durata=" + durata +
+                ", partenza='" + partenza + '\'' +
+                ", arrivo='" + arrivo + '\'' +
+                ", mezziServenti=" + mezziServenti +
+                '}';
+    }
+
     public Tratta() {}
 
-    public Tratta( int durata, String partenza, String arrivo, Set<Mezzo> mezziServenti) {
-
+    public Tratta( int durata, String partenza, String arrivo) {
         this.durata = durata;
         this.partenza = partenza;
         this.arrivo = arrivo;
-        this.mezziServenti = mezziServenti;
+//        this.mezziServenti = mezziServenti;
     }
 
     public Long getId() {
