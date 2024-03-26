@@ -24,4 +24,6 @@ public class Biglietto {
     @ManyToOne
     @JoinColumn(name = "tesseraId")
     private Tessera tessera;
+
+
 }

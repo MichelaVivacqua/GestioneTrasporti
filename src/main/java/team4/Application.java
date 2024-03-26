@@ -32,24 +32,18 @@ public class Application {
 //        trattaDAO.saveTratta(veronaNapoli,2,5);
 //        trattaDAO.saveTratta(abruzzoVerona,6,10);
 //        trattaDAO.deleteTratta(milano_roma);
-//        trattaDAO.findTrattaById(2);
+//        System.out.println( trattaDAO.findTrattaById(7));
 //        System.out.println(trattaDAO.findTrattaByPartenza("Milano"));
 //        trattaDAO.findTrattaByIdAndDelete(1);
-        try {
-            Mezzo bus = new Mezzo(80, true, LocalDate.parse("10-01-2024", formatter), milano_roma, 1, 1);
-            mezzoDAO.save(bus);
-        } catch (DateTimeParseException e) {
-            System.out.println("ERRORE: Formato data non valido.");
-        } catch (Exception e) {
-           
-            System.out.println("ERRORE NELLA CREAZIONE O SALVATAGGIO DEL MEZZO: " + e.getMessage());
-        }
+
+//            Mezzo bus = new Mezzo(80, true, LocalDate.parse("10-01-2024", formatter), milano_roma, 1, 1);
+//            mezzoDAO.save(bus);
 
 
 
 
 
-//         Emissione di un biglietto
+//        Emissione di un biglietto
 //        Biglietto biglietto = new Biglietto();
 //        // Imposta i dettagli del biglietto...
 //        bigliettoDAO.emettiBiglietto(biglietto);
