@@ -55,7 +55,7 @@ public class Tessera {
         this.cognome = cognome;
     }
 
-    public LocalDate getDataEmissione() {
+    public LocalDate getDataDiEmissione() {
         return dataDiEmissione;
     }
 
