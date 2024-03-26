@@ -18,7 +18,7 @@ public class TessereDAO {
             e.begin();
             em.persist(t);
             e.commit();
-            System.out.println("Utente " + t.getNome() + " " + t.getCognome() + " creato!");
+            System.out.println("Utente " + t.getId() + " creato!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
