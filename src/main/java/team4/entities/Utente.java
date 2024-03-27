@@ -15,18 +15,30 @@ public class Utente {
     @Column(name = "Cognome")
     private String cognome;
 
-    @OneToOne
+
+    @Column(name = "Possiede_Tessera")
+    private boolean possiedeTessera;
+
+
+
+    @OneToOne(mappedBy = "utente", cascade = CascadeType.ALL)
     @JoinColumn(name = "tessera_id", referencedColumnName = "id")
     private Tessera tessera;
 
     public Utente() {
     }
 
-    public Utente(String nome, String cognome, Tessera tessera) {
+    public Utente(String nome, String cognome, boolean possiedeTessera) {
         this.nome = nome;
         this.cognome = cognome;
-        this.tessera = tessera;
+        this.possiedeTessera= possiedeTessera;
+
+        if (possiedeTessera){
+        this.tessera = new Tessera();
+            this.tessera.setUtente(this);
+        }
     }
+
 
     public Long getId() {
         return id;
@@ -59,4 +71,6 @@ public class Utente {
     public void setTessera(Tessera tessera) {
         this.tessera = tessera;
     }
+
+
 }

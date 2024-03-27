@@ -16,6 +16,8 @@ public class TessereDAO {
         try {
             EntityTransaction e = em.getTransaction();
             e.begin();
+
+            em.persist(t.getUtente());
             em.persist(t);
             e.commit();
             System.out.println("Utente " + t.getId() + " creato!");
