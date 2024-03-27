@@ -4,10 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import team4.dao.DistributoriDAO;
-import team4.entities.Abbonamento;
-import team4.entities.Distributore;
-import team4.entities.Mezzo;
-import team4.entities.Tratta;
+import team4.entities.*;
 import team4.enums.DurataTitolo;
 import team4.enums.StatoMezzo;
 import team4.enums.TipoDistributore;
@@ -30,7 +27,7 @@ public class Application {
     ;
 
 
-            menu();
+//            menu();
 //                scelta = Integer.parseInt(scanner.nextLine());
 
 
@@ -39,19 +36,23 @@ public class Application {
 
 
         DistributoriDAO distributoriDAO= new DistributoriDAO(em);
-        Distributore distributore = new Distributore(TipoDistributore.Automatico,true);
-        distributoriDAO.save(distributore);
+//        Distributore distributore = new Distributore();
+        DistributoreAutomatico distributoreAutomatico= new DistributoreAutomatico(true);
+        DistributoreAutomatico distributoreAutomatico2= new DistributoreAutomatico(false);
+//        distributoriDAO.save(distributore);
+        distributoriDAO.save(distributoreAutomatico);
+        distributoriDAO.save(distributoreAutomatico2);
 
 
 //     Emissione di un abbonamento settimanale
-        Tratta veronaNapoli = new Tratta(4, "Verona", "Napoli");
-        trattaDAO.saveTratta(veronaNapoli);
-        Mezzo nuovoMezzo = new Mezzo(TipoMezzo.AUTOBUS,80, StatoMezzo.IN_MANUTENZIONE, LocalDate.parse("27-03-2024", formatter),veronaNapoli,4,3);
-        mezzoDAO.save(nuovoMezzo);
+//        Tratta veronaNapoli = new Tratta(4, "Bologna", "Palermo");
+//        trattaDAO.saveTratta(veronaNapoli);
+//        Mezzo nuovoMezzo = new Mezzo(TipoMezzo.TRAM,100, StatoMezzo.IN_SERVIZIO, LocalDate.parse("25-01-2024", formatter),veronaNapoli,6,1);
+//        mezzoDAO.save(nuovoMezzo);
 
-        Abbonamento abbonamentoSettimanale = new Abbonamento(DurataTitolo.SETTIMANALE,nuovoMezzo,distributore,LocalDate.now(),tessereDAO.findById(5));
+//        Abbonamento abbonamentoSettimanale = new Abbonamento(DurataTitolo.MENSILE,nuovoMezzo,distributore,LocalDate.now(),tessereDAO.findById(1));
         // Imposta i dettagli dell'abbonamento...
-        bigliettoDAO.emettiAbbonamento(abbonamentoSettimanale);
+//        bigliettoDAO.emettiAbbonamento(abbonamentoSettimanale);
         em.close();
         emf.close();
         scanner.close();

@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import team4.entities.Distributore;
 //import team4.entities.DistributoreAutomatico;
+import team4.entities.DistributoreAutomatico;
 import team4.entities.Mezzo;
 import team4.enums.TipoDistributore;
 
@@ -50,7 +51,7 @@ public class DistributoriDAO {
             }
         }
 //------------DISTRIBUTORE AUTOMATICO (avrà anche il metodo di verifica)--------------------
-public void save(Distributore distributore, boolean attivo) {
+public void save(DistributoreAutomatico distributore, boolean attivo) {
     try {
         if (attivo){
         EntityTransaction e = em.getTransaction();
