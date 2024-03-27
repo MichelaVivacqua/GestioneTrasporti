@@ -12,6 +12,9 @@ public class Tessera {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(mappedBy = "tessera")
+    private Utente utente;
+
     @Column(name = "Data_emissione")
     private Date dataDiEmissione;
 
@@ -45,8 +48,14 @@ public class Tessera {
     }
 
     public Date getDataDiEmissione() {
-        return dataDiEmissione;
+    public Utente getUtente() {
+        return utente;
     }
+
+    public void setUtente(Utente utente) {
+        this.utente = utente;
+    }
+
 
     public void setDataDiEmissione(Date dataDiEmissione) {
         this.dataDiEmissione = dataDiEmissione;
@@ -68,5 +77,3 @@ public class Tessera {
         this.utente = utente;
     }
 }
-
-
