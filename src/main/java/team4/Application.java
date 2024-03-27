@@ -1,3 +1,5 @@
+package team4;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -9,10 +11,8 @@ import team4.entities.Utente;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
-
     public static void main(String[] args) {
         EntityManager em = emf.createEntityManager();
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
@@ -74,7 +74,31 @@ public class Application {
                         System.out.println("UTENTE " + nome + " CREATO CON SUCCESSO");
                         break;
                     case 2:
-                        System.out.println("Hai selezionato l'opzione 2");
+                        System.out.println("Cerca per mezzo di ");
+                        System.out.println("1. Tessera");
+                        System.out.println("2. Id Utente");
+                        System.out.println("3. Torna indietro");
+                        int sceltaCerca= Integer.parseInt(scanner.nextLine());
+//                        while (scelta != 4){
+                            switch (sceltaCerca){
+
+                                case 1:
+                                    System.out.println("Inserisci il numero di tessera");
+                                int tesseraId= Integer.parseInt(scanner.nextLine());
+                                    System.out.println( tessereDAO.findById(tesseraId));
+                                    break;
+                                case 2:
+                                    System.out.println("Inserisci l'Id dell'utente");
+                                    int utenteId=Integer.parseInt(scanner.nextLine());
+                                    System.out.println( utenteDAO.findById(utenteId));
+                                    break;
+                                case 3:
+                                    return;
+                                default:
+                                    System.out.println("Scelta non valida. Riprova.");
+                                    break;
+                            }
+//                        }
                         break;
                     case 3:
                         System.out.println("Inserisci qui l'id della tua tessera");
@@ -92,6 +116,7 @@ public class Application {
                     default:
                         System.out.println("Scelta non valida. Riprova.");
                         break;
+
                 }
             } catch (Exception e) {
                 System.out.println("Input non valido. Riprova.");
@@ -99,112 +124,12 @@ public class Application {
             }
         }
         // Chiudi lo scanner alla fine
-        scanner.close();
+//        scanner.close();
 
         // Chiudi l'EntityManager
-        em.close();
-    }
-}
-
-//! CREAZIONE TESSERA
-//       3
+//        em.close();
 
 
-//        tessereDAO.findByIdAndDelete(1);
-//        Tessera tessera1 = new Tessera(LocalDate.parse("25-03-2024", formatter));
-//
-//        try {
-//            tessereDAO.save(tessera1);
-//
-//            System.out.print("Seleziona un'opzione: ");
-//            try {
-//                scelta = Integer.parseInt(scanner.nextLine());
-//                switch (scelta) {
-//                    case 1:
-//                        //TODO CREAZIONE UTENTE + TESSERA(AUTOMATICO)
-//                        System.out.println("Inserisci un nome");
-//                        String nome = scanner.nextLine();
-//                        System.out.println("Inserisci un cognome");
-//                        String cognome = scanner.nextLine();
-//
-//                        System.out.println("Vuoi creare una tessera? ");
-//                        boolean tessera = false;
-//                        while (scelta != 4) {
-//                            System.out.println("1. SI");
-//                            System.out.println("2. No");
-//
-//                            int sceltaT = Integer.parseInt(scanner.nextLine());
-//                            switch (sceltaT) {
-//                                case 1:
-//                                    tessera = true;
-//                                    scelta = 4; // Per uscire dal loop
-//                                    break;
-//                                case 2:
-//                                    tessera = false;
-//                                    scelta = 4; // Per uscire dal loop
-//                                    break;
-//                                default:
-//                                    System.out.println("Scelta non valida. Riprova.");
-//                                    break;
-//                            }
-//                        }
-//                        Utente utente;
-//                        if (tessera) {
-//                            utente = new Utente(nome, cognome, true);
-//                        } else {
-//                            utente = new Utente(nome, cognome, false);
-//                        }
-//                        utenteDAO.save(utente);
-//                        System.out.println("UTENTE " + nome + " CREATO CON SUCCESSO");
-//                        break;
-//                    case 2:
-//                        System.out.println("Cerca per mezzo di ");
-//                        System.out.println("1. Tessera");
-//                        System.out.println("2. Id Utente");
-//                        System.out.println("3. Torna indietro");
-//                        int sceltaCerca= Integer.parseInt(scanner.nextLine());
-////                        while (scelta != 4){
-//                            switch (sceltaCerca){
-//
-//                                case 1:
-//                                    System.out.println("Inserisci il numero di tessera");
-//                                int tesseraId= Integer.parseInt(scanner.nextLine());
-//                                    System.out.println( tessereDAO.findById(tesseraId));
-//                                    break;
-//                                case 2:
-//                                    System.out.println("Inserisci l'Id dell'utente");
-//                                    int utenteId=Integer.parseInt(scanner.nextLine());
-//                                    System.out.println( utenteDAO.findById(utenteId));
-//
-//
-//                                    break;
-//                                case 3:
-//                                    return;
-//                                default:
-//                                    System.out.println("Scelta non valida. Riprova.");
-//                                    break;
-//                            }
-//
-////                        }
-//
-//                        break;
-//                    case 3:
-//                        System.out.println("Hai selezionato l'opzione 3");
-//                        break;
-//                    case 4:
-//                        System.out.println("Uscita...");
-//                        break;
-//                    default:
-//                        System.out.println("Scelta non valida. Riprova.");
-//                        break;
-//                }
-//            } catch (Exception e) {
-//                System.out.println("Input non valido. Riprova.");
-//                scanner.next(); // Consuma l'input errato per evitare loop infinito
-//            }
-//        }
-
-        //! CREAZIONE TRATTA
         Tratta milano_roma = new Tratta(2, "Milano", "Roma");
         trattaDAO.saveTratta(milano_roma,10,2);
         Mezzo nuovoMezzo = new Mezzo(TipoMezzo.AUTOBUS,80,StatoMezzo.IN_MANUTENZIONE,LocalDate.parse("27-03-2024", formatter),milano_roma,4,3);
@@ -283,7 +208,7 @@ public class Application {
 //        -------------RINNOVO TESSERA SCADUTA---------------
 //       tessereDAO.rinnovaTessera(1);
 
-//        em.close();
-//        emf.close();
-//    }
-//}
+        em.close();
+        emf.close();
+    }
+}
