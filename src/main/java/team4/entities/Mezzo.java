@@ -5,6 +5,7 @@ import team4.enums.StatoMezzo;
 import team4.enums.TipoMezzo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Mezzo {
@@ -19,15 +20,12 @@ public class Mezzo {
     @Column(name = "capienza")
     private int capienza;
 
-//    @Column(name = "in_manutenzione")
-//    private boolean inManutenzione;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "stato")
     private StatoMezzo stato;
 
-    @Column(name = "data_manutenzione")
-    private LocalDate dataManutenzione;
+    @OneToMany(mappedBy = "mezzo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Manutenzione> manutenzioni;
 
     @ManyToOne
     @JoinColumn(name = "tratta_id") // FK nel DB
@@ -121,13 +119,6 @@ public class Mezzo {
 //        this.inManutenzione = inManutenzione;
 //    }
 
-    public LocalDate getDataManutenzione() {
-        return dataManutenzione;
-    }
-
-    public void setDataManutenzione(LocalDate dataManutenzione) {
-        this.dataManutenzione = dataManutenzione;
-    }
 
     public Tratta getTrattaServita() {
         return trattaServita;
@@ -143,10 +134,9 @@ public class Mezzo {
                 "tipoMezzo=" + tipoMezzo +
                 ", capienza=" + capienza +
                 ", stato=" + stato +
-                ", dataManutenzione=" + dataManutenzione +
                 ", trattaServita=" + trattaServita +
                 ", numeroDiVolte=" + numeroDiVolte +
-                ", tempoEffettivo=" + tempoEffettivo +
+                ", tempoEffettivo=" + tempoEffettivo + //TODO AGGIUNGERE TOSTRING MANUTENZIONE IN CORSO O ULTIMA MANUTENZIONE
                 '}';
     }
 }

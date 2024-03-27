@@ -36,10 +36,11 @@ public class Application {
 
 
         DistributoriDAO distributoriDAO= new DistributoriDAO(em);
-//        Distributore distributore = new Distributore();
         DistributoreAutomatico distributoreAutomatico= new DistributoreAutomatico(true);
         DistributoreAutomatico distributoreAutomatico2= new DistributoreAutomatico(false);
-//        distributoriDAO.save(distributore);
+        Distributore botteghino = new Distributore();
+
+        distributoriDAO.save(botteghino);
         distributoriDAO.save(distributoreAutomatico);
         distributoriDAO.save(distributoreAutomatico2);
 
