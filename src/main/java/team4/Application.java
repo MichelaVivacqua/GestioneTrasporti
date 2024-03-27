@@ -4,10 +4,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import team4.dao.*;
+import team4.entities.Tessera;
 import team4.entities.Utente;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Application {
@@ -101,7 +103,7 @@ public class Application {
 
 //        tessereDAO.findByIdAndDelete(1);
 //        Tessera tessera1 = new Tessera(LocalDate.parse("25-03-2024", formatter));
-
+//
 //        try {
 //            tessereDAO.save(tessera1);
 //
@@ -188,6 +190,8 @@ public class Application {
 //        long bigliettiVidimatiTotali = bigliettoDAO.countBigliettiVidimatiTotali(startDate, endDate);
 //        System.out.println("Numero di biglietti vidimati in totale: " + bigliettiVidimatiTotali);
 
+//        -------------RINNOVO TESSERA SCADUTA---------------
+       tessereDAO.rinnovaTessera(1);
 
         em.close();
         emf.close();
