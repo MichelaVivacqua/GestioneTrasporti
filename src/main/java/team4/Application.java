@@ -1,5 +1,3 @@
-package team4;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -9,23 +7,18 @@ import team4.entities.Utente;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
 
-
     public static void main(String[] args) {
-
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
         EntityManager em = emf.createEntityManager();
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
         TrattaDAO trattaDAO = new TrattaDAO(em);
         MezzoDAO mezzoDAO = new MezzoDAO(em);
         UtenteDAO utenteDAO = new UtenteDAO(em);
-
+        TessereDAO tessereDAO = new TessereDAO(em);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -35,7 +28,7 @@ public class Application {
             System.out.println("Menu:");
             System.out.println("1. Creazione Utente");
             System.out.println("2. Seleziona Utente");
-            System.out.println("3. Opzione 3");
+            System.out.println("3. Controlla la validità della tua tessera");
             System.out.println("4. Esci");
 
             System.out.print("Seleziona un'opzione: ");
@@ -83,7 +76,14 @@ public class Application {
                         System.out.println("Hai selezionato l'opzione 2");
                         break;
                     case 3:
-                        System.out.println("Hai selezionato l'opzione 3");
+                        System.out.println("Inserisci qui l'id della tua tessera");
+                        String id = scanner.nextLine();
+                        try {
+                            long tesseraId = Long.parseLong(id);
+                            tessereDAO.rinnovaTessera(tesseraId);
+                        } catch (NumberFormatException e) {
+                            System.out.println("ID della tessera non valido. Riprova.");
+                        }
                         break;
                     case 4:
                         System.out.println("Uscita...");
@@ -97,9 +97,17 @@ public class Application {
                 scanner.next(); // Consuma l'input errato per evitare loop infinito
             }
         }
+        // Chiudi lo scanner alla fine
+        scanner.close();
 
-        //! CREAZIONE TESSERA
-        TessereDAO tessereDAO = new TessereDAO(em);
+        // Chiudi l'EntityManager
+        em.close();
+    }
+}
+
+//! CREAZIONE TESSERA
+//       3
+
 
 //        tessereDAO.findByIdAndDelete(1);
 //        Tessera tessera1 = new Tessera(LocalDate.parse("25-03-2024", formatter));
@@ -169,8 +177,8 @@ public class Application {
 
 
 // Esempio di utilizzo di un  distributore
-        LocalDate startDate = LocalDate.of(2024, 3, 1); // Data di inizio del periodo
-        LocalDate endDate = LocalDate.of(2024, 3, 31); // Data di fine del periodo
+//        LocalDate startDate = LocalDate.of(2024, 3, 1); // Data di inizio del periodo
+//        LocalDate endDate = LocalDate.of(2024, 3, 31); // Data di fine del periodo
 
 //        long bigliettiEmessi = bigliettoDAO.countBigliettiEmessiPerDistributore(distributore, LocalDate.parse("01-03-2024",formatter), LocalDate.parse("31-03-2024",formatter));
 //        long abbonamentiEmessi = bigliettoDAO.countAbbonamentiEmessiPerDistributore(distributore, LocalDate.parse("01-03-2024",formatter), LocalDate.parse("31-03-2024",formatter));
@@ -191,9 +199,9 @@ public class Application {
 //        System.out.println("Numero di biglietti vidimati in totale: " + bigliettiVidimatiTotali);
 
 //        -------------RINNOVO TESSERA SCADUTA---------------
-       tessereDAO.rinnovaTessera(1);
+//       tessereDAO.rinnovaTessera(1);
 
-        em.close();
-        emf.close();
-    }
-}
+//        em.close();
+//        emf.close();
+//    }
+//}
