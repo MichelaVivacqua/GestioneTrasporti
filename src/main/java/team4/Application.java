@@ -1,10 +1,10 @@
-package team4;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import team4.dao.*;
 import team4.entities.*;
+import team4.entities.Tessera;
+import team4.entities.Utente;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,11 +13,7 @@ import java.util.Scanner;
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
 
-
     public static void main(String[] args) {
-
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
         EntityManager em = emf.createEntityManager();
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
         TrattaDAO trattaDAO = new TrattaDAO(em);
@@ -29,12 +25,96 @@ public class Application {
 
         Scanner scanner = new Scanner(System.in);
         int scelta = 0;
-//        while (scelta != 4) {
-//            System.out.println("Menu:");
-//            System.out.println("1. Creazione Utente");
-//            System.out.println("2. Seleziona Utente");
-//            System.out.println("3. Opzione 3");
-//            System.out.println("4. Esci");
+        while (scelta != 4) {
+            System.out.println("Menu:");
+            System.out.println("1. Creazione Utente");
+            System.out.println("2. Seleziona Utente");
+            System.out.println("3. Controlla la validità della tua tessera");
+            System.out.println("4. Esci");
+
+            System.out.print("Seleziona un'opzione: ");
+            try {
+                scelta = Integer.parseInt(scanner.nextLine());
+                switch (scelta) {
+                    case 1:
+                        //TODO CREAZIONE UTENTE + TESSERA(AUTOMATICO)
+                        System.out.println("Inserisci un nome");
+                        String nome = scanner.nextLine();
+                        System.out.println("Inserisci un cognome");
+                        String cognome = scanner.nextLine();
+
+                        System.out.println("Vuoi creare una tessera? ");
+                        boolean tessera = false;
+                        while (scelta != 4) {
+                            System.out.println("1. SI");
+                            System.out.println("2. No");
+
+                            int sceltaT = Integer.parseInt(scanner.nextLine());
+                            switch (sceltaT) {
+                                case 1:
+                                    tessera = true;
+                                    scelta = 4; // Per uscire dal loop
+                                    break;
+                                case 2:
+                                    tessera = false;
+                                    scelta = 4; // Per uscire dal loop
+                                    break;
+                                default:
+                                    System.out.println("Scelta non valida. Riprova.");
+                                    break;
+                            }
+                        }
+                        Utente utente;
+                        if (tessera) {
+                            utente = new Utente(nome, cognome, true);
+                        } else {
+                            utente = new Utente(nome, cognome, false);
+                        }
+                        utenteDAO.save(utente);
+                        System.out.println("UTENTE " + nome + " CREATO CON SUCCESSO");
+                        break;
+                    case 2:
+                        System.out.println("Hai selezionato l'opzione 2");
+                        break;
+                    case 3:
+                        System.out.println("Inserisci qui l'id della tua tessera");
+                        String id = scanner.nextLine();
+                        try {
+                            long tesseraId = Long.parseLong(id);
+                            tessereDAO.rinnovaTessera(tesseraId);
+                        } catch (NumberFormatException e) {
+                            System.out.println("ID della tessera non valido. Riprova.");
+                        }
+                        break;
+                    case 4:
+                        System.out.println("Uscita...");
+                        break;
+                    default:
+                        System.out.println("Scelta non valida. Riprova.");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Input non valido. Riprova.");
+                scanner.next(); // Consuma l'input errato per evitare loop infinito
+            }
+        }
+        // Chiudi lo scanner alla fine
+        scanner.close();
+
+        // Chiudi l'EntityManager
+        em.close();
+    }
+}
+
+//! CREAZIONE TESSERA
+//       3
+
+
+//        tessereDAO.findByIdAndDelete(1);
+//        Tessera tessera1 = new Tessera(LocalDate.parse("25-03-2024", formatter));
+//
+//        try {
+//            tessereDAO.save(tessera1);
 //
 //            System.out.print("Seleziona un'opzione: ");
 //            try {
@@ -179,8 +259,8 @@ public class Application {
 
 
 // Esempio di utilizzo di un  distributore
-        LocalDate startDate = LocalDate.of(2024, 3, 1); // Data di inizio del periodo
-        LocalDate endDate = LocalDate.of(2024, 3, 31); // Data di fine del periodo
+//        LocalDate startDate = LocalDate.of(2024, 3, 1); // Data di inizio del periodo
+//        LocalDate endDate = LocalDate.of(2024, 3, 31); // Data di fine del periodo
 
 //        long bigliettiEmessi = bigliettoDAO.countBigliettiEmessiPerDistributore(distributore, LocalDate.parse("01-03-2024",formatter), LocalDate.parse("31-03-2024",formatter));
 //        long abbonamentiEmessi = bigliettoDAO.countAbbonamentiEmessiPerDistributore(distributore, LocalDate.parse("01-03-2024",formatter), LocalDate.parse("31-03-2024",formatter));
@@ -200,8 +280,10 @@ public class Application {
 //        long bigliettiVidimatiTotali = bigliettoDAO.countBigliettiVidimatiTotali(startDate, endDate);
 //        System.out.println("Numero di biglietti vidimati in totale: " + bigliettiVidimatiTotali);
 
+//        -------------RINNOVO TESSERA SCADUTA---------------
+//       tessereDAO.rinnovaTessera(1);
 
-        em.close();
-        emf.close();
-    }
-}
+//        em.close();
+//        emf.close();
+//    }
+//}
