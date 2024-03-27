@@ -67,5 +67,16 @@ public class Tessera {
         public void setUtente(Utente utente) {
             this.utente = utente;
         }
+
+
+    @Override
+    public String toString() {
+        return "Tessera{" +
+                ", intestatario= " + utente.getNome() + " " + utente.getCognome() +
+                " id=" + id +
+                ", dataDiEmissione=" + dataDiEmissione +
+                ", dataDiScadenza=" + dataDiScadenza +
+                '}';
+    }
 }
 

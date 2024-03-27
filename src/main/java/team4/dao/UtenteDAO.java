@@ -31,4 +31,26 @@ public class UtenteDAO {
         }
     }
 
+    public Utente findById(long id) {
+        return em.find(Utente.class, id);
+    }
+
+
+    public void findByIdAndDelete(long id) {
+        try {
+            EntityTransaction t = em.getTransaction();
+            t.begin();
+            Utente found = em.find(Utente.class, id);
+            if (found != null) {
+                em.remove(found);
+                t.commit();
+                System.out.println("Utente eliminato");
+            } else System.out.println("Utente non trovata");
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

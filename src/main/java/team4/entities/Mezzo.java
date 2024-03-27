@@ -7,13 +7,21 @@ import java.time.LocalDate;
 public class Mezzo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_Mezzo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo")
+    private TipoMezzo tipoMezzo;
 
     @Column(name = "capienza")
     private int capienza;
 
-    @Column(name = "in_manutenzione")
-    private boolean inManutenzione;
+//    @Column(name = "in_manutenzione")
+//    private boolean inManutenzione;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "stato")
+    private StatoMezzo stato;
 
     @Column(name = "data_manutenzione")
     private LocalDate dataManutenzione;
@@ -23,7 +31,6 @@ public class Mezzo {
 
     private Tratta trattaServita;
 
-
     @Column(name = "numero_di_volte")
     private int numeroDiVolte;
 
@@ -32,15 +39,44 @@ public class Mezzo {
 
     public Mezzo() {}
 
-    public Mezzo(int capienza, boolean inManutenzione, LocalDate dataManutenzione, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
-       this.capienza = capienza;
-        this.inManutenzione = inManutenzione;
+    public Mezzo(TipoMezzo tipoMezzo,int capienza, StatoMezzo stato, LocalDate dataManutenzione, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
+        this.tipoMezzo = tipoMezzo;
+        this.capienza = capienza;
+        this.stato = stato;
+
+        if (stato==StatoMezzo.IN_MANUTENZIONE){
         this.dataManutenzione = dataManutenzione;
+
+        }else {
+            this.dataManutenzione= null;
+        }
         this.trattaServita = trattaServita;
         this.tempoEffettivo= tempoEffettivo;
         this.numeroDiVolte= numeroDiVolte;
     }
 
+    public Mezzo(TipoMezzo tipoMezzo, int capienza, StatoMezzo stato, LocalDate dataManutenzione) {
+        this.tipoMezzo = tipoMezzo;
+        this.capienza = capienza;
+        this.stato = stato;
+        this.dataManutenzione = dataManutenzione;
+    }
+
+    public TipoMezzo getTipoMezzo() {
+        return tipoMezzo;
+    }
+
+    public void setTipoMezzo(TipoMezzo tipoMezzo) {
+        this.tipoMezzo = tipoMezzo;
+    }
+
+    public StatoMezzo getStato() {
+        return stato;
+    }
+
+    public void setStato(StatoMezzo stato) {
+        this.stato = stato;
+    }
 
     public int getNumeroDiVolte() {
         return numeroDiVolte;
@@ -59,11 +95,11 @@ public class Mezzo {
     }
 
     public Long getId() {
-        return id;
+        return id_Mezzo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long id_Mezzo) {
+        this.id_Mezzo = id_Mezzo;
     }
 
     public int getCapienza() {
@@ -74,13 +110,13 @@ public class Mezzo {
         this.capienza = capienza;
     }
 
-    public boolean isInManutenzione() {
-        return inManutenzione;
-    }
+//    public boolean isInManutenzione() {
+//        return inManutenzione;
+//    }
 
-    public void setInManutenzione(boolean inManutenzione) {
-        this.inManutenzione = inManutenzione;
-    }
+//    public void setInManutenzione(boolean inManutenzione) {
+//        this.inManutenzione = inManutenzione;
+//    }
 
     public LocalDate getDataManutenzione() {
         return dataManutenzione;
@@ -101,10 +137,11 @@ public class Mezzo {
     @Override
     public String toString() {
         return "Mezzo{" +
-                "id=" + id +
+                "tipoMezzo=" + tipoMezzo +
                 ", capienza=" + capienza +
-                ", inManutenzione=" + inManutenzione +
+                ", stato=" + stato +
                 ", dataManutenzione=" + dataManutenzione +
+                ", trattaServita=" + trattaServita +
                 ", numeroDiVolte=" + numeroDiVolte +
                 ", tempoEffettivo=" + tempoEffettivo +
                 '}';
