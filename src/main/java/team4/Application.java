@@ -3,150 +3,65 @@ package team4;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import team4.dao.*;
-import team4.entities.Utente;
+import team4.dao.DistributoriDAO;
+import team4.entities.Abbonamento;
+import team4.entities.Distributore;
+import team4.entities.Mezzo;
+import team4.entities.Tratta;
+import team4.enums.DurataTitolo;
+import team4.enums.StatoMezzo;
+import team4.enums.TipoDistributore;
+import team4.enums.TipoMezzo;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static team4.Navigations.Navigations.*;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
-    private static EntityManager em = emf.createEntityManager();
-    private static BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
-    private static TrattaDAO trattaDAO = new TrattaDAO(em);
-    private static MezzoDAO mezzoDAO = new MezzoDAO(em);
-    private static UtenteDAO utenteDAO = new UtenteDAO(em);
-    private static TessereDAO tessereDAO = new TessereDAO(em);
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static EntityManager em = emf.createEntityManager();
 
-    private static Scanner scanner = new Scanner(System.in);
+
 
     public static void main(String[] args) {
-        int scelta = 0;
-        while (scelta != 4) {
-                menu();
-                scelta = Integer.parseInt(scanner.nextLine());
-            try {
-                switch (scelta) {
-                    case 1:
-                        creaUtente();
-                        break;
-                    case 2:
-                        cercaUtente();
-//                        }
-                        break;
-                    case 3:
-                        controllaValiditaTessera();
-                        break;
-                    case 4:
-                        System.out.println("Uscita...");
-                        break;
-                    default:
-                        System.out.println("Scelta non valida. Riprova.");
-                        break;
+    ;
 
-                }
-            } catch (Exception e) {
-                System.out.println("Input non valido. Riprova.");
-                scanner.next(); // Consuma l'input errato per evitare loop infinito
-            }
-        }
+
+            menu();
+//                scelta = Integer.parseInt(scanner.nextLine());
+
+
+
+//        trattaDAO.findTrattaByIdAndDelete(6);
+
+
+        DistributoriDAO distributoriDAO= new DistributoriDAO(em);
+        Distributore distributore = new Distributore(TipoDistributore.Automatico,true);
+        distributoriDAO.save(distributore);
+
+
+//     Emissione di un abbonamento settimanale
+        Tratta veronaNapoli = new Tratta(4, "Verona", "Napoli");
+        trattaDAO.saveTratta(veronaNapoli);
+        Mezzo nuovoMezzo = new Mezzo(TipoMezzo.AUTOBUS,80, StatoMezzo.IN_MANUTENZIONE, LocalDate.parse("27-03-2024", formatter),veronaNapoli,4,3);
+        mezzoDAO.save(nuovoMezzo);
+
+        Abbonamento abbonamentoSettimanale = new Abbonamento(DurataTitolo.SETTIMANALE,nuovoMezzo,distributore,LocalDate.now(),tessereDAO.findById(5));
+        // Imposta i dettagli dell'abbonamento...
+        bigliettoDAO.emettiAbbonamento(abbonamentoSettimanale);
+        em.close();
+        emf.close();
+        scanner.close();
     }
-    // Chiudi lo scanner alla fine
-//        scanner.close();
-
-    // Chiudi l'EntityManager
-//        em.close();
-    //!----------------------------------------------------------------------------------
-    private static void menu(){
-        System.out.println("Menu:");
-        System.out.println("1. Utente");
-        System.out.println("2. Amministratore");
-        System.out.println("3. Esci");
-        System.out.print("Seleziona un'opzione: ");
-    }
-    private static void utente(){
-        System.out.println("1. CreaUtente");
-        System.out.println("2. ");
-        System.out.println("3. Esci");
-        System.out.print("Seleziona un'opzione: ");
-    }
-
-
-    private static void creaUtente() {
-        System.out.println("Inserisci un nome");
-        String nome = scanner.nextLine();
-        System.out.println("Inserisci un cognome");
-        String cognome = scanner.nextLine();
-        boolean tessera = chiediCreazioneTessera();
-        Utente utente = new Utente(nome, cognome, tessera);
-        utenteDAO.save(utente);
-        System.out.println("UTENTE " + nome + " CREATO CON SUCCESSO");
-    }
-
-    private static boolean chiediCreazioneTessera() {
-        System.out.println("Vuoi creare una tessera?");
-        System.out.println("1. SI");
-        System.out.println("2. No");
-        int sceltaT = Integer.parseInt(scanner.nextLine());
-        return sceltaT == 1;
-    }
-
-    private static void cercaUtente() {
-        System.out.println("Cerca per mezzo di:");
-        System.out.println("1. Tessera");
-        System.out.println("2. Id Utente");
-        System.out.println("3. Torna indietro");
-        int sceltaCerca = Integer.parseInt(scanner.nextLine());
-        switch (sceltaCerca) {
-            case 1:
-                cercaPerTessera();
-                break;
-            case 2:
-                cercaPerIdUtente();
-                break;
-            case 3:
-                // Torna al menu principale
-                break;
-            default:
-                System.out.println("Scelta non valida. Riprova.");
-                break;
-        }
-    }
-
-    private static void cercaPerTessera() {
-        System.out.println("Inserisci il numero di tessera");
-        int tesseraId = Integer.parseInt(scanner.nextLine());
-        System.out.println(tessereDAO.findById(tesseraId));
-    }
-
-    private static void cercaPerIdUtente() {
-        System.out.println("Inserisci l'Id dell'utente");
-        int utenteId = Integer.parseInt(scanner.nextLine());
-        System.out.println(utenteDAO.findById(utenteId));
-    }
-
-    private static void controllaValiditaTessera() {
-        System.out.println("Inserisci qui l'id della tua tessera");
-        String id = scanner.nextLine();
-        try {
-            long tesseraId = Long.parseLong(id);
-            tessereDAO.rinnovaTessera(tesseraId);
-        } catch (NumberFormatException e) {
-            System.out.println("ID della tessera non valido. Riprova.");
-        }
-    }
-
 }
-//!----------------------------------------------------------------------------------
+
 //!TRATTA1 //TRATTA2
 //        Tratta milano_roma = new Tratta(2, "Milano", "Roma");
-//        Tratta veronaNapoli = new Tratta(4, "Verona", "Napoli");
-//        trattaDAO.saveTratta(veronaNapoli);
 
 
-//        Mezzo nuovoMezzo = new Mezzo(TipoMezzo.AUTOBUS,80,StatoMezzo.IN_MANUTENZIONE, LocalDate.parse("27-03-2024", formatter),veronaNapoli,4,3);
-//        mezzoDAO.save(nuovoMezzo);
 
 
 //TODO Rimuvoi i metodi dal dao perchè non serve nel salvataggio della tratta il tempo e il num di volte dato che con il mezzo fai tutto
@@ -158,7 +73,6 @@ public class Application {
 //        trattaDAO.saveTratta(abruzzoVerona,6,10);
 //        System.out.println( trattaDAO.findTrattaById(7));
 //        System.out.println(trattaDAO.findTrattaByPartenza("Milano"));
-//        trattaDAO.findTrattaByIdAndDelete(7);
 //        //! CREAZIONE MEZZO
 //            Mezzo bus = new Mezzo(80, false, LocalDate.parse("26-03-2024", formatter), milano_roma, 1, 1);
 //            mezzoDAO.save(bus);
@@ -167,9 +81,7 @@ public class Application {
 
 
 //                 Ottenere il conteggio dei biglietti e degli abbonamenti emessi da un distributore in un dato periodo di tempo
-//        DistributoriDAO distributoriDAO= new DistributoriDAO(em);
-//        Distributore distributore = new Distributore();
-//        distributoriDAO.save(distributore);
+//
 //
 //
 //
@@ -186,10 +98,7 @@ public class Application {
 
 
 //
-//        // Emissione di un abbonamento settimanale
-//        Abbonamento abbonamentoSettimanale = new Abbonamento();
-//        // Imposta i dettagli dell'abbonamento...
-//        bigliettoDAO.emettiAbbonamentoSettimanale(abbonamentoSettimanale);
+
 //
 //        // Emissione di un abbonamento mensile
 //        Abbonamento abbonamentoMensile = new Abbonamento();
@@ -222,7 +131,6 @@ public class Application {
 //        -------------RINNOVO TESSERA SCADUTA---------------
 //       tessereDAO.rinnovaTessera(1);
 
-//        em.close();
-//        emf.close();
+//
 //    }
 //}

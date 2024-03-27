@@ -11,11 +11,11 @@ public class Biglietto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "mezzoDiVidimazioneId")
+    @JoinColumn(name = "mezzo_Di_Vidimazione_Id")
     private Mezzo mezzoDiVidimazione;
 
     @ManyToOne
-    @JoinColumn(name = "emessoDaId")
+    @JoinColumn(name = "emesso_Da_Id")
     private Distributore emessoDa;
 
     private LocalDate dataDiEmissione;
@@ -30,6 +30,13 @@ public class Biglietto {
         this.emessoDa = emessoDa;
         this.dataDiEmissione = dataDiEmissione;
         this.dataDiVidimazione = dataDiVidimazione;
+        this.tessera = tessera;
+    }
+
+    public Biglietto(Mezzo mezzoDiVidimazione, Distributore emessoDa, LocalDate dataDiEmissione, Tessera tessera) {
+        this.mezzoDiVidimazione = mezzoDiVidimazione;
+        this.emessoDa = emessoDa;
+        this.dataDiEmissione = dataDiEmissione;
         this.tessera = tessera;
     }
 

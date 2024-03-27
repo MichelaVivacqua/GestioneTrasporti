@@ -1,16 +1,26 @@
 package team4.dao;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import team4.entities.*;
+import team4.entities.Abbonamento;
+import team4.entities.Biglietto;
+import team4.entities.Distributore;
+import team4.entities.Mezzo;
+import team4.enums.DurataTitolo;
 
 import java.time.LocalDate;
 
 
 public class BigliettoDAO {
     private EntityManager em;
+
+    private DurataTitolo durata;
+
+    private Abbonamento abbonamento;
+
 
     public BigliettoDAO(EntityManager em) {
         this.em = em;
@@ -34,32 +44,27 @@ public class BigliettoDAO {
     }
 
 
-
     // Metodo per l'emissione di un abbonamento settimanale
-    public void emettiAbbonamentoSettimanale(Abbonamento abbonamento) {
+    public void emettiAbbonamento(Abbonamento abbonamento) {
         try {
             EntityTransaction t = this.em.getTransaction();
             t.begin();
+
             this.em.persist(abbonamento);
+            System.out.println("ABBONAMENTO FATTO");
+//            if (durata == Durata_titolo.MENSILE) {
+//                System.out.println("Abbonamento mensile emesso!");
+//
+//            } else {
+//                System.out.println("Abbonamento settimanale emesso!");
+//
+//            }
             t.commit();
-            System.out.println("Abbonamento settimanale emesso!");
         } catch (Exception e) {
-            System.out.println("Errore durante l'emissione dell'abbonamento settimanale: " + e.getMessage());
+            System.out.println("Errore durante l'emissione dell'abbonamento " + e.getMessage());
         }
     }
 
-    // Metodo per l'emissione di un abbonamento mensile
-    public void emettiAbbonamentoMensile(Abbonamento abbonamento) {
-        try {
-            EntityTransaction t = this.em.getTransaction();
-            t.begin();
-            this.em.persist(abbonamento);
-            t.commit();
-            System.out.println("Abbonamento mensile emesso!");
-        } catch (Exception e) {
-            System.out.println("Errore durante l'emissione dell'abbonamento mensile: " + e.getMessage());
-        }
-    }
     // Metodo per il conteggio dei biglietti emessi per un distributore in un dato periodo di tempo
     public long countBigliettiEmessiPerDistributore(Distributore distributore, LocalDate startDate, LocalDate endDate) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

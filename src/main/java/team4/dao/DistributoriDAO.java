@@ -3,11 +3,12 @@ package team4.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import team4.entities.Distributore;
-import team4.entities.DistributoreAutomatico;
+//import team4.entities.DistributoreAutomatico;
 import team4.entities.Mezzo;
+import team4.enums.TipoDistributore;
 
 
-    public class DistributoriDAO {
+public class DistributoriDAO {
         private EntityManager em;
 
         public DistributoriDAO(EntityManager em) {
@@ -49,15 +50,15 @@ import team4.entities.Mezzo;
             }
         }
 //------------DISTRIBUTORE AUTOMATICO (avrà anche il metodo di verifica)--------------------
-public void save(DistributoreAutomatico da, boolean attivo) {
+public void save(Distributore distributore, boolean attivo) {
     try {
         if (attivo){
         EntityTransaction e = em.getTransaction();
         e.begin();
-        da.setAttivo(true);
-        em.persist(da);
+        distributore.setAttivo(true);
+        em.persist(distributore);
         e.commit();
-        System.out.println("Distributore automatico con id: " + da.getId() + " creato!");
+        System.out.println("Distributore automatico con id: " + distributore.getId() + " creato!");
         } else {
             System.out.println("Impossibile emettere i biglietti, distributore automatico non in funzione");
         }
