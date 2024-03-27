@@ -19,17 +19,17 @@ public class TrattaDAO {
     }
 
 
-    public void saveTratta(Tratta t,int numeroDiVolte, int tempoEffettivo) {
+    public void saveTratta(Tratta t) {
         try {
             EntityTransaction e = em.getTransaction();
             e.begin();
 
-            Set<Mezzo> mezziServenti = t.getMezziServenti();
-            for (Mezzo mezzo: mezziServenti){
-                mezzo.setNumeroDiVolte(mezzo.getNumeroDiVolte()+numeroDiVolte);
-                mezzo.setTempoEffettivo(tempoEffettivo);
-
-            }
+//            Set<Mezzo> mezziServenti = t.getMezziServenti();
+//            for (Mezzo mezzo: mezziServenti){
+//                mezzo.setNumeroDiVolte(mezzo.getNumeroDiVolte()+numeroDiVolte);
+//                mezzo.setTempoEffettivo(tempoEffettivo);
+//
+//            }
             em.persist(t);
             e.commit();
             System.out.println("Tratta con id:  " + t.getId() + " con partenza da " + t.getPartenza() + " creata!");

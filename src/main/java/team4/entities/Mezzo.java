@@ -1,6 +1,9 @@
 package team4.entities;
 
 import jakarta.persistence.*;
+import team4.enums.StatoMezzo;
+import team4.enums.TipoMezzo;
+
 import java.time.LocalDate;
 
 @Entity
