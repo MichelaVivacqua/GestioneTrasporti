@@ -22,10 +22,9 @@ public class Utente {
     public Utente() {
     }
 
-    public Utente(String nome, String cognome, Tessera tessera) {
+    public Utente(String nome, String cognome) {
         this.nome = nome;
         this.cognome = cognome;
-        this.tessera = tessera;
     }
 
     public Long getId() {

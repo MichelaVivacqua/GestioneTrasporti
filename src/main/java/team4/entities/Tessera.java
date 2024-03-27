@@ -10,11 +10,15 @@ public class Tessera {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(mappedBy = "tessera")
+    private Utente utente;
+
     @Column(name = "Data_emissione")
     private LocalDate dataDiEmissione;
 
     @Column(name = "Data_scandeza")
     private LocalDate dataDiScadenza;
+
     public Tessera() {
     }
 
@@ -29,6 +33,14 @@ public class Tessera {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Utente getUtente() {
+        return utente;
+    }
+
+    public void setUtente(Utente utente) {
+        this.utente = utente;
     }
 
     public LocalDate getDataDiEmissione() {
@@ -47,5 +59,3 @@ public class Tessera {
         this.dataDiScadenza = dataDiScadenza;
     }
 }
-
-
