@@ -72,6 +72,13 @@ public class Utente {
         this.tessera = tessera;
     }
 
+    public boolean isPossiedeTessera() {
+        return possiedeTessera;
+    }
+
+    public void setPossiedeTessera(boolean possiedeTessera) {
+        this.possiedeTessera = possiedeTessera;
+    }
 
     @Override
     public String toString() {

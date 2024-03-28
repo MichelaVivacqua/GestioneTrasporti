@@ -5,15 +5,6 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import team4.dao.DistributoriDAO;
 import team4.entities.*;
-import team4.enums.DurataTitolo;
-import team4.enums.StatoMezzo;
-import team4.enums.TipoDistributore;
-import team4.enums.TipoMezzo;
-
-import java.time.LocalDate;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static team4.Navigations.Navigations.*;
 
@@ -27,7 +18,7 @@ public class Application {
     ;
 
 
-//            menu();
+            menu();
 //                scelta = Integer.parseInt(scanner.nextLine());
 
 
@@ -35,13 +26,13 @@ public class Application {
 //        trattaDAO.findTrattaByIdAndDelete(6);
 
 
-        DistributoriDAO distributoriDAO= new DistributoriDAO(em);
-//        Distributore distributore = new Distributore();
-        DistributoreAutomatico distributoreAutomatico= new DistributoreAutomatico(true);
-        DistributoreAutomatico distributoreAutomatico2= new DistributoreAutomatico(false);
-//        distributoriDAO.save(distributore);
-        distributoriDAO.save(distributoreAutomatico);
-        distributoriDAO.save(distributoreAutomatico2);
+//        DistributoriDAO distributoriDAO= new DistributoriDAO(em);
+//        Rivenditore_Autorizzato rivenditoreAutorizzato = new Rivenditore_Autorizzato();
+//        RivenditoreAutorizzatoAutomatico distributoreAutomatico= new RivenditoreAutorizzatoAutomatico(true);
+//        RivenditoreAutorizzatoAutomatico distributoreAutomatico2= new RivenditoreAutorizzatoAutomatico(false);
+//        distributoriDAO.save(rivenditoreAutorizzato);
+//        distributoriDAO.save(distributoreAutomatico);
+//        distributoriDAO.save(distributoreAutomatico2);
 
 
 //     Emissione di un abbonamento settimanale
@@ -53,6 +44,8 @@ public class Application {
 //        Abbonamento abbonamentoSettimanale = new Abbonamento(DurataTitolo.MENSILE,nuovoMezzo,distributore,LocalDate.now(),tessereDAO.findById(1));
         // Imposta i dettagli dell'abbonamento...
 //        bigliettoDAO.emettiAbbonamento(abbonamentoSettimanale);
+
+
         em.close();
         emf.close();
         scanner.close();

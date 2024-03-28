@@ -16,7 +16,7 @@ public class Biglietto {
 
     @ManyToOne
     @JoinColumn(name = "emesso_Da_Id")
-    private Distributore emessoDa;
+    private Rivenditore_Autorizzato emessoDa;
 
     private LocalDate dataDiEmissione;
     private LocalDate dataDiVidimazione;
@@ -25,7 +25,7 @@ public class Biglietto {
     @JoinColumn(name = "tesseraId")
     private Tessera tessera;
 
-    public Biglietto(Mezzo mezzoDiVidimazione, Distributore emessoDa, LocalDate dataDiEmissione, LocalDate dataDiVidimazione, Tessera tessera) {
+    public Biglietto(Mezzo mezzoDiVidimazione, Rivenditore_Autorizzato emessoDa, LocalDate dataDiEmissione, LocalDate dataDiVidimazione, Tessera tessera) {
         this.mezzoDiVidimazione = mezzoDiVidimazione;
         this.emessoDa = emessoDa;
         this.dataDiEmissione = dataDiEmissione;
@@ -33,7 +33,7 @@ public class Biglietto {
         this.tessera = tessera;
     }
 
-    public Biglietto(Mezzo mezzoDiVidimazione, Distributore emessoDa, LocalDate dataDiEmissione, Tessera tessera) {
+    public Biglietto(Mezzo mezzoDiVidimazione, Rivenditore_Autorizzato emessoDa, LocalDate dataDiEmissione, Tessera tessera) {
         this.mezzoDiVidimazione = mezzoDiVidimazione;
         this.emessoDa = emessoDa;
         this.dataDiEmissione = dataDiEmissione;
@@ -52,11 +52,11 @@ public class Biglietto {
         this.mezzoDiVidimazione = mezzoDiVidimazione;
     }
 
-    public Distributore getEmessoDa() {
+    public Rivenditore_Autorizzato getEmessoDa() {
         return emessoDa;
     }
 
-    public void setEmessoDa(Distributore emessoDa) {
+    public void setEmessoDa(Rivenditore_Autorizzato emessoDa) {
         this.emessoDa = emessoDa;
     }
 

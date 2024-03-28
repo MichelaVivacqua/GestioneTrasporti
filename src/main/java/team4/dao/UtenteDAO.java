@@ -31,6 +31,24 @@ public class UtenteDAO {
         }
     }
 
+    public void update(Utente u){
+
+        try{
+            EntityTransaction e= em.getTransaction();
+            e.begin();
+
+            em.merge(u);
+
+            e.commit();
+
+            System.out.println("Utente con id: "+ u.getId() + " aggiornato");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
     public Utente findById(long id) {
         return em.find(Utente.class, id);
     }

@@ -1,30 +1,34 @@
 package team4.Navigations;
 
+import team4.entities.Tessera;
 import team4.entities.Utente;
 
-import static team4.Navigations.Navigations.scanner;
-import static team4.Navigations.Navigations.utenteDAO;
-import static team4.Navigations.TesseraNav.cercaPerTessera;
-import static team4.Navigations.TesseraNav.chiediCreazioneTessera;
+import static team4.Navigations.Navigations.*;
+import static team4.Navigations.TesseraNav.*;
 
 public class UtentiNav {
 
 
-
-    public static void utente(){
+    public static void utente() {
         System.out.println("1. CreaUtente");
         System.out.println("2. Seleziona Utente");
         System.out.println("3. Esci");
         System.out.print("Seleziona un'opzione: ");
 
-        int sceltaU= Integer.parseInt(scanner.nextLine());
-        switch (sceltaU){
+        int sceltaU = Integer.parseInt(scanner.nextLine());
+        switch (sceltaU) {
             case 1:
                 creaUtente();
                 break;
             case 2:
                 cercaUtente();
 
+            case 3:
+                utente();
+                break;
+            default:
+                System.out.println("Opzione non valida");
+                break;
         }
     }
 
@@ -55,8 +59,7 @@ public class UtentiNav {
                 cercaPerIdUtente();
                 break;
             case 3:
-                // Torna al menu principale
-                break;
+               return;
             default:
                 System.out.println("Scelta non valida. Riprova.");
                 break;
@@ -67,5 +70,26 @@ public class UtentiNav {
         System.out.println("Inserisci l'Id dell'utente");
         int utenteId = Integer.parseInt(scanner.nextLine());
         System.out.println(utenteDAO.findById(utenteId));
+        Utente utente = utenteDAO.findById(utenteId);
+        if (utente != null) {
+            System.out.println(utente);
+            if (utente.getTessera() == null) {
+                if (chiediCreazioneTesseraSelezioneUtente()) {
+                    Tessera tessera = new Tessera();
+                    tessera.setUtente(utente);
+                    tessereDAO.save(tessera);
+                    System.out.println("Tessera creata e associata all'utente");
+                    utente.setPossiedeTessera(true);
+                    utenteDAO.update(utente);
+                } else {
+                    System.out.println("Nessuna tessera creata");
+                }
+            } else {
+                System.out.println("L'utente possiede già una tessera associata");
+            }
+        } else {
+            System.out.println("Utente non trovato");
+        }
+
     }
 }

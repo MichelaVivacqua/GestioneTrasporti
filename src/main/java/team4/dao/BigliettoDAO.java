@@ -7,7 +7,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import team4.entities.Abbonamento;
 import team4.entities.Biglietto;
-import team4.entities.Distributore;
+import team4.entities.Rivenditore_Autorizzato;
 import team4.entities.Mezzo;
 import team4.enums.DurataTitolo;
 
@@ -66,14 +66,14 @@ public class BigliettoDAO {
     }
 
     // Metodo per il conteggio dei biglietti emessi per un distributore in un dato periodo di tempo
-    public long countBigliettiEmessiPerDistributore(Distributore distributore, LocalDate startDate, LocalDate endDate) {
+    public long countBigliettiEmessiPerDistributore(Rivenditore_Autorizzato rivenditoreAutorizzato, LocalDate startDate, LocalDate endDate) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
         Root<Biglietto> root = query.from(Biglietto.class);
 
         query.select(cb.count(root));
         query.where(cb.and(
-                cb.equal(root.get("emessoDa"), distributore),
+                cb.equal(root.get("emessoDa"), rivenditoreAutorizzato),
                 cb.between(root.get("dataDiEmissione"), startDate, endDate)
         ));
 
@@ -81,14 +81,14 @@ public class BigliettoDAO {
     }
 
     // Metodo per il conteggio degli abbonamenti emessi per un distributore in un dato periodo di tempo
-    public long countAbbonamentiEmessiPerDistributore(Distributore distributore, LocalDate startDate, LocalDate endDate) {
+    public long countAbbonamentiEmessiPerDistributore(Rivenditore_Autorizzato rivenditoreAutorizzato, LocalDate startDate, LocalDate endDate) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
         Root<Abbonamento> root = query.from(Abbonamento.class);
 
         query.select(cb.count(root));
         query.where(cb.and(
-                cb.equal(root.get("emessoDa"), distributore),
+                cb.equal(root.get("emessoDa"), rivenditoreAutorizzato),
                 cb.between(root.get("dataDiEmissione"), startDate, endDate)
         ));
 
