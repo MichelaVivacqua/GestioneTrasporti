@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import static team4.Application.em;
+import static team4.Navigations.AdminNav.admin;
 import static team4.Navigations.UtentiNav.utente;
 
 public class Navigations {
@@ -32,17 +33,15 @@ public class Navigations {
                 utente();
                 break;
             case 2:
-
+             admin();
                 break;
             case 3:
                 break;
-
             default:
                 System.out.println("Scelta non valida, riprova");
                 break;
         }
     }
-
 
 }
 

@@ -16,9 +16,6 @@ public class Rivenditore_AutorizzatoDAO {
             this.em = em;
         }
 
-
-
-
         public void save(team4.entities.Rivenditore_Autorizzato d) {
             try {
                 EntityTransaction e = em.getTransaction();
@@ -67,12 +64,18 @@ public void save(RivenditoreAutorizzatoAutomatico distributore, boolean attivo) 
         e.commit();
         System.out.println("Distributore automatico con id: " + distributore.getId() + " creato!");
         } else {
-            System.out.println("Impossibile emettere i biglietti, distributore automatico non in funzione");
+            EntityTransaction e = em.getTransaction();
+            e.begin();
+            distributore.setAttivo(false);
+            em.persist(distributore);
+            e.commit();
+            System.out.println("Distributore automatico con id: " + distributore.getId() + " creato! ATTENZIONE DISTRIBUTORE NON IN FUNZIONE");
         }
     } catch (Exception e) {
         System.out.println(e.getMessage());
     }
 }
+
     }
 
 
