@@ -30,6 +30,22 @@ public class TesseraDAO {
         }
     }
 
+
+//    public void update(Tessera t){
+//        EntityTransaction e= em.getTransaction();
+//
+//        try {
+//            e.begin();
+//
+//            em.merge(t);
+//
+//            e.commit();
+//            System.out.println("Tessera "+ );
+//
+//        }
+//
+//    }
+
     public void saveTesseraAndUtenteAnnesso(Tessera t) {
         EntityTransaction e = em.getTransaction();
         try {
@@ -56,6 +72,7 @@ public class TesseraDAO {
             Tessera found = em.find(Tessera.class, id);
             if (found != null) {
                 em.remove(found);
+                em.flush();
                 t.commit();
                 System.out.println("Tessera eliminata");
             } else System.out.println("Tessera non trovata");

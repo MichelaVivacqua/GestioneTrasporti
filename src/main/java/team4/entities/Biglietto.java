@@ -52,6 +52,7 @@ public class Biglietto {
 
     }
 
+
     public Mezzo getMezzoDiVidimazione() {
         return mezzoDiVidimazione;
     }

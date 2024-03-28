@@ -28,7 +28,13 @@ public class TrattaDAO {
             throw e;
         }
     }
-
+    public List<Tratta> listaTratte() {
+        List<Tratta> tratte = em.createQuery("SELECT t FROM Tratta t", Tratta.class).getResultList();
+        for (Tratta tratta : tratte) {
+            System.out.println(tratta);
+        }
+        return tratte;
+    }
     public void deleteTratta(Tratta tratta) {
         EntityTransaction tx = em.getTransaction();
         try {

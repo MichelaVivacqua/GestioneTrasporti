@@ -31,21 +31,18 @@ public class UtenteDAO {
         }
     }
 
-    public void update(Utente u){
-
-        try{
-            EntityTransaction e= em.getTransaction();
-            e.begin();
-
+    public void update(Utente u) {
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
             em.merge(u);
-
-            e.commit();
-
-            System.out.println("Utente con id: "+ u.getId() + " aggiornato");
-
-        }catch (Exception e) {
-            e.printStackTrace();
-
+            transaction.commit();
+            System.out.println("Utente con id: " + u.getId() + " aggiornato");
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.out.println("Errore durante l'aggiornamento dell'utente: " + e.getMessage());
         }
     }
 

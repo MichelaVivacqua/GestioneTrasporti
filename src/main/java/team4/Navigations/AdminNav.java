@@ -2,7 +2,7 @@ package team4.Navigations;
 
 import jakarta.persistence.EntityManager;
 import team4.Application;
-import team4.dao.Rivenditore_Autorizzato;
+import team4.dao.Rivenditore_AutorizzatoDAO;
 import team4.dao.MezzoDAO;
 import team4.dao.TrattaDAO;
 
@@ -12,7 +12,7 @@ public class AdminNav {
     private static final EntityManager em = Application.em;
     private static final MezzoDAO mezzoDAO = new MezzoDAO(em);
     private static final TrattaDAO trattaDAO = new TrattaDAO(em);
-    private static final Rivenditore_Autorizzato RIVENDITORE_AUTORIZZATO = new Rivenditore_Autorizzato(em);
+    private static final Rivenditore_AutorizzatoDAO RIVENDITORE_AUTORIZZATO = new Rivenditore_AutorizzatoDAO(em);
 
 
     public static void main(String[] args) {

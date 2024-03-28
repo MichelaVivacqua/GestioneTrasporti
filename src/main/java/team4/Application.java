@@ -3,13 +3,6 @@ package team4;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import team4.dao.*;
-import team4.dao.Rivenditore_Autorizzato;
-import team4.entities.*;
-import team4.enums.DurataTitolo;
-import team4.enums.TipoMezzo;
-
-import java.time.LocalDate;
 
 import static team4.Navigations.Navigations.*;
 
@@ -19,102 +12,105 @@ public class Application {
 
     public static void main(String[] args) {
 
+        menu();
 
-        Rivenditore_Autorizzato rivenditoreAutorizzato = new Rivenditore_Autorizzato(em);
-        BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
-        MezzoDAO mezzoDAO = new MezzoDAO(em);
-        TesseraDAO tesseraDAO = new TesseraDAO(em);
-        UtenteDAO utenteDAO = new UtenteDAO(em);
-        TrattaDAO trattaDAO = new TrattaDAO(em);
+//        trattaDAO.listaTratte();
 
-        //ESEMPI DI UTENTI
-        Utente vincenzo = new Utente("Vincenzo", "Costantini", true); // Pro green-pass
-        Utente marco = new Utente("Marco", "Bianchi", false); // Pericoloso anarchico non tesserato
-        Utente giulia = new Utente("Giulia", "Rossi", false); // Inizialmente non tesserata
-
-        utenteDAO.save(vincenzo);
-        utenteDAO.save(marco);
-        utenteDAO.save(giulia);
-
-        //ESEMPIO DI TESSERA
-        Tessera tesseraVincenzo = new Tessera();
-        Tessera tesseraGiulia = new Tessera();
-
-        tesseraVincenzo.setUtente(vincenzo);
-        tesseraGiulia.setUtente(giulia);
-        tesseraVincenzo.setDataDiEmissione(LocalDate.now().minusDays(50));
-        tesseraGiulia.setDataDiEmissione(LocalDate.now().minusDays(150));
-
-        tesseraGiulia.autoUpdateDataDiScadenza();
-        tesseraVincenzo.autoUpdateDataDiScadenza();
-
-        tesseraDAO.save(tesseraVincenzo);
-        tesseraDAO.save(tesseraGiulia);
-
-        //ESEMPI DI DISTRIBUTORI
-        team4.entities.Rivenditore_Autorizzato distributoreAutomatico= new RivenditoreAutorizzatoAutomatico(true);
-        RivenditoreAutorizzatoAutomatico distributoreAutomatico2= new RivenditoreAutorizzatoAutomatico(false);
-        team4.entities.Rivenditore_Autorizzato botteghino = new team4.entities.Rivenditore_Autorizzato();
-
-        rivenditoreAutorizzato.save(botteghino);
-        rivenditoreAutorizzato.save(distributoreAutomatico);
-        rivenditoreAutorizzato.save(distributoreAutomatico2);
-
-        //ESEMPI DI TRATTE
-        Tratta veronaNapoli = new Tratta(350, "Verona", "Napoli");
-        Tratta napoliTorino = new Tratta(400, "Napoli", "Torino");
-        Tratta pescaraRoma = new Tratta(200, "Pescara", "Roma");
-        Tratta milanoRoma = new Tratta(500, "Milano", "Roma");
-
-        trattaDAO.saveTratta(veronaNapoli);
-        trattaDAO.saveTratta(napoliTorino);
-        trattaDAO.saveTratta(pescaraRoma);
-        trattaDAO.saveTratta(milanoRoma);
-
-        //ESEMPI DI MEZZI
-        Mezzo mezzo1 = new Mezzo(TipoMezzo.AUTOBUS.ordinal(), veronaNapoli, 4, 50);
-        Mezzo mezzo2 = new Mezzo();
-        mezzo2.setTipoMezzo(TipoMezzo.TRAM);
-        mezzo2.setTrattaServita(pescaraRoma); // Assumendo che Tratta sia corrett
-        mezzo2.setNumeroDiVolte(2);
-        mezzo2.setTempoEffettivo(120);
-        Mezzo mezzo3 = new Mezzo(90, napoliTorino, 1, 100);
-
-        mezzoDAO.save(mezzo1);
-        mezzoDAO.save(mezzo2);
-        mezzoDAO.save(mezzo3);
-
-//     Emissione di un abbonamento settimanale
-        trattaDAO.saveTratta(veronaNapoli);
-
-        // Creazione delle entità Abbonamento
-        Abbonamento abbonamento1 = new Abbonamento();
-        Abbonamento abbonamento2 = new Abbonamento();
-        Biglietto bigliettoGiulia = new Biglietto(distributoreAutomatico, LocalDate.now(), LocalDate.now(), tesseraGiulia);
-
-        abbonamento1.setMezzoDiVidimazione(mezzo1);
-        abbonamento1.setDurata(DurataTitolo.MENSILE);
-        abbonamento1.setEmessoDa(botteghino);
-        abbonamento1.setTessera(tesseraVincenzo);
-        abbonamento1.setDataDiEmissione(LocalDate.now().minusDays(10));
-        abbonamento1.setDataDiVidimazione(LocalDate.now());
-        abbonamento1.addTratta(veronaNapoli);
-        abbonamento1.addTratta(napoliTorino);
-        abbonamento1.addTratta(pescaraRoma);
-
-        abbonamento2.setMezzoDiVidimazione(mezzo1);
-        abbonamento2.setDurata(DurataTitolo.SETTIMANALE);
-        abbonamento2.setEmessoDa(distributoreAutomatico2);
-        abbonamento2.setTessera(tesseraGiulia);
-        abbonamento2.setDataDiEmissione(LocalDate.now().minusDays(10));
-        abbonamento2.setDataDiVidimazione(LocalDate.now().minusDays(8));
-        abbonamento2.addTratta(veronaNapoli);
-
-
-
-        bigliettoDAO.emettiAbbonamento(abbonamento1);
-        bigliettoDAO.emettiAbbonamento(abbonamento2);
-        bigliettoDAO.emettiBiglietto(bigliettoGiulia);
+//        tesseraDAO.findByIdAndDelete(6);
+//        Rivenditore_Autorizzato rivenditoreAutorizzato = new Rivenditore_Autorizzato(em);
+//        BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
+//        MezzoDAO mezzoDAO = new MezzoDAO(em);
+//        TesseraDAO tesseraDAO = new TesseraDAO(em);
+//        UtenteDAO utenteDAO = new UtenteDAO(em);
+//        TrattaDAO trattaDAO = new TrattaDAO(em);
+//
+//        //ESEMPI DI UTENTI
+//        Utente vincenzo = new Utente("Vincenzo", "Costantini", true); // Pro green-pass
+//        Utente marco = new Utente("Marco", "Bianchi", false); // Pericoloso anarchico non tesserato
+//        Utente giulia = new Utente("Giulia", "Rossi", false); // Inizialmente non tesserata
+//
+//        utenteDAO.save(vincenzo);
+//        utenteDAO.save(marco);
+//        utenteDAO.save(giulia);
+//
+//        //ESEMPIO DI TESSERA
+//        Tessera tesseraVincenzo = new Tessera();
+//        Tessera tesseraGiulia = new Tessera();
+//
+//        tesseraVincenzo.setUtente(vincenzo);
+//        tesseraGiulia.setUtente(giulia);
+//        tesseraVincenzo.setDataDiEmissione(LocalDate.now().minusDays(50));
+//        tesseraGiulia.setDataDiEmissione(LocalDate.now().minusDays(150));
+//
+//        tesseraGiulia.autoUpdateDataDiScadenza();
+//        tesseraVincenzo.autoUpdateDataDiScadenza();
+//
+//        tesseraDAO.save(tesseraVincenzo);
+//        tesseraDAO.save(tesseraGiulia);
+//
+//        //ESEMPI DI DISTRIBUTORI
+//        team4.entities.Rivenditore_Autorizzato distributoreAutomatico= new RivenditoreAutorizzatoAutomatico(true);
+//        RivenditoreAutorizzatoAutomatico distributoreAutomatico2= new RivenditoreAutorizzatoAutomatico(false);
+//        team4.entities.Rivenditore_Autorizzato botteghino = new team4.entities.Rivenditore_Autorizzato();
+//
+//        rivenditoreAutorizzato.save(botteghino);
+//        rivenditoreAutorizzato.save(distributoreAutomatico);
+//        rivenditoreAutorizzato.save(distributoreAutomatico2);
+//
+//        //ESEMPI DI TRATTE
+//        Tratta veronaNapoli = new Tratta(350, "Verona", "Napoli");
+//        Tratta napoliTorino = new Tratta(400, "Napoli", "Torino");
+//        Tratta pescaraRoma = new Tratta(200, "Pescara", "Roma");
+//        Tratta milanoRoma = new Tratta(500, "Milano", "Roma");
+//
+//        trattaDAO.saveTratta(veronaNapoli);
+//        trattaDAO.saveTratta(napoliTorino);
+//        trattaDAO.saveTratta(pescaraRoma);
+//        trattaDAO.saveTratta(milanoRoma);
+//
+//        //ESEMPI DI MEZZI
+//        Mezzo mezzo1 = new Mezzo(TipoMezzo.AUTOBUS.ordinal(), veronaNapoli, 4, 50);
+//        Mezzo mezzo2 = new Mezzo();
+//        mezzo2.setTipoMezzo(TipoMezzo.TRAM);
+//        mezzo2.setTrattaServita(pescaraRoma); // Assumendo che Tratta sia corrett
+//        mezzo2.setNumeroDiVolte(2);
+//        mezzo2.setTempoEffettivo(120);
+//        Mezzo mezzo3 = new Mezzo(90, napoliTorino, 1, 100);
+//
+//        mezzoDAO.save(mezzo1);
+//        mezzoDAO.save(mezzo2);
+//        mezzoDAO.save(mezzo3);
+//
+////     Emissione di un abbonamento settimanale
+//        trattaDAO.saveTratta(veronaNapoli);
+//
+//        // Creazione delle entità Abbonamento
+//        Abbonamento abbonamento1 = new Abbonamento();
+//        Abbonamento abbonamento2 = new Abbonamento();
+//        Biglietto bigliettoGiulia = new Biglietto(distributoreAutomatico, LocalDate.now(), LocalDate.now(), tesseraGiulia);
+//
+//        abbonamento1.setMezzoDiVidimazione(mezzo1);
+//        abbonamento1.setDurata(DurataTitolo.MENSILE);
+//        abbonamento1.setEmessoDa(botteghino);
+//        abbonamento1.setTessera(tesseraVincenzo);
+//        abbonamento1.setDataDiEmissione(LocalDate.now().minusDays(10));
+//        abbonamento1.setDataDiVidimazione(LocalDate.now());
+//        abbonamento1.addTratta(veronaNapoli);
+//        abbonamento1.addTratta(napoliTorino);
+//        abbonamento1.addTratta(pescaraRoma);
+//
+//        abbonamento2.setMezzoDiVidimazione(mezzo1);
+//        abbonamento2.setDurata(DurataTitolo.SETTIMANALE);
+//        abbonamento2.setEmessoDa(distributoreAutomatico2);
+//        abbonamento2.setTessera(tesseraGiulia);
+//        abbonamento2.setDataDiEmissione(LocalDate.now().minusDays(10));
+//        abbonamento2.setDataDiVidimazione(LocalDate.now().minusDays(8));
+//        abbonamento2.addTratta(veronaNapoli);
+//
+//
+//        bigliettoDAO.emettiAbbonamento(abbonamento1);
+//        bigliettoDAO.emettiAbbonamento(abbonamento2);
+//        bigliettoDAO.emettiBiglietto(bigliettoGiulia);
 
         em.close();
         emf.close();

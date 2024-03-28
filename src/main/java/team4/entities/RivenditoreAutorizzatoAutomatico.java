@@ -9,6 +9,10 @@ public class RivenditoreAutorizzatoAutomatico extends Rivenditore_Autorizzato {
     @Column(name = "attivo") // Specifica il nome della colonna nel database
     private boolean attivo;
 
+
+    public RivenditoreAutorizzatoAutomatico() {
+    }
+
     public RivenditoreAutorizzatoAutomatico(boolean attivo) {
         this.attivo= attivo;
 

@@ -16,6 +16,8 @@ public class Navigations {
     public static MezzoDAO mezzoDAO = new MezzoDAO(em);
     public static UtenteDAO utenteDAO = new UtenteDAO(em);
     public static TesseraDAO tesseraDAO = new TesseraDAO(em);
+    public  static Rivenditore_AutorizzatoDAO rivenditoreAutorizzatoDAO= new Rivenditore_AutorizzatoDAO(em);
+
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public static void menu(){
         System.out.println("Menu:");
