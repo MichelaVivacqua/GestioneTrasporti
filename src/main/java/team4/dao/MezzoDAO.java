@@ -48,6 +48,16 @@ public class MezzoDAO {
 
         }
     }
-
-}
-
+    public String getDataManutenzioneById(long mezzoId) {
+        try {
+            Mezzo mezzo = em.find(Mezzo.class, mezzoId);
+            if (mezzo != null) {
+                return mezzo.getDataManutenzione() != null ? mezzo.getDataManutenzione().toString() : "Data di manutenzione non disponibile";
+            } else {
+                return "Mezzo non trovato";
+            }
+        } catch (Exception e) {
+            System.out.println("Errore durante il recupero della data di manutenzione del mezzo con ID " + mezzoId + ": " + e.getMessage());
+            return "Errore durante il recupero della data di manutenzione";
+        }
+    }}
