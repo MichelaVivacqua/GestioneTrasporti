@@ -2,11 +2,9 @@ package team4.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import team4.entities.Distributore;
+import team4.entities.Rivenditore_Autorizzato;
 //import team4.entities.DistributoreAutomatico;
-import team4.entities.DistributoreAutomatico;
-import team4.entities.Mezzo;
-import team4.enums.TipoDistributore;
+import team4.entities.RivenditoreAutorizzatoAutomatico;
 
 
 public class DistributoriDAO {
@@ -17,7 +15,7 @@ public class DistributoriDAO {
         }
 
 
-        public void save(Distributore d) {
+        public void save(Rivenditore_Autorizzato d) {
             try {
                 EntityTransaction e = em.getTransaction();
                 e.begin();
@@ -30,15 +28,15 @@ public class DistributoriDAO {
         }
 
 
-        public Distributore findById(long id) {
-            return em.find(Distributore.class, id);
+        public Rivenditore_Autorizzato findById(long id) {
+            return em.find(Rivenditore_Autorizzato.class, id);
         }
 
         public void findByIdAndDelete(long id) {
             try {
                 EntityTransaction t = em.getTransaction();
                 t.begin();
-                Distributore found = em.find(Distributore.class, id);
+                Rivenditore_Autorizzato found = em.find(Rivenditore_Autorizzato.class, id);
                 if (found != null) {
                     em.remove(found);
                     t.commit();
@@ -51,7 +49,7 @@ public class DistributoriDAO {
             }
         }
 //------------DISTRIBUTORE AUTOMATICO (avrà anche il metodo di verifica)--------------------
-public void save(DistributoreAutomatico distributore, boolean attivo) {
+public void save(RivenditoreAutorizzatoAutomatico distributore, boolean attivo) {
     try {
         if (attivo){
         EntityTransaction e = em.getTransaction();

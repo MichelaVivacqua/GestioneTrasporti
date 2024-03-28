@@ -11,8 +11,14 @@ public class TesseraNav {
         int sceltaT = Integer.parseInt(scanner.nextLine());
         return sceltaT == 1;
     }
+    public static boolean chiediCreazioneTesseraSelezioneUtente() {
+        System.out.println("Vuoi creare una tessera?");
+        System.out.println("1. SI");
+        System.out.println("2. No");
+        int sceltaT = Integer.parseInt(scanner.nextLine());
+        return sceltaT == 1;
 
-
+    }
 
     public static void cercaPerTessera() {
         System.out.println("Inserisci il numero di tessera");

@@ -61,6 +61,11 @@ public class Application {
         trattaDAO.saveTratta(veronaNapoli);
 
 
+//        Abbonamento abbonamentoSettimanale = new Abbonamento(DurataTitolo.MENSILE,nuovoMezzo,distributore,LocalDate.now(),tessereDAO.findById(1));
+        // Imposta i dettagli dell'abbonamento...
+//        bigliettoDAO.emettiAbbonamento(abbonamentoSettimanale);
+
+
         em.close();
         emf.close();
         scanner.close();

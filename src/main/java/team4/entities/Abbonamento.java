@@ -25,7 +25,7 @@ public class Abbonamento extends Biglietto implements Controllabile {
         this.durata = durata;
     }
 
-    public Abbonamento(DurataTitolo durata, Mezzo mezzo, Distributore emessoDa, LocalDate dataDiEmissione, Tessera tessera) {
+    public Abbonamento(DurataTitolo durata, Mezzo mezzo, Rivenditore_Autorizzato emessoDa, LocalDate dataDiEmissione, Tessera tessera) {
         super(mezzo, emessoDa, dataDiEmissione, tessera);
         this.durata = durata;
     }
