@@ -1,8 +1,6 @@
 package team4.Navigations;
 
-import jakarta.persistence.EntityManager;
 import team4.dao.*;
-import team4.entities.Utente;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -17,7 +15,7 @@ public class Navigations {
     public static TrattaDAO trattaDAO = new TrattaDAO(em);
     public static MezzoDAO mezzoDAO = new MezzoDAO(em);
     public static UtenteDAO utenteDAO = new UtenteDAO(em);
-    public static TessereDAO tessereDAO = new TessereDAO(em);
+    public static TesseraDAO tesseraDAO = new TesseraDAO(em);
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public static void menu(){
         System.out.println("Menu:");

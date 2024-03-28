@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import team4.enums.TipoMezzo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Manutenzione {
@@ -67,4 +68,24 @@ public class Manutenzione {
     public void setMezzo_manutenuto(Mezzo mezzo_manutenuto) {
         this.mezzo = mezzo_manutenuto;
     }
+
+    public boolean isMezzoInManutenzione(EntityManager em, Long idMezzo) {
+        String jpql = "SELECT m FROM Manutenzione m WHERE m.mezzo.id_Mezzo = :idMezzo AND m.data_fine IS NULL ORDER BY m.data_inizio DESC";
+        List<Manutenzione> manutenzioni = em.createQuery(jpql, Manutenzione.class)
+                .setParameter("idMezzo", idMezzo)
+                .setMaxResults(1)
+                .getResultList();
+        return !manutenzioni.isEmpty();
+    }
+
+    public Manutenzione getUltimaManutenzione(EntityManager em, Long idMezzo) {
+        String jpql = "SELECT m FROM Manutenzione m WHERE m.mezzo.id_Mezzo = :idMezzo ORDER BY m.data_inizio DESC";
+        List<Manutenzione> manutenzioni = em.createQuery(jpql, Manutenzione.class)
+                .setParameter("idMezzo", idMezzo)
+                .setMaxResults(1)
+                .getResultList();
+        return manutenzioni.isEmpty() ? null : manutenzioni.get(0);
+    }
+
+
 }

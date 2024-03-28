@@ -1,7 +1,7 @@
 package team4.Navigations;
 
 import static team4.Navigations.Navigations.scanner;
-import static team4.Navigations.Navigations.tessereDAO;
+import static team4.Navigations.Navigations.tesseraDAO;
 
 public class TesseraNav {
     public static boolean chiediCreazioneTessera() {
@@ -23,10 +23,10 @@ public class TesseraNav {
     public static void cercaPerTessera() {
         System.out.println("Inserisci il numero di tessera");
         int tesseraId = Integer.parseInt(scanner.nextLine());
-        System.out.println(tessereDAO.findById(tesseraId));
+        System.out.println(tesseraDAO.findById(tesseraId));
         try {
 //            long tesseraId = Long.parseLong(id);
-            tessereDAO.rinnovaTessera(tesseraId);
+            tesseraDAO.rinnovaTessera(tesseraId);
         } catch (NumberFormatException e) {
             System.out.println("ID della tessera non valido. Riprova.");
         }

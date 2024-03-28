@@ -21,8 +21,7 @@ public class Utente {
 
 
 
-    @OneToOne(mappedBy = "utente", cascade = CascadeType.ALL)
-    @JoinColumn(name = "tessera_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "utente", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Tessera tessera;
 
     public Utente() {

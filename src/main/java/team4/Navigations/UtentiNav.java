@@ -77,7 +77,7 @@ public class UtentiNav {
                 if (chiediCreazioneTesseraSelezioneUtente()) {
                     Tessera tessera = new Tessera();
                     tessera.setUtente(utente);
-                    tessereDAO.save(tessera);
+                    tesseraDAO.save(tessera);
                     System.out.println("Tessera creata e associata all'utente");
                     utente.setPossiedeTessera(true);
                     utenteDAO.update(utente);

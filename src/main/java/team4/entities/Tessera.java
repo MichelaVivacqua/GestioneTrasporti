@@ -13,22 +13,19 @@ public class Tessera {
     private Long id;
 
     @Column(name = "Data_emissione")
-    private Date dataDiEmissione;
+    private LocalDate dataDiEmissione;
 
     @Column(name = "Data_scandeza")
-    private Date dataDiScadenza;
+    private LocalDate dataDiScadenza;
 
-    @OneToOne
-    @JoinColumn(name = "utente_id") // La colonna in cui verrà memorizzato l'ID dell'utente nella tabella delle tessere
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "utente_id")
     private Utente utente;
 
 
     public Tessera() {
-        this.dataDiEmissione= new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(this.dataDiEmissione);
-        calendar.add(Calendar.YEAR, 1);
-        this.dataDiScadenza = calendar.getTime();
+        this.dataDiEmissione = LocalDate.now();
+        this.dataDiScadenza = LocalDate.now().plusYears(1);
     }
 
 //    public Tessera(LocalDate dataDiEmissione) {
@@ -44,19 +41,19 @@ public class Tessera {
         this.id = id;
     }
 
-    public Date getDataDiEmissione() {
+    public LocalDate getDataDiEmissione() {
         return dataDiEmissione;
     }
 
-    public void setDataDiEmissione(Date dataDiEmissione) {
+    public void setDataDiEmissione(LocalDate dataDiEmissione) {
         this.dataDiEmissione = dataDiEmissione;
     }
 
-        public Date getDataDiScadenza() {
+        public LocalDate getDataDiScadenza() {
             return dataDiScadenza;
         }
 
-        public void setDataDiScadenza(Date dataDiScadenza) {
+        public void setDataDiScadenza(LocalDate dataDiScadenza) {
             this.dataDiScadenza = dataDiScadenza;
         }
 
@@ -64,10 +61,13 @@ public class Tessera {
             return utente;
         }
 
+        public void autoUpdateDataDiScadenza() {
+        this.dataDiScadenza = this.dataDiEmissione.plusYears(1);
+        }
+
         public void setUtente(Utente utente) {
             this.utente = utente;
         }
-
 
     @Override
     public String toString() {

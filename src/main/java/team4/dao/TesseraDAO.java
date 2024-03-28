@@ -4,30 +4,47 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import team4.entities.Tessera;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 
-public class TessereDAO {
+public class TesseraDAO {
     private EntityManager em;
 
-    public TessereDAO(EntityManager em) {
+    public TesseraDAO(EntityManager em) {
         this.em = em;
     }
 
-
     public void save(Tessera t) {
+        EntityTransaction e = em.getTransaction();
         try {
-            EntityTransaction e = em.getTransaction();
+            e.begin();
+            // Rimuovi la seguente riga se l'utente è già persistito altrove.
+            // em.persist(t.getUtente());
+            em.persist(t);
+            e.commit();
+            System.out.println("Tessera " + t.getId() + " creata per l'utente!");
+        } catch (Exception ex) {
+            if (e.isActive()) {
+                e.rollback();
+            }
+            ex.printStackTrace();
+        }
+    }
+
+    public void saveTesseraAndUtenteAnnesso(Tessera t) {
+        EntityTransaction e = em.getTransaction();
+        try {
             e.begin();
             em.persist(t.getUtente());
             em.persist(t);
             e.commit();
-            System.out.println("Utente " + t.getId() + " creato!");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Tessera " + t.getId() + " creata per l'utente!");
+        } catch (Exception ex) {
+            if (e.isActive()) {
+                e.rollback();
+            }
+            ex.printStackTrace();
         }
     }
-
     public Tessera findById(long id) {
         return em.find(Tessera.class, id);
     }
@@ -50,21 +67,16 @@ public class TessereDAO {
     }
 
     public void rinnovaTessera(long id) {
+        EntityTransaction transaction = em.getTransaction();
         try {
-            EntityTransaction transaction = em.getTransaction();
             transaction.begin();
             Tessera tessera = em.find(Tessera.class, id);
             if (tessera != null) {
-                // salvo la data di oggi in una variabile now
-                Date now = new Date();
-                // prendo la data di scadenza della tessera per il confronto
-                Date scadenza = tessera.getDataDiScadenza();
-                if (now.after(scadenza)) {
-                    // La tessera è scaduta, allora aggiorna la data di scadenza
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(now);
-                    calendar.add(Calendar.YEAR, 1);
-                    tessera.setDataDiScadenza(calendar.getTime());
+                LocalDate now = LocalDate.now();
+                LocalDate scadenza = tessera.getDataDiScadenza();
+                if (now.isAfter(scadenza)) {
+                    LocalDate nuovaScadenza = now.plusYears(1);
+                    tessera.setDataDiScadenza(nuovaScadenza);
                     em.merge(tessera);
                     transaction.commit();
                     System.out.println("Tessera rinnovata con successo.");
@@ -74,10 +86,12 @@ public class TessereDAO {
             } else {
                 System.out.println("Tessera non trovata.");
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             System.out.println("Errore durante il rinnovo della tessera: " + e.getMessage());
         }
     }
-
 
 }

@@ -70,5 +70,4 @@ public class UtenteDAO {
             System.out.println(e.getMessage());
         }
     }
-
 }

@@ -33,6 +33,14 @@ public class Biglietto {
         this.tessera = tessera;
     }
 
+    public Biglietto(Rivenditore_Autorizzato emessoDa, LocalDate dataDiEmissione, LocalDate dataDiVidimazione, Tessera tessera) {
+        this.mezzoDiVidimazione = null;
+        this.emessoDa = emessoDa;
+        this.dataDiEmissione = dataDiEmissione;
+        this.dataDiVidimazione = dataDiVidimazione;
+        this.tessera = tessera;
+    }
+
     public Biglietto(Mezzo mezzoDiVidimazione, Rivenditore_Autorizzato emessoDa, LocalDate dataDiEmissione, Tessera tessera) {
         this.mezzoDiVidimazione = mezzoDiVidimazione;
         this.emessoDa = emessoDa;

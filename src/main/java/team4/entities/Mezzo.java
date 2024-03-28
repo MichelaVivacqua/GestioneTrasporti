@@ -100,6 +100,22 @@ public class Mezzo {
         this.trattaServita = trattaServita;
     }
 
+    public List<Manutenzione> getManutenzioni() {
+        return manutenzioni;
+    }
+
+    public void setManutenzioni(List<Manutenzione> manutenzioni) {
+        this.manutenzioni = manutenzioni;
+    }
+
+    public TipoMezzo getTipoMezzo() {
+        return tipoMezzo;
+    }
+
+    public void setTipoMezzo(TipoMezzo tipoMezzo) {
+        this.tipoMezzo = tipoMezzo;
+    }
+
     @Override
     public String toString() {
         return "Mezzo{" +

@@ -2,20 +2,19 @@ package team4.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import team4.entities.Rivenditore_Autorizzato;
 //import team4.entities.DistributoreAutomatico;
 import team4.entities.RivenditoreAutorizzatoAutomatico;
 
 
-public class DistributoriDAO {
+public class Rivenditore_Autorizzato {
         private EntityManager em;
 
-        public DistributoriDAO(EntityManager em) {
+        public Rivenditore_Autorizzato(EntityManager em) {
             this.em = em;
         }
 
 
-        public void save(Rivenditore_Autorizzato d) {
+        public void save(team4.entities.Rivenditore_Autorizzato d) {
             try {
                 EntityTransaction e = em.getTransaction();
                 e.begin();
@@ -28,15 +27,15 @@ public class DistributoriDAO {
         }
 
 
-        public Rivenditore_Autorizzato findById(long id) {
-            return em.find(Rivenditore_Autorizzato.class, id);
+        public team4.entities.Rivenditore_Autorizzato findById(long id) {
+            return em.find(team4.entities.Rivenditore_Autorizzato.class, id);
         }
 
         public void findByIdAndDelete(long id) {
             try {
                 EntityTransaction t = em.getTransaction();
                 t.begin();
-                Rivenditore_Autorizzato found = em.find(Rivenditore_Autorizzato.class, id);
+                team4.entities.Rivenditore_Autorizzato found = em.find(team4.entities.Rivenditore_Autorizzato.class, id);
                 if (found != null) {
                     em.remove(found);
                     t.commit();

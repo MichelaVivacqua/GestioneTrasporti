@@ -1,10 +1,11 @@
 package team4.dao;
 
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import team4.entities.Manutenzione;
 import team4.entities.Mezzo;
-import team4.entities.Tessera;
+
+import java.util.List;
 
 public class MezzoDAO {
     private EntityManager em;
@@ -13,16 +14,18 @@ public class MezzoDAO {
         this.em = em;
     }
 
-
     public void save(Mezzo m) {
+        EntityTransaction tx = em.getTransaction();
         try {
-            EntityTransaction e = em.getTransaction();
-            e.begin();
+            tx.begin();
             em.persist(m);
-            e.commit();
+            tx.commit();
             System.out.println("Mezzo id: " + m.getId() + " creato!");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (RuntimeException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
         }
     }
 
@@ -31,33 +34,42 @@ public class MezzoDAO {
     }
 
     public void findByIdAndDelete(long id) {
+        EntityTransaction tx = em.getTransaction();
         try {
-
-            EntityTransaction t = em.getTransaction();
-            t.begin();
+            tx.begin();
             Mezzo found = em.find(Mezzo.class, id);
             if (found != null) {
                 em.remove(found);
-                t.commit();
+                tx.commit();
                 System.out.println("Mezzo eliminato");
-            } else System.out.println("Mezzo non trovato");
-
-        } catch (Exception e) {
-
-            System.out.println(e.getMessage());
-
+            } else {
+                System.out.println("Mezzo non trovato");
+            }
+        } catch (RuntimeException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
         }
     }
-    public String getDataManutenzioneById(long mezzoId) {
-        try {
-            Mezzo mezzo = em.find(Mezzo.class, mezzoId);
-            if (mezzo != null) {
-                return mezzo.getDataManutenzione() != null ? mezzo.getDataManutenzione().toString() : "Data di manutenzione non disponibile";
-            } else {
-                return "Mezzo non trovato";
-            }
-        } catch (Exception e) {
-            System.out.println("Errore durante il recupero della data di manutenzione del mezzo con ID " + mezzoId + ": " + e.getMessage());
-            return "Errore durante il recupero della data di manutenzione";
-        }
-    }}
+
+    public boolean isMezzoInManutenzione(EntityManager em, Long idMezzo) {
+        String jpql = "SELECT m FROM Manutenzione m WHERE m.mezzo.id_Mezzo = :idMezzo AND m.data_fine IS NULL ORDER BY m.data_inizio DESC";
+        List<Manutenzione> manutenzioni = em.createQuery(jpql, Manutenzione.class)
+                .setParameter("idMezzo", idMezzo)
+                .setMaxResults(1)
+                .getResultList();
+        return !manutenzioni.isEmpty();
+    }
+
+
+    public Manutenzione getUltimaManutenzione(EntityManager em, Long idMezzo) {
+        String jpql = "SELECT m FROM Manutenzione m WHERE m.mezzo.id_Mezzo = :idMezzo ORDER BY m.data_inizio DESC";
+        List<Manutenzione> manutenzioni = em.createQuery(jpql, Manutenzione.class)
+                .setParameter("idMezzo", idMezzo)
+                .setMaxResults(1)
+                .getResultList();
+        return manutenzioni.isEmpty() ? null : manutenzioni.get(0);
+    }
+
+}

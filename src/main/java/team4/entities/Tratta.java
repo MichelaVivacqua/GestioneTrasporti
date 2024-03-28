@@ -45,7 +45,6 @@ public class Tratta {
         this.durata = durata;
         this.partenza = partenza;
         this.arrivo = arrivo;
-//        this.mezziServenti = mezziServenti;
     }
 
     public Long getId() {
