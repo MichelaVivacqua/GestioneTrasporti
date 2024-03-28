@@ -52,6 +52,10 @@ public class Biglietto {
 
     }
 
+    public Biglietto(Rivenditore_Autorizzato botteghino, LocalDate now, LocalDate now1) {
+
+    }
+
     public Mezzo getMezzoDiVidimazione() {
         return mezzoDiVidimazione;
     }

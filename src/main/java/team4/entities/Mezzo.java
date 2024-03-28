@@ -45,6 +45,19 @@ public class Mezzo {
             this.tipoMezzo = TipoMezzo.TRAM;
         }
     }
+    public Mezzo(TipoMezzo tipoMezzo, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
+        this.tipoMezzo = tipoMezzo;
+        this.manutenzioni = null;
+        this.trattaServita = trattaServita;
+        this.numeroDiVolte = numeroDiVolte;
+        this.tempoEffettivo = tempoEffettivo;
+        if (this.tipoMezzo == TipoMezzo.AUTOBUS) {
+            this.capienza = 80;
+        }
+        if (this.tipoMezzo == TipoMezzo.TRAM) {
+            this.capienza = 60;
+        }
+    }
 
     public Mezzo(TipoMezzo tipoMezzo, List<Manutenzione> manutenzioni, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
         this.tipoMezzo = tipoMezzo;
@@ -57,6 +70,18 @@ public class Mezzo {
         }
         if (tipoMezzo == TipoMezzo.TRAM) {
             this.capienza = 60;
+        }
+    }
+    public Mezzo(int capienza, List<Manutenzione> manutenzioni, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
+        this.capienza = capienza;
+        this.manutenzioni = manutenzioni;
+        this.trattaServita = trattaServita;
+        this.numeroDiVolte = numeroDiVolte;
+        this.tempoEffettivo = tempoEffettivo;
+        if (capienza>=80){
+            this.tipoMezzo = TipoMezzo.AUTOBUS;
+        } else {
+            this.tipoMezzo = TipoMezzo.TRAM;
         }
     }
 

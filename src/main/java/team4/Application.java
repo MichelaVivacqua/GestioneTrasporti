@@ -26,6 +26,7 @@ public class Application {
         TesseraDAO tesseraDAO = new TesseraDAO(em);
         UtenteDAO utenteDAO = new UtenteDAO(em);
         TrattaDAO trattaDAO = new TrattaDAO(em);
+        ManutenzioniDAO manutenzioniDAO = new ManutenzioniDAO(em);
 
         //ESEMPI DI UTENTI
         Utente vincenzo = new Utente("Vincenzo", "Costantini", true); // Pro green-pass
@@ -75,22 +76,40 @@ public class Application {
         Mezzo mezzo1 = new Mezzo(TipoMezzo.AUTOBUS.ordinal(), veronaNapoli, 4, 50);
         Mezzo mezzo2 = new Mezzo();
         mezzo2.setTipoMezzo(TipoMezzo.TRAM);
-        mezzo2.setTrattaServita(pescaraRoma); // Assumendo che Tratta sia corrett
+        mezzo2.setTrattaServita(pescaraRoma);
         mezzo2.setNumeroDiVolte(2);
         mezzo2.setTempoEffettivo(120);
         Mezzo mezzo3 = new Mezzo(90, napoliTorino, 1, 100);
 
+        LocalDate dataInizio1 = LocalDate.now().minusDays(20);
+        LocalDate dataFine1 = LocalDate.now().minusDays(10);
+        LocalDate dataInizio2 = LocalDate.now().minusDays(20);
+
+        Manutenzione manutenzione1 = new Manutenzione(dataInizio1, dataFine1, mezzo1); // MANUTENZIONE FINITA
+        Manutenzione manutenzione2 = new Manutenzione(dataInizio2, mezzo2); // MANUTENZIONE IN CORSO
+
+        // SALVARE PRIMA I MEZZI CHE LE MANUTENZIONI DIPENDENTI PER NON VIOLARE IL VINCOLO DI NON NULLITA'
         mezzoDAO.save(mezzo1);
         mezzoDAO.save(mezzo2);
         mezzoDAO.save(mezzo3);
 
-//     Emissione di un abbonamento settimanale
-        trattaDAO.saveTratta(veronaNapoli);
+        // SALVO LE MANUTENZIONI
+        manutenzioniDAO.save(manutenzione1);
+        manutenzioniDAO.save(manutenzione2);
 
-        // Creazione delle entità Abbonamento
+        //TEST METODI DI VERIFICA MANUTENZIONE
+        //NB!! PER FUNZIONARE SIA I MEZZI CHE LE MANUTENZIONI DEVONO ESSERE GIA SALVATI
+        // HO FATTO I PRINTLN VERDI SENNO NON SI CAPISCE UN CAZZO
+        System.out.println("\u001B[32m" + "Il mezzo2 è in manutenzione: " + manutenzioniDAO.isMezzoInManutenzione(mezzo2.getId()) + "\u001B[0m");
+        System.out.println("\u001B[32m" + "Il mezzo1 è in manutenzione: " + manutenzioniDAO.isMezzoInManutenzione(mezzo1.getId()) + "\u001B[0m");
+        System.out.println("\u001B[32m" + "Giorni dall'ultima manutenzione di mezzo1: " + manutenzioniDAO.getGiorniDallUltimaManutenzione(mezzo1.getId()) + "\u001B[0m");
+
+
+        // CREAZIONE DI TITOLI DI VIAGGIO
         Abbonamento abbonamento1 = new Abbonamento();
         Abbonamento abbonamento2 = new Abbonamento();
         Biglietto bigliettoGiulia = new Biglietto(distributoreAutomatico, LocalDate.now(), LocalDate.now(), tesseraGiulia);
+        Biglietto bigliettoMarco = new Biglietto(botteghino, LocalDate.now(), LocalDate.now());
 
         abbonamento1.setMezzoDiVidimazione(mezzo1);
         abbonamento1.setDurata(DurataTitolo.MENSILE);
@@ -109,8 +128,6 @@ public class Application {
         abbonamento2.setDataDiEmissione(LocalDate.now().minusDays(10));
         abbonamento2.setDataDiVidimazione(LocalDate.now().minusDays(8));
         abbonamento2.addTratta(veronaNapoli);
-
-
 
         bigliettoDAO.emettiAbbonamento(abbonamento1);
         bigliettoDAO.emettiAbbonamento(abbonamento2);
