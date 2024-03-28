@@ -1,10 +1,8 @@
 package team4.entities;
 
 import jakarta.persistence.*;
-import team4.enums.StatoMezzo;
 import team4.enums.TipoMezzo;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -13,23 +11,14 @@ public class Mezzo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_Mezzo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo")
-    private TipoMezzo tipoMezzo;
-
     @Column(name = "capienza")
     private int capienza;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "stato")
-    private StatoMezzo stato;
 
     @OneToMany(mappedBy = "mezzo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Manutenzione> manutenzioni;
 
     @ManyToOne
-    @JoinColumn(name = "tratta_id") // FK nel DB
-
+    @JoinColumn(name = "tratta_id") // Questa è la correzione
     private Tratta trattaServita;
 
     @Column(name = "numero_di_volte")
@@ -38,45 +27,37 @@ public class Mezzo {
     @Column(name = "tempo_effettivo")
     private int tempoEffettivo;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_mezzo")
+    private TipoMezzo tipoMezzo;
+
     public Mezzo() {}
 
-    public Mezzo(TipoMezzo tipoMezzo,int capienza, StatoMezzo stato, LocalDate dataManutenzione, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
-        this.tipoMezzo = tipoMezzo;
+    public Mezzo(int capienza, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
         this.capienza = capienza;
-        this.stato = stato;
-
-        if (stato==StatoMezzo.IN_MANUTENZIONE){
-        this.dataManutenzione = dataManutenzione;
-
-        }else {
-            this.dataManutenzione= null;
-        }
+        this.manutenzioni = null;
         this.trattaServita = trattaServita;
-        this.tempoEffettivo= tempoEffettivo;
-        this.numeroDiVolte= numeroDiVolte;
+        this.numeroDiVolte = numeroDiVolte;
+        this.tempoEffettivo = tempoEffettivo;
+        if (capienza>=80){
+            this.tipoMezzo = TipoMezzo.AUTOBUS;
+        } else {
+            this.tipoMezzo = TipoMezzo.TRAM;
+        }
     }
 
-    public Mezzo(TipoMezzo tipoMezzo, int capienza, StatoMezzo stato, LocalDate dataManutenzione) {
+    public Mezzo(TipoMezzo tipoMezzo, List<Manutenzione> manutenzioni, Tratta trattaServita, int numeroDiVolte, int tempoEffettivo) {
         this.tipoMezzo = tipoMezzo;
-        this.capienza = capienza;
-        this.stato = stato;
-        this.dataManutenzione = dataManutenzione;
-    }
-
-    public TipoMezzo getTipoMezzo() {
-        return tipoMezzo;
-    }
-
-    public void setTipoMezzo(TipoMezzo tipoMezzo) {
-        this.tipoMezzo = tipoMezzo;
-    }
-
-    public StatoMezzo getStato() {
-        return stato;
-    }
-
-    public void setStato(StatoMezzo stato) {
-        this.stato = stato;
+        this.manutenzioni = manutenzioni;
+        this.trattaServita = trattaServita;
+        this.numeroDiVolte = numeroDiVolte;
+        this.tempoEffettivo = tempoEffettivo;
+        if (tipoMezzo == TipoMezzo.AUTOBUS) {
+            this.capienza = 80;
+        }
+        if (tipoMezzo == TipoMezzo.TRAM) {
+            this.capienza = 60;
+        }
     }
 
     public int getNumeroDiVolte() {
@@ -111,15 +92,6 @@ public class Mezzo {
         this.capienza = capienza;
     }
 
-//    public boolean isInManutenzione() {
-//        return inManutenzione;
-//    }
-
-//    public void setInManutenzione(boolean inManutenzione) {
-//        this.inManutenzione = inManutenzione;
-//    }
-
-
     public Tratta getTrattaServita() {
         return trattaServita;
     }
@@ -131,10 +103,8 @@ public class Mezzo {
     @Override
     public String toString() {
         return "Mezzo{" +
-                "tipoMezzo=" + tipoMezzo +
                 ", capienza=" + capienza +
-                ", stato=" + stato +
-                ", trattaServita=" + trattaServita +
+                ", trattaServita=" + trattaServita + //TODO AGGIUNGERE TOSTRING TIPOMEZZO E STATOMEZZO
                 ", numeroDiVolte=" + numeroDiVolte +
                 ", tempoEffettivo=" + tempoEffettivo + //TODO AGGIUNGERE TOSTRING MANUTENZIONE IN CORSO O ULTIMA MANUTENZIONE
                 '}';

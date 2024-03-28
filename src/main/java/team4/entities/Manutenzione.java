@@ -10,7 +10,7 @@ public class Manutenzione {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_Mezzo;
+    private int id_manutenzione;
 
     @Column(name = "data_inizio")
     private LocalDate data_inizio;
@@ -30,12 +30,18 @@ public class Manutenzione {
         this.mezzo = mezzo_manutenuto;
     }
 
-    public Long getId_Mezzo() {
-        return id_Mezzo;
+    public Manutenzione(LocalDate data_inizio, Mezzo mezzo) {
+        this.data_inizio = data_inizio;
+        this.mezzo = mezzo;
+        this.data_fine = null;
     }
 
-    public void setId_Mezzo(Long id_Mezzo) {
-        this.id_Mezzo = id_Mezzo;
+    public int getId_manutenzione() {
+        return id_manutenzione;
+    }
+
+    public void setId_manutenzione(int id_manutenzione) {
+        this.id_manutenzione = id_manutenzione;
     }
 
     public LocalDate getData_inizio() {

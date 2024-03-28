@@ -3,17 +3,17 @@ package team4;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import team4.dao.BigliettoDAO;
 import team4.dao.DistributoriDAO;
+import team4.dao.MezzoDAO;
+import team4.dao.TrattaDAO;
 import team4.entities.*;
 import team4.enums.DurataTitolo;
-import team4.enums.StatoMezzo;
-import team4.enums.TipoDistributore;
 import team4.enums.TipoMezzo;
 
 import java.time.LocalDate;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 import static team4.Navigations.Navigations.*;
 
@@ -24,18 +24,15 @@ public class Application {
 
 
     public static void main(String[] args) {
-    ;
-
-
-//            menu();
-//                scelta = Integer.parseInt(scanner.nextLine());
-
-
-
-//        trattaDAO.findTrattaByIdAndDelete(6);
 
 
         DistributoriDAO distributoriDAO= new DistributoriDAO(em);
+        TrattaDAO trattaDAO = new TrattaDAO(em);
+        BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
+        MezzoDAO mezzoDAO = new MezzoDAO(em);
+
+
+        //ESEMPI DI DISTRIBUTORI
         DistributoreAutomatico distributoreAutomatico= new DistributoreAutomatico(true);
         DistributoreAutomatico distributoreAutomatico2= new DistributoreAutomatico(false);
         Distributore botteghino = new Distributore();
@@ -44,24 +41,32 @@ public class Application {
         distributoriDAO.save(distributoreAutomatico);
         distributoriDAO.save(distributoreAutomatico2);
 
+        //ESEMPI DI TRATTE
+        Tratta veronaNapoli = new Tratta(350, "Verona", "Napoli");
+        Tratta napoliTorino = new Tratta(400, "Napoli", "Torino");
+        Tratta pescaraRoma = new Tratta(200, "Pescara", "Roma");
+
+        trattaDAO.saveTratta(veronaNapoli);
+        trattaDAO.saveTratta(napoliTorino);
+        trattaDAO.saveTratta(pescaraRoma);
+
+        //ESEMPI DI MEZZI
+        Mezzo mezzo1 = new Mezzo(TipoMezzo.AUTOBUS.ordinal(), veronaNapoli, 4, 50);
+        Mezzo mezzo2 = new Mezzo();
+
+
+        mezzoDAO.save(mezzo1);
 
 //     Emissione di un abbonamento settimanale
-//        Tratta veronaNapoli = new Tratta(4, "Bologna", "Palermo");
-//        trattaDAO.saveTratta(veronaNapoli);
-//        Mezzo nuovoMezzo = new Mezzo(TipoMezzo.TRAM,100, StatoMezzo.IN_SERVIZIO, LocalDate.parse("25-01-2024", formatter),veronaNapoli,6,1);
-//        mezzoDAO.save(nuovoMezzo);
+        trattaDAO.saveTratta(veronaNapoli);
 
-//        Abbonamento abbonamentoSettimanale = new Abbonamento(DurataTitolo.MENSILE,nuovoMezzo,distributore,LocalDate.now(),tessereDAO.findById(1));
-        // Imposta i dettagli dell'abbonamento...
-//        bigliettoDAO.emettiAbbonamento(abbonamentoSettimanale);
+
         em.close();
         emf.close();
         scanner.close();
     }
 }
 
-//!TRATTA1 //TRATTA2
-//        Tratta milano_roma = new Tratta(2, "Milano", "Roma");
 
 
 

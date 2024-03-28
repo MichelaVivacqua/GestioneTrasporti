@@ -1,13 +1,12 @@
 package team4.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import team4.enums.DurataTitolo;
 
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Abbonamento extends Biglietto implements Controllabile {
@@ -15,9 +14,8 @@ public class Abbonamento extends Biglietto implements Controllabile {
     @Column(name = "tipo_durata")
    private DurataTitolo durata;
 
-
-
-
+    @ManyToMany(mappedBy = "abbonamenti")
+    private Set<Tratta> tratte = new HashSet<>();
 
     public Abbonamento() {
 
@@ -38,5 +36,15 @@ public class Abbonamento extends Biglietto implements Controllabile {
     @Override
     public boolean isValido() {
         return false; // DA IMPLEMENTARE
+    }
+
+    public void addTratta(Tratta tratta) {
+        tratte.add(tratta);
+        tratta.getAbbonamenti().add(this);
+    }
+
+    public void removeTratta(Tratta tratta) {
+        tratte.remove(tratta);
+        tratta.getAbbonamenti().remove(this);
     }
 }

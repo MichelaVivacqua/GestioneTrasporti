@@ -21,8 +21,13 @@ public class Tratta {
 
     private String arrivo;
 
-    @OneToMany(mappedBy = "trattaServita")
-    private Set<Mezzo> mezziServenti = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "tratta_abbonamento",
+            joinColumns = @JoinColumn(name = "tratta_id"),
+            inverseJoinColumns = @JoinColumn(name = "abbonamento_id")
+    )
+    private Set<Abbonamento> abbonamenti = new HashSet<>();
 
     @Override
     public String toString() {
@@ -31,7 +36,6 @@ public class Tratta {
                 ", durata=" + durata +
                 ", partenza='" + partenza + '\'' +
                 ", arrivo='" + arrivo + '\'' +
-                ", mezziServenti=" + mezziServenti +
                 '}';
     }
 
@@ -76,11 +80,11 @@ public class Tratta {
         this.arrivo = arrivo;
     }
 
-    public Set<Mezzo> getMezziServenti() {
-        return mezziServenti;
+    public Set<Abbonamento> getAbbonamenti() {
+        return abbonamenti;
     }
 
-    public void setMezziServenti(Set<Mezzo> mezziServenti) {
-        this.mezziServenti = mezziServenti;
+    public void setAbbonamenti(Set<Abbonamento> abbonamenti) {
+        this.abbonamenti = abbonamenti;
     }
 }
