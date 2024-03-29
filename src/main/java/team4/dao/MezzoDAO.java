@@ -3,6 +3,7 @@ package team4.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
+import team4.entities.Biglietto;
 import team4.entities.Manutenzione;
 import team4.entities.Mezzo;
 
@@ -74,7 +75,22 @@ public class MezzoDAO {
         }
     }
 
+    public void deleteMezzo(Mezzo m) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
 
+            Mezzo deleteMezzo = em.merge(m); // Assicurati che l'entità sia gestita
+            em.remove(deleteMezzo);
+            tx.commit();
+            System.out.println("Mezzo eliminato");
+        } catch (RuntimeException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        }
+    }
     public boolean isMezzoInManutenzione(EntityManager em, Long idMezzo) {
         String jpql = "SELECT m FROM Manutenzione m WHERE m.mezzo.id_Mezzo = :idMezzo AND m.data_fine IS NULL ORDER BY m.data_inizio DESC";
         List<Manutenzione> manutenzioni = em.createQuery(jpql, Manutenzione.class)

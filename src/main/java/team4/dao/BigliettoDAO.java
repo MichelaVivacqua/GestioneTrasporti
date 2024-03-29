@@ -2,6 +2,7 @@ package team4.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -186,7 +187,52 @@ public class BigliettoDAO {
                 .setParameter("abbonamentoId", abbonamentoId)
                 .getResultList();
     }
-}
+
+    public Long  findBigliettoByMezzoId(long mezzoId){
+            TypedQuery<Long> query = em.createQuery(
+                    "SELECT m.id FROM Biglietto m WHERE m.mezzoDiVidimazione.id_Mezzo = :mezzoId", Long.class);
+            query.setParameter("mezzoId", mezzoId);
+
+            List<Long> results = query.getResultList();
+            if (!results.isEmpty()) {
+                return results.get(0);
+            }
+
+            return null;
+        }
+
+    public void update(Biglietto b) {
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.merge(b);
+            et.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void deleteBiglietto(Biglietto b) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            Biglietto deleteBiglietto = em.merge(b); // Assicurati che l'entità sia gestita
+            em.remove(deleteBiglietto);
+            tx.commit();
+            System.out.println("Biglietto eliminato");
+        } catch (RuntimeException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        }
+    }
+
+
+    }
 
 
 

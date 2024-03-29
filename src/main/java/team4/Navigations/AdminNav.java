@@ -5,17 +5,13 @@ import team4.Application;
 import team4.dao.MezzoDAO;
 import team4.dao.Rivenditore_AutorizzatoDAO;
 import team4.dao.TrattaDAO;
-import team4.entities.Mezzo;
-import team4.entities.RivenditoreAutorizzatoAutomatico;
-import team4.entities.Rivenditore_Autorizzato;
-import team4.entities.Tratta;
+import team4.entities.*;
 import team4.enums.TipoMezzo;
 
 import java.util.List;
 import java.util.Scanner;
 
-import static team4.Navigations.Navigations.rivenditoreAutorizzatoDAO;
-import static team4.Navigations.Navigations.scanner;
+import static team4.Navigations.Navigations.*;
 
 public class AdminNav {
     private static final EntityManager em = Application.em;
@@ -35,6 +31,7 @@ public class AdminNav {
             System.out.println("3. Crea mezzo");
             System.out.println("4. Crea distributore");
             System.out.println("5. Rimuovi tratta");
+            System.out.println("6. Rimuovi mezzo");
             System.out.println("0. Esci");
             System.out.print("Seleziona un'opzione: ");
             int choice = scanner.nextInt();
@@ -57,6 +54,9 @@ public class AdminNav {
                     break;
                 case 5:
                     rimuoviTratta();
+                    break;
+                case 6:
+                    rimuoviMezzo();
                     break;
                 case 0:
                     System.out.println("Uscita dal programma.");
@@ -195,13 +195,27 @@ public class AdminNav {
         trattaDAO.update(tratta);
         System.out.println(mezzo);
         trattaDAO.deleteTratta(tratta);
-
         System.out.println("FINITO IL METODO CONTROLLA DB");
 
     }
 
     public static void rimuoviMezzo() {
+        System.out.println("INSERISCI ID MEZZO DA ELIMINARE");
+        int mezzoId = Integer.parseInt(scanner.nextLine());
 
+        Mezzo mezzo = mezzoDAO.findById(mezzoId);       //! TROVO ID MEZZO
+        System.out.println(mezzo);
+
+        long bigliettoId= bigliettoDAO.findBigliettoByMezzoId(mezzoId);
+        Biglietto biglietto= bigliettoDAO.findById(bigliettoId);
+
+        biglietto.setMezzoDiVidimazione(null);
+        System.out.println(biglietto);
+        bigliettoDAO.update(biglietto);
+        mezzoDAO.deleteMezzo(mezzo);
+
+
+        System.out.println("FINITO IL METODO CONTROLLA DB");
     }
 
     public static void rimuoviDistributore() {
