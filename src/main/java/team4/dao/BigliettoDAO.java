@@ -188,7 +188,14 @@ public class BigliettoDAO {
                 .getResultList();
     }
 
-    public Long  findBigliettoByMezzoId(long mezzoId){
+    public List<Biglietto> findBigliettoByMezzoId(long mezzoId) {
+        TypedQuery<Biglietto> query = em.createQuery(
+                "SELECT b FROM Biglietto b WHERE b.mezzoDiVidimazione.id_Mezzo = :mezzoId", Biglietto.class);
+        query.setParameter("mezzoId", mezzoId);
+        return query.getResultList();
+    }
+
+        public Long  findAbbonamentoByMezzoId(long mezzoId){
             TypedQuery<Long> query = em.createQuery(
                     "SELECT m.id FROM Biglietto m WHERE m.mezzoDiVidimazione.id_Mezzo = :mezzoId", Long.class);
             query.setParameter("mezzoId", mezzoId);
@@ -247,8 +254,13 @@ public class BigliettoDAO {
     }
 
 
-
+    public List<Biglietto> findBigliettiByDistributoreId(int distributoreId) {
+        TypedQuery<Biglietto> query = em.createQuery(
+                "SELECT b FROM Biglietto b WHERE b.emessoDa.id = :distributoreId", Biglietto.class);
+        query.setParameter("distributoreId", distributoreId);
+        return query.getResultList();
     }
+}
 
 
 
