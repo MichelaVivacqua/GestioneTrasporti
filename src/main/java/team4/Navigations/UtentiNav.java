@@ -3,6 +3,7 @@ package team4.Navigations;
 import team4.dao.Rivenditore_AutorizzatoDAO;
 import team4.entities.*;
 import team4.enums.DurataTitolo;
+import team4.exceptions.UtenteNonTrovatoException;
 
 import java.net.Inet4Address;
 import java.time.LocalDate;
@@ -14,8 +15,7 @@ import static team4.Navigations.TesseraNav.*;
 
 public class UtentiNav {
 
-
-    public static void utente() {
+    public static void utente() throws UtenteNonTrovatoException{
         System.out.println("1. CreaUtente");
         System.out.println("2. Seleziona Utente");
         System.out.println("3. Esci");
@@ -77,6 +77,9 @@ public class UtentiNav {
         int utenteId = Integer.parseInt(scanner.nextLine());
         System.out.println(utenteDAO.findById(utenteId));
         Utente utente = utenteDAO.findById(utenteId);
+        if (utente == null) {
+            throw new UtenteNonTrovatoException("Utente non trovato");
+        }
         if (utente != null) {
             System.out.println(utente);
             if (utente.getTessera() == null) {

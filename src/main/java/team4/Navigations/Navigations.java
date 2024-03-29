@@ -1,6 +1,7 @@
 package team4.Navigations;
 
 import team4.dao.*;
+import team4.exceptions.UtenteNonTrovatoException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -30,7 +31,11 @@ public class Navigations {
 
         switch (scelta){
             case 1:
-                utente();
+                try {
+                    utente();
+                } catch (UtenteNonTrovatoException e) {
+                    System.out.println("Errore: " + e.getMessage());
+                }
                 break;
             case 2:
              admin();
