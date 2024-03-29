@@ -19,127 +19,128 @@ public class Application {
 
     public static void main(String[] args) {
 
-        menu();
+        //menu();
 
-        Rivenditore_AutorizzatoDAO rivenditoreAutorizzato = new Rivenditore_AutorizzatoDAO(em);
-        BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
-        AbbonamentoDAO abbonamentoDAO = new AbbonamentoDAO(em);
-        MezzoDAO mezzoDAO = new MezzoDAO(em);
-        TesseraDAO tesseraDAO = new TesseraDAO(em);
-        UtenteDAO utenteDAO = new UtenteDAO(em);
-        TrattaDAO trattaDAO = new TrattaDAO(em);
-        ManutenzioniDAO manutenzioniDAO = new ManutenzioniDAO(em);
-
-        //ESEMPI DI UTENTI
-        Utente vincenzo = new Utente("Vincenzo", "Costantini", true); // Pro green-pass
-        Utente marco = new Utente("Marco", "Bianchi", false); // Pericoloso anarchico non tesserato
-        Utente giulia = new Utente("Giulia", "Rossi", false); // Inizialmente non tesserata
-
-        utenteDAO.save(vincenzo);
-        utenteDAO.save(marco);
-        utenteDAO.save(giulia);
-
-        //ESEMPIO DI TESSERA
-        Tessera tesseraVincenzo = new Tessera();
-        Tessera tesseraGiulia = new Tessera();
-
-        tesseraVincenzo.setUtente(vincenzo);
-        tesseraGiulia.setUtente(giulia);
-        tesseraVincenzo.setDataDiEmissione(LocalDate.now().minusDays(50));
-        tesseraGiulia.setDataDiEmissione(LocalDate.now().minusDays(150));
-
-        tesseraGiulia.autoUpdateDataDiScadenza();
-        tesseraVincenzo.autoUpdateDataDiScadenza();
-
-        tesseraDAO.save(tesseraVincenzo);
-        tesseraDAO.save(tesseraGiulia);
-
-        //ESEMPI DI DISTRIBUTORI
-        team4.entities.Rivenditore_Autorizzato distributoreAutomatico= new RivenditoreAutorizzatoAutomatico(true);
-        RivenditoreAutorizzatoAutomatico distributoreAutomatico2= new RivenditoreAutorizzatoAutomatico(false);
-        team4.entities.Rivenditore_Autorizzato botteghino = new team4.entities.Rivenditore_Autorizzato();
-
-        rivenditoreAutorizzato.save(botteghino);
-        rivenditoreAutorizzato.save(distributoreAutomatico);
-        rivenditoreAutorizzato.save(distributoreAutomatico2);
-
-        //ESEMPI DI TRATTE
-        Tratta veronaNapoli = new Tratta(350, "Verona", "Napoli");
-        Tratta napoliTorino = new Tratta(400, "Napoli", "Torino");
-        Tratta pescaraRoma = new Tratta(200, "Pescara", "Roma");
-        Tratta milanoRoma = new Tratta(500, "Milano", "Roma");
-
-        trattaDAO.saveTratta(veronaNapoli);
-        trattaDAO.saveTratta(napoliTorino);
-        trattaDAO.saveTratta(pescaraRoma);
-        trattaDAO.saveTratta(milanoRoma);
-
-        //ESEMPI DI MEZZI
-        Mezzo mezzo1 = new Mezzo(TipoMezzo.AUTOBUS.ordinal(), veronaNapoli, 4, 50);
-        Mezzo mezzo2 = new Mezzo();
-        mezzo2.setTipoMezzo(TipoMezzo.TRAM);
-        mezzo2.setTrattaServita(pescaraRoma);
-        mezzo2.setNumeroDiVolte(2);
-        mezzo2.setTempoEffettivo(120);
-        Mezzo mezzo3 = new Mezzo(90, napoliTorino, 1, 100);
-
-        LocalDate dataInizio1 = LocalDate.now().minusDays(20);
-        LocalDate dataFine1 = LocalDate.now().minusDays(10);
-        LocalDate dataInizio2 = LocalDate.now().minusDays(20);
-
-        Manutenzione manutenzione1 = new Manutenzione(dataInizio1, dataFine1, mezzo1); // MANUTENZIONE FINITA
-        Manutenzione manutenzione2 = new Manutenzione(mezzo2); // METODO MANUTENZIONE CON SOLO IL MEZZO COME ARGOMENTO CREA UNA MANUTENZIONE CON DATA CORRENTE E DATA FINE NULL
-
-        // SALVARE PRIMA I MEZZI CHE LE MANUTENZIONI DIPENDENTI PER NON VIOLARE IL VINCOLO DI NON NULLITA'
-        mezzoDAO.save(mezzo1);
-        mezzoDAO.save(mezzo2);
-        mezzoDAO.save(mezzo3);
-
-        // SALVO LE MANUTENZIONI
-        manutenzioniDAO.save(manutenzione1);
-        manutenzioniDAO.save(manutenzione2);
-
-        //TEST METODI DI VERIFICA MANUTENZIONE
-        //NB!! PER FUNZIONARE SIA I MEZZI CHE LE MANUTENZIONI DEVONO ESSERE GIA SALVATI
-        // HO FATTO I PRINTLN VERDI SENNO NON SI CAPISCE UN CAZZO
-        System.out.println("\u001B[32m" + "Il mezzo2 è in manutenzione: " + manutenzioniDAO.isMezzoInManutenzione(mezzo2.getId()) + "\u001B[0m");
-        System.out.println("\u001B[32m" + "Il mezzo1 è in manutenzione: " + manutenzioniDAO.isMezzoInManutenzione(mezzo1.getId()) + "\u001B[0m");
-        System.out.println("\u001B[32m" + "Giorni dall'ultima manutenzione di mezzo1: " + manutenzioniDAO.getGiorniDallUltimaManutenzione(mezzo1.getId()) + "\u001B[0m");
-
-
-        // CREAZIONE DI TITOLI DI VIAGGIO
-        Abbonamento abbonamento1 = new Abbonamento();
-        Abbonamento abbonamento2 = new Abbonamento();
-        Biglietto bigliettoGiulia = new Biglietto(distributoreAutomatico, LocalDate.now(), LocalDate.now(), tesseraGiulia);
-        Biglietto bigliettoMarco = new Biglietto(botteghino, LocalDate.now(), LocalDate.now());
-
-        abbonamento1.setMezzoDiVidimazione(mezzo1);
-        abbonamento1.setDurata(DurataTitolo.MENSILE);
-        abbonamento1.setEmessoDa(botteghino);
-        abbonamento1.setTessera(tesseraVincenzo);
-        abbonamento1.setDataDiEmissione(LocalDate.now().minusDays(10));
-        abbonamento1.setDataDiVidimazione(LocalDate.now());
-
-        abbonamento2.setMezzoDiVidimazione(mezzo1);
-        abbonamento2.setDurata(DurataTitolo.SETTIMANALE);
-        abbonamento2.setEmessoDa(distributoreAutomatico2);
-        abbonamento2.setTessera(tesseraGiulia);
-        abbonamento2.setDataDiEmissione(LocalDate.now().minusDays(10));
-        abbonamento2.setDataDiVidimazione(LocalDate.now().minusDays(8));
-        abbonamento2.addTratta(veronaNapoli);
-
-
-        bigliettoDAO.emettiBiglietto(bigliettoGiulia);
-        abbonamentoDAO.salvaAbbonamento(abbonamento1);
-        abbonamentoDAO.salvaAbbonamento(abbonamento2);
-
-        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), veronaNapoli);
-        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), napoliTorino);
-        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), pescaraRoma);
+//        Rivenditore_AutorizzatoDAO rivenditoreAutorizzato = new Rivenditore_AutorizzatoDAO(em);
+//        BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
+//        AbbonamentoDAO abbonamentoDAO = new AbbonamentoDAO(em);
+//        MezzoDAO mezzoDAO = new MezzoDAO(em);
+//        TesseraDAO tesseraDAO = new TesseraDAO(em);
+//        UtenteDAO utenteDAO = new UtenteDAO(em);
+//        TrattaDAO trattaDAO = new TrattaDAO(em);
+//        ManutenzioniDAO manutenzioniDAO = new ManutenzioniDAO(em);
+//
+//        //ESEMPI DI UTENTI
+//        Utente vincenzo = new Utente("Vincenzo", "Costantini", true); // Pro green-pass
+//        Utente marco = new Utente("Marco", "Bianchi", false); // Pericoloso anarchico non tesserato
+//        Utente giulia = new Utente("Giulia", "Rossi", false); // Inizialmente non tesserata
+//
+//        utenteDAO.save(vincenzo);
+//        utenteDAO.save(marco);
+//        utenteDAO.save(giulia);
+//
+//        //ESEMPIO DI TESSERA
+//        Tessera tesseraVincenzo = new Tessera();
+//        Tessera tesseraGiulia = new Tessera();
+//
+//        tesseraVincenzo.setUtente(vincenzo);
+//        tesseraGiulia.setUtente(giulia);
+//        tesseraVincenzo.setDataDiEmissione(LocalDate.now().minusDays(50));
+//        tesseraGiulia.setDataDiEmissione(LocalDate.now().minusDays(150));
+//
+//        tesseraGiulia.autoUpdateDataDiScadenza();
+//        tesseraVincenzo.autoUpdateDataDiScadenza();
+//
+//        tesseraDAO.save(tesseraVincenzo);
+//        tesseraDAO.save(tesseraGiulia);
+//
+//        //ESEMPI DI DISTRIBUTORI
+//        team4.entities.Rivenditore_Autorizzato distributoreAutomatico= new RivenditoreAutorizzatoAutomatico(true);
+//        RivenditoreAutorizzatoAutomatico distributoreAutomatico2= new RivenditoreAutorizzatoAutomatico(false);
+//        team4.entities.Rivenditore_Autorizzato botteghino = new team4.entities.Rivenditore_Autorizzato();
+//
+//        rivenditoreAutorizzato.save(botteghino);
+//        rivenditoreAutorizzato.save(distributoreAutomatico);
+//        rivenditoreAutorizzato.save(distributoreAutomatico2);
+//
+//        //ESEMPI DI TRATTE
+//        Tratta veronaNapoli = new Tratta(350, "Verona", "Napoli");
+//        Tratta napoliTorino = new Tratta(400, "Napoli", "Torino");
+//        Tratta pescaraRoma = new Tratta(200, "Pescara", "Roma");
+//        Tratta milanoRoma = new Tratta(500, "Milano", "Roma");
+//
+//        trattaDAO.saveTratta(veronaNapoli);
+//        trattaDAO.saveTratta(napoliTorino);
+//        trattaDAO.saveTratta(pescaraRoma);
+//        trattaDAO.saveTratta(milanoRoma);
+//
+//        //ESEMPI DI MEZZI
+//        Mezzo mezzo1 = new Mezzo(TipoMezzo.AUTOBUS.ordinal(), veronaNapoli, 4, 50);
+//        Mezzo mezzo2 = new Mezzo();
+//        mezzo2.setTipoMezzo(TipoMezzo.TRAM);
+//        mezzo2.setTrattaServita(pescaraRoma);
+//        mezzo2.setNumeroDiVolte(2);
+//        mezzo2.setTempoEffettivo(120);
+//        Mezzo mezzo3 = new Mezzo(90, napoliTorino, 1, 100);
+//
+//        LocalDate dataInizio1 = LocalDate.now().minusDays(20);
+//        LocalDate dataFine1 = LocalDate.now().minusDays(10);
+//        LocalDate dataInizio2 = LocalDate.now().minusDays(20);
+//
+//        Manutenzione manutenzione1 = new Manutenzione(dataInizio1, dataFine1, mezzo1); // MANUTENZIONE FINITA
+//        Manutenzione manutenzione2 = new Manutenzione(mezzo2); // METODO MANUTENZIONE CON SOLO IL MEZZO COME ARGOMENTO CREA UNA MANUTENZIONE CON DATA CORRENTE E DATA FINE NULL
+//
+//        // SALVARE PRIMA I MEZZI CHE LE MANUTENZIONI DIPENDENTI PER NON VIOLARE IL VINCOLO DI NON NULLITA'
+//        mezzoDAO.save(mezzo1);
+//        mezzoDAO.save(mezzo2);
+//        mezzoDAO.save(mezzo3);
+//
+//        // SALVO LE MANUTENZIONI
+//        manutenzioniDAO.save(manutenzione1);
+//        manutenzioniDAO.save(manutenzione2);
+//
+//        //TEST METODI DI VERIFICA MANUTENZIONE
+//        //NB!! PER FUNZIONARE SIA I MEZZI CHE LE MANUTENZIONI DEVONO ESSERE GIA SALVATI
+//        // HO FATTO I PRINTLN VERDI SENNO NON SI CAPISCE UN CAZZO
+//        System.out.println("\u001B[32m" + "Il mezzo2 è in manutenzione: " + manutenzioniDAO.isMezzoInManutenzione(mezzo2.getId()) + "\u001B[0m");
+//        System.out.println("\u001B[32m" + "Il mezzo1 è in manutenzione: " + manutenzioniDAO.isMezzoInManutenzione(mezzo1.getId()) + "\u001B[0m");
+//        System.out.println("\u001B[32m" + "Giorni dall'ultima manutenzione di mezzo1: " + manutenzioniDAO.getGiorniDallUltimaManutenzione(mezzo1.getId()) + "\u001B[0m");
+//
+//
+//        // CREAZIONE DI TITOLI DI VIAGGIO
+//        Abbonamento abbonamento1 = new Abbonamento();
+//        Abbonamento abbonamento2 = new Abbonamento();
+//        Biglietto bigliettoGiulia = new Biglietto(distributoreAutomatico, LocalDate.now(), LocalDate.now(), tesseraGiulia);
+//        Biglietto bigliettoMarco = new Biglietto(botteghino, LocalDate.now(), LocalDate.now());
+//
+//        abbonamento1.setMezzoDiVidimazione(mezzo1);
+//        abbonamento1.setDurata(DurataTitolo.MENSILE);
+//        abbonamento1.setEmessoDa(botteghino);
+//        abbonamento1.setTessera(tesseraVincenzo);
+//        abbonamento1.setDataDiEmissione(LocalDate.now().minusDays(10));
+//        abbonamento1.setDataDiVidimazione(LocalDate.now());
+//
+//        abbonamento2.setMezzoDiVidimazione(mezzo1);
+//        abbonamento2.setDurata(DurataTitolo.SETTIMANALE);
+//        abbonamento2.setEmessoDa(distributoreAutomatico2);
+//        abbonamento2.setTessera(tesseraGiulia);
+//        abbonamento2.setDataDiEmissione(LocalDate.now().minusDays(10));
+//        abbonamento2.setDataDiVidimazione(LocalDate.now().minusDays(8));
+//        abbonamento2.addTratta(veronaNapoli);
+//
+//
+//        bigliettoDAO.emettiBiglietto(bigliettoGiulia);
+//        bigliettoDAO.emettiBiglietto(abbonamento1);
+//        bigliettoDAO.emettiBiglietto(abbonamento2);
+//
+//        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), veronaNapoli);
+//        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), napoliTorino);
+//        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), pescaraRoma);
 
 
         // TEST METODI DI VERIFICA ABBONAMENTO
-        System.out.println("\u001B[32m Vincenzo può salire su " + veronaNapoli.toString() + " ? "+ utenteDAO.userPuòSalireSuTratta(vincenzo.getId() ,veronaNapoli.getId()) + "\u001B[0m");
+        System.out.println("\u001B[32m Vincenzo può salire su tratta 1 ? "+ utenteDAO.userPuòSalireSuTratta(1L, 1L) + "\u001B[0m");
+
 
         em.close();
         emf.close();
