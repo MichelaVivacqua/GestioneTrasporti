@@ -5,13 +5,12 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import team4.entities.Abbonamento;
-import team4.entities.Biglietto;
+import team4.entities.*;
 import team4.entities.Rivenditore_Autorizzato;
-import team4.entities.Mezzo;
 import team4.enums.DurataTitolo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 public class BigliettoDAO {
@@ -46,24 +45,33 @@ public class BigliettoDAO {
 
     // Metodo per l'emissione di un abbonamento settimanale
     public void emettiAbbonamento(Abbonamento abbonamento) {
+        EntityTransaction t = this.em.getTransaction();
         try {
-            EntityTransaction t = this.em.getTransaction();
             t.begin();
 
+            for (Tratta tratta : abbonamento.getTratte()) {
+                if (!em.contains(tratta)) {
+                    Tratta managedTratta = em.find(Tratta.class, tratta.getId());
+                    if (managedTratta == null) {
+                        em.persist(tratta);
+                    } else {
+                        tratta = managedTratta;
+                    }
+                }
+            }
+
             this.em.persist(abbonamento);
-            System.out.println("ABBONAMENTO FATTO");
-//            if (durata == Durata_titolo.MENSILE) {
-//                System.out.println("Abbonamento mensile emesso!");
-//
-//            } else {
-//                System.out.println("Abbonamento settimanale emesso!");
-//
-//            }
+
             t.commit();
+            System.out.println("Abbonamento emesso con successo.");
         } catch (Exception e) {
-            System.out.println("Errore durante l'emissione dell'abbonamento " + e.getMessage());
+            if (t.isActive()) {
+                t.rollback();
+            }
+            System.out.println("Errore durante l'emissione dell'abbonamento: " + e.getMessage());
         }
     }
+
 
     // Metodo per il conteggio dei biglietti emessi per un distributore in un dato periodo di tempo
     public long countBigliettiEmessiPerDistributore(Rivenditore_Autorizzato rivenditoreAutorizzato, LocalDate startDate, LocalDate endDate) {
@@ -172,6 +180,11 @@ public class BigliettoDAO {
             System.out.println("Errore durante il conteggio totale dei biglietti vidimati: " + e.getMessage());
             return 0;
         }
+    }
+    public List<Tratta> getTratteByAbbonamento(Long abbonamentoId) {
+        return em.createQuery("SELECT t FROM Abbonamento a JOIN a.tratte t WHERE a.id = :abbonamentoId", Tratta.class)
+                .setParameter("abbonamentoId", abbonamentoId)
+                .getResultList();
     }
 }
 

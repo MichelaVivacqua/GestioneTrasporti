@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import team4.dao.*;
-import team4.dao.Rivenditore_Autorizzato;
+import team4.dao.Rivenditore_AutorizzatoDAO;
 import team4.entities.*;
 import team4.enums.DurataTitolo;
 import team4.enums.TipoMezzo;
@@ -20,8 +20,9 @@ public class Application {
     public static void main(String[] args) {
 
 
-        Rivenditore_Autorizzato rivenditoreAutorizzato = new Rivenditore_Autorizzato(em);
+        Rivenditore_AutorizzatoDAO rivenditoreAutorizzato = new Rivenditore_AutorizzatoDAO(em);
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
+        AbbonamentoDAO abbonamentoDAO = new AbbonamentoDAO(em);
         MezzoDAO mezzoDAO = new MezzoDAO(em);
         TesseraDAO tesseraDAO = new TesseraDAO(em);
         UtenteDAO utenteDAO = new UtenteDAO(em);
@@ -86,7 +87,7 @@ public class Application {
         LocalDate dataInizio2 = LocalDate.now().minusDays(20);
 
         Manutenzione manutenzione1 = new Manutenzione(dataInizio1, dataFine1, mezzo1); // MANUTENZIONE FINITA
-        Manutenzione manutenzione2 = new Manutenzione(dataInizio2, mezzo2); // MANUTENZIONE IN CORSO
+        Manutenzione manutenzione2 = new Manutenzione(mezzo2); // METODO MANUTENZIONE CON SOLO IL MEZZO COME ARGOMENTO CREA UNA MANUTENZIONE CON DATA CORRENTE E DATA FINE NULL
 
         // SALVARE PRIMA I MEZZI CHE LE MANUTENZIONI DIPENDENTI PER NON VIOLARE IL VINCOLO DI NON NULLITA'
         mezzoDAO.save(mezzo1);
@@ -117,9 +118,6 @@ public class Application {
         abbonamento1.setTessera(tesseraVincenzo);
         abbonamento1.setDataDiEmissione(LocalDate.now().minusDays(10));
         abbonamento1.setDataDiVidimazione(LocalDate.now());
-        abbonamento1.addTratta(veronaNapoli);
-        abbonamento1.addTratta(napoliTorino);
-        abbonamento1.addTratta(pescaraRoma);
 
         abbonamento2.setMezzoDiVidimazione(mezzo1);
         abbonamento2.setDurata(DurataTitolo.SETTIMANALE);
@@ -129,9 +127,18 @@ public class Application {
         abbonamento2.setDataDiVidimazione(LocalDate.now().minusDays(8));
         abbonamento2.addTratta(veronaNapoli);
 
-        bigliettoDAO.emettiAbbonamento(abbonamento1);
-        bigliettoDAO.emettiAbbonamento(abbonamento2);
+
         bigliettoDAO.emettiBiglietto(bigliettoGiulia);
+        abbonamentoDAO.salvaAbbonamento(abbonamento1);
+        abbonamentoDAO.salvaAbbonamento(abbonamento2);
+
+        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), veronaNapoli);
+        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), napoliTorino);
+        abbonamentoDAO.aggiungiTrattaAdAbbonamento(abbonamento1.getId(), pescaraRoma);
+
+
+        // TEST METODI DI VERIFICA ABBONAMENTO
+        System.out.println("\u001B[32m Vincenzo può salire su " + veronaNapoli.toString() + " ? "+ utenteDAO.userPuòSalireSuTratta(vincenzo.getId() ,veronaNapoli.getId()) + "\u001B[0m");
 
         em.close();
         emf.close();

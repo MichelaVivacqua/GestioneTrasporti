@@ -6,10 +6,10 @@ import jakarta.persistence.EntityTransaction;
 import team4.entities.RivenditoreAutorizzatoAutomatico;
 
 
-public class Rivenditore_Autorizzato {
+public class Rivenditore_AutorizzatoDAO {
         private EntityManager em;
 
-        public Rivenditore_Autorizzato(EntityManager em) {
+        public Rivenditore_AutorizzatoDAO(EntityManager em) {
             this.em = em;
         }
 
@@ -58,12 +58,14 @@ public void save(RivenditoreAutorizzatoAutomatico distributore, boolean attivo) 
         e.commit();
         System.out.println("Distributore automatico con id: " + distributore.getId() + " creato!");
         } else {
-            System.out.println("Impossibile emettere i biglietti, distributore automatico non in funzione");
+            System.out.println("\\u001B[31mImpossibile emettere i biglietti, distributore automatico non in funzione\\u001B[0m");
         }
     } catch (Exception e) {
         System.out.println(e.getMessage());
     }
 }
-    }
+
+
+}
 
 

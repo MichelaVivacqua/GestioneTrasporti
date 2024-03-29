@@ -37,6 +37,12 @@ public class Manutenzione {
         this.data_fine = null;
     }
 
+    public Manutenzione( Mezzo mezzo) {
+        this.data_inizio = LocalDate.now();
+        this.mezzo = mezzo;
+        this.data_fine = null;
+    }
+
     public int getId_manutenzione() {
         return id_manutenzione;
     }

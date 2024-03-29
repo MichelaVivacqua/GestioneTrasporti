@@ -70,4 +70,41 @@ public class UtenteDAO {
             System.out.println(e.getMessage());
         }
     }
+
+    public boolean utenteHaBiglietto(Long utenteId) { // BIGLIETTO GENERICO NON VIDIMATO ASSOCIATO ALL'UTENTE
+        String jpql = "SELECT COUNT(b) FROM Biglietto b " +
+                "WHERE b.tessera.utente.id = :utenteId AND b.dataDiVidimazione IS NULL";
+        Long count = em.createQuery(jpql, Long.class)
+                .setParameter("utenteId", utenteId)
+                .getSingleResult();
+        return count > 0;
+    }
+
+    // RITORNA TRUE SE L'UTENTE HA UN ABBONAMENTO VALIDO PER LA LINEA DEL MEZZO DELL'ARGOMENTO
+    public boolean utenteAutorizzatoSuMezzo(Long utenteId, Long mezzoId) {
+        String jpql = "SELECT COUNT(a) FROM Abbonamento a " +
+                "JOIN a.tratte t JOIN t.mezzi m " +
+                "WHERE a.tessera.utente.id = :utenteId AND m.id = :mezzoId";
+        Long count = em.createQuery(jpql, Long.class)
+                .setParameter("utenteId", utenteId)
+                .setParameter("mezzoId", mezzoId)
+                .getSingleResult();
+        return count > 0;
+    }
+
+    // RITORNA TRUE SE L'UTENTE HA UN ABBONAMENTO VALIDO PER LA LINEA DELL'ARGOMENTO
+    public boolean userPuòSalireSuTratta(Long utenteId, Long trattaId) {
+        // Verifica la presenza di un abbonamento valido per la tratta specificata
+        String jpql = "SELECT COUNT(a) FROM Abbonamento a " +
+                "JOIN a.tratte t " +
+                "WHERE a.tessera.utente.id = :utenteId AND t.id = :trattaId";
+
+        Long count = em.createQuery(jpql, Long.class)
+                .setParameter("utenteId", utenteId)
+                .setParameter("trattaId", trattaId)
+                .getSingleResult();
+
+        return count > 0; // Ritorna true se esiste almeno un abbonamento valido per la tratta
+    }
+
 }

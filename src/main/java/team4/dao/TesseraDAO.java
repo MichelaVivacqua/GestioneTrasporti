@@ -94,4 +94,28 @@ public class TesseraDAO {
         }
     }
 
+//CONTROLLO BOARDING PER TRATTA
+    public boolean controlloValiditàTitoloByTesseraPerTratta(Long tesseraId, Long trattaId) {
+        String jpql = "SELECT COUNT(a) FROM Abbonamento a " +
+                "JOIN a.tratte t " +
+                "WHERE a.tessera.id = :tesseraId AND t.id = :trattaId";
+        Long count = em.createQuery(jpql, Long.class)
+                .setParameter("tesseraId", tesseraId)
+                .setParameter("trattaId", trattaId)
+                .getSingleResult();
+        return count > 0;
+    }
+
+    //CONTROLLO BOARDING PER MEZZO
+    public boolean controlloValiditàTitoloByTesseraPerMezzo(Long tesseraId, Long mezzoId) {
+        String jpql = "SELECT COUNT(a) FROM Abbonamento a " +
+                "JOIN a.tratte t JOIN t.mezzi m " +
+                "WHERE a.tessera.id = :tesseraId AND m.id = :mezzoId";
+        Long count = em.createQuery(jpql, Long.class)
+                .setParameter("tesseraId", tesseraId)
+                .setParameter("mezzoId", mezzoId)
+                .getSingleResult();
+        return count > 0;
+    }
+
 }

@@ -2,6 +2,7 @@ package team4.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import team4.entities.Abbonamento;
 import team4.entities.Tratta;
 
 import java.util.List;
@@ -68,10 +69,9 @@ public class TrattaDAO {
         }
     }
 
-    public Tratta findTrattaByPartenza(String partenza) {
-        List<Tratta> resultList = em.createQuery("SELECT t FROM Tratta t WHERE t.partenza = :partenza", Tratta.class)
-                .setParameter("partenza", partenza)
+    public List<Abbonamento> getAbbonamentiByTratta(Long trattaId) {
+        return em.createQuery("SELECT a FROM Abbonamento a JOIN a.tratte t WHERE t.id = :trattaId", Abbonamento.class)
+                .setParameter("trattaId", trattaId)
                 .getResultList();
-        return resultList.isEmpty() ? null : resultList.get(0);
     }
 }
