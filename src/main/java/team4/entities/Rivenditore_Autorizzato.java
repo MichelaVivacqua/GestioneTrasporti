@@ -11,9 +11,7 @@ public class Rivenditore_Autorizzato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     public Rivenditore_Autorizzato() {
-
     }
 
     public Long getId() {

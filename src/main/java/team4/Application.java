@@ -19,6 +19,7 @@ public class Application {
 
     public static void main(String[] args) {
 
+        menu();
 
         Rivenditore_AutorizzatoDAO rivenditoreAutorizzato = new Rivenditore_AutorizzatoDAO(em);
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);

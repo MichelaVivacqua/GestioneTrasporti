@@ -4,6 +4,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 //import team4.entities.DistributoreAutomatico;
 import team4.entities.RivenditoreAutorizzatoAutomatico;
+import team4.entities.Rivenditore_Autorizzato;
+
+import java.util.List;
 
 
 public class Rivenditore_AutorizzatoDAO {
@@ -12,7 +15,6 @@ public class Rivenditore_AutorizzatoDAO {
         public Rivenditore_AutorizzatoDAO(EntityManager em) {
             this.em = em;
         }
-
 
         public void save(team4.entities.Rivenditore_Autorizzato d) {
             try {
@@ -26,6 +28,10 @@ public class Rivenditore_AutorizzatoDAO {
             }
         }
 
+    public List<Rivenditore_Autorizzato> findAll() {
+        return em.createQuery("SELECT r FROM Rivenditore_Autorizzato r", Rivenditore_Autorizzato.class)
+                .getResultList();
+    }
 
         public team4.entities.Rivenditore_Autorizzato findById(long id) {
             return em.find(team4.entities.Rivenditore_Autorizzato.class, id);

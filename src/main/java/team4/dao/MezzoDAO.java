@@ -2,9 +2,12 @@ package team4.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team4.entities.Manutenzione;
 import team4.entities.Mezzo;
+import team4.entities.Tratta;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MezzoDAO {
@@ -27,6 +30,13 @@ public class MezzoDAO {
             }
             throw e;
         }
+    }
+
+    public List<Mezzo> findMezziForTratta(Long trattaId) {
+        TypedQuery<Mezzo> query = em.createQuery(
+                "SELECT m FROM Mezzo m WHERE m.trattaServita.id = :trattaId", Mezzo.class);
+        query.setParameter("trattaId", trattaId);
+        return query.getResultList();
     }
 
     public Mezzo findById(long id) {
