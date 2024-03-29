@@ -81,5 +81,9 @@ public class MezzoDAO {
                 .getResultList();
         return manutenzioni.isEmpty() ? null : manutenzioni.get(0);
     }
+    public List<Mezzo> listaMezzi() {
+        return em.createQuery("SELECT m FROM Mezzo m", Mezzo.class)
+                .getResultList();
+    }
 
 }
