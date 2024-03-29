@@ -14,7 +14,7 @@ import static team4.Navigations.TesseraNav.*;
 
 public class UtentiNav {
 
-    public static void utente() throws UtenteNonTrovatoException{
+    public static void utente(){
         System.out.println("1. CreaUtente");
         System.out.println("2. Seleziona Utente");
         System.out.println("3. Return");
@@ -53,7 +53,7 @@ public class UtentiNav {
         System.out.println("UTENTE " + nome + " CREATO CON SUCCESSO");
     }
 
-    public static void cercaUtente() throws UtenteNonTrovatoException {
+    public static void cercaUtente(){
         System.out.println("Cerca per mezzo di:");
         System.out.println("1. Tessera");
         System.out.println("2. Id Utente");

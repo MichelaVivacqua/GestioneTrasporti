@@ -3,17 +3,10 @@ package team4;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import team4.dao.*;
-import team4.dao.Rivenditore_AutorizzatoDAO;
-import team4.entities.*;
-import team4.enums.DurataTitolo;
-import team4.enums.TipoMezzo;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Scanner;
 
-import static team4.Navigations.Navigations.*;
+import static team4.Navigations.Navigations.menu;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionetrasporti");
@@ -21,9 +14,9 @@ public class Application {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        emettiBiglietto(scanner, trattaDAO, mezzoDAO);
+//        emettiBiglietto(scanner, trattaDAO, mezzoDAO);
 
-        //menu();
+        menu();
 
 //        Rivenditore_AutorizzatoDAO rivenditoreAutorizzato = new Rivenditore_AutorizzatoDAO(em);
 //        BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
@@ -150,34 +143,34 @@ public class Application {
         em.close();
         emf.close();
         scanner.close();
-    }
-    public static void emettiBiglietto(Scanner scanner, TrattaDAO trattaDAO, MezzoDAO mezzoDAO) {
-
-        List<Tratta> tratteDisponibili = trattaDAO.listaTratte();
-
-
-        List<Mezzo> mezziDisponibili = mezzoDAO.listaMezzi();
-
-
-        System.out.println("Tratte disponibili:");
-        for (Tratta tratta : tratteDisponibili) {
-            System.out.println(tratta);
-        }
-
-
-        System.out.println("Mezzi disponibili:");
-        for (Mezzo mezzo : mezziDisponibili) {
-            System.out.println(mezzo);
-        }
-
-        System.out.print("Seleziona l'ID della tratta: ");
-        long trattaId = scanner.nextLong();
-        System.out.print("Seleziona l'ID del mezzo: ");
-        long mezzoId = scanner.nextLong();
-    }
-
-
-    };
+    }}
+//    public static void emettiBiglietto(Scanner scanner, TrattaDAO trattaDAO, MezzoDAO mezzoDAO) {
+//
+//        List<Tratta> tratteDisponibili = trattaDAO.listaTratte();
+//
+//
+//        List<Mezzo> mezziDisponibili = mezzoDAO.listaMezzi();
+//
+//
+//        System.out.println("Tratte disponibili:");
+//        for (Tratta tratta : tratteDisponibili) {
+//            System.out.println(tratta);
+//        }
+//
+//
+//        System.out.println("Mezzi disponibili:");
+//        for (Mezzo mezzo : mezziDisponibili) {
+//            System.out.println(mezzo);
+//        }
+//
+//        System.out.print("Seleziona l'ID della tratta: ");
+//        long trattaId = scanner.nextLong();
+//        System.out.print("Seleziona l'ID del mezzo: ");
+//        long mezzoId = scanner.nextLong();
+//    }
+//
+//
+//    };
 
 
 //TODO Rimuvoi i metodi dal dao perchè non serve nel salvataggio della tratta il tempo e il num di volte dato che con il mezzo fai tutto
