@@ -123,6 +123,7 @@ public class UtentiNav {
 
                     System.out.println("1. Crea abbonamento");
                     System.out.println("2. Crea biglietto");
+                    System.out.println("3. Vidima biglietto");
                     System.out.println("3. Esci");
 
 
@@ -265,6 +266,12 @@ public class UtentiNav {
 
                             break;
                         case 3:
+                            System.out.println("Vidima biglietto");
+                            UtentiNav utentiNav = new UtentiNav();
+                            utentiNav.vidimaBiglietto();
+                            break;
+
+                        case 4:
                             return;
                         default:
                             System.out.println("Opzione non valida");
@@ -282,4 +289,26 @@ public class UtentiNav {
         }
 
     }
+
+    public void vidimaBiglietto() {
+        try {
+            System.out.println("Inserisci l'ID del biglietto da vidimare:");
+            long bigliettoId = Long.parseLong(scanner.nextLine());
+
+            System.out.println("Inserisci l'ID del mezzo di vidimazione:");
+            long mezzoId = Long.parseLong(scanner.nextLine());
+
+            Biglietto biglietto = bigliettoDAO.findById(bigliettoId);
+            Mezzo mezzo = mezzoDAO.findById(mezzoId);
+
+            if (biglietto != null && mezzo != null) {
+                bigliettoDAO.vidimaBiglietto(biglietto, mezzo);
+            } else {
+                System.out.println("Biglietto o mezzo non trovati.");
+            }
+        } catch (NumberFormatException ne) {
+            System.out.println("Opzione non valida, inserisci un numero corretto!");
+        }
+    }
+
 }
