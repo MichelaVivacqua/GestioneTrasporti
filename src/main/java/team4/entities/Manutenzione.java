@@ -41,6 +41,7 @@ public class Manutenzione {
         this.data_inizio = LocalDate.now();
         this.mezzo = mezzo;
         this.data_fine = null;
+        mezzo.rimuoviTratta();
     }
 
     public int getId_manutenzione() {

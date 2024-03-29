@@ -8,6 +8,7 @@ import team4.dao.TrattaDAO;
 import team4.entities.*;
 import team4.enums.TipoMezzo;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +28,7 @@ public class AdminNav {
 
         while (true) {
             System.out.println("Menu: ");
-            System.out.println("1. Verifica manutenzione tramite ID del mezzo");
+            System.out.println("1. Pannello Manutenzione mezzi");
             System.out.println("2. Crea tratta");
             System.out.println("3. Crea mezzo");
             System.out.println("4. Crea distributore");
@@ -40,10 +41,7 @@ public class AdminNav {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Inserisci l'ID del mezzo: ");
-                    long mezzoId = Long.parseLong(scanner.nextLine());
-                    String dataManutenzione = String.valueOf(mezzoDAO.isMezzoInManutenzione(em, mezzoId));
-                    System.out.println("La data di manutenzione per il mezzo con ID " + mezzoId + " è: " + dataManutenzione);
+                    pannelloManutenzioneMezzi();
                     break;
                 case 2:
                     creaTratta();
@@ -81,6 +79,64 @@ public class AdminNav {
         Tratta tratta = new Tratta(durata, partenza, arrivo);
         trattaDAO.saveTratta(tratta);
         System.out.println("Tratta creata con successo.");
+    }
+
+    private static void pannelloManutenzioneMezzi(){
+        List<Mezzo> listaMezzi = mezzoDAO.listaMezzi();
+        for (Mezzo mezzo : listaMezzi) {
+            System.out.println(mezzo.stringaPerPannello());
+        }
+        System.out.println("Seleziona una di queste opzioni: ");
+        System.out.println("1. Manda un mezzo in manutenzione");
+        System.out.println("2. Manda un mezzo in servizio");
+        System.out.println("3. Indietro");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        switch (choice) {
+            case 1:
+                mandaMezzoInManutenzione();
+                break;
+            case 2:
+                concludiManutenzioneMezzo();
+                break;
+            case 3:
+                System.out.println("Ritorno al menu");
+                break;
+            default:
+                System.out.println("Scelta non valida. Riprova.");
+        }
+    }
+
+    private static void mandaMezzoInManutenzione() {
+        System.out.println("Inserisci l'ID del mezzo da mandare in manutenzione:");
+        Long mezzoId = Long.parseLong(scanner.nextLine());
+        Mezzo mezzo = mezzoDAO.findById(mezzoId);
+        if (mezzo != null) {
+            Manutenzione manutenzione = new Manutenzione(mezzo);
+            mezzo.getManutenzioni().add(manutenzione);
+            mezzoDAO.update(mezzo);
+            System.out.println("Mezzo mandato in manutenzione.");
+        } else {
+            System.out.println("Mezzo non trovato.");
+        }
+    }
+
+    private static void concludiManutenzioneMezzo() {
+        System.out.println("Inserisci l'ID del mezzo per cui concludere la manutenzione:");
+        Long mezzoId = Long.parseLong(scanner.nextLine());
+        Mezzo mezzo = mezzoDAO.findById(mezzoId);
+        if (mezzo != null && !mezzo.getManutenzioni().isEmpty()) {
+            Manutenzione ultimaManutenzione = mezzo.getManutenzioni().get(mezzo.getManutenzioni().size() - 1);
+            if (ultimaManutenzione.getData_fine() == null) {
+                ultimaManutenzione.setData_fine(LocalDate.now());
+                mezzoDAO.update(mezzo);
+                System.out.println("Manutenzione conclusa con successo.");
+            } else {
+                System.out.println("Non ci sono manutenzioni attive per questo mezzo.");
+            }
+        } else {
+            System.out.println("Mezzo non trovato o nessuna manutenzione presente.");
+        }
     }
 
     private static void creaMezzo() {

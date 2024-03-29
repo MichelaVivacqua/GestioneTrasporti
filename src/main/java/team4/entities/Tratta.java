@@ -23,6 +23,10 @@ public class Tratta {
     @ManyToMany(mappedBy = "tratte")
     private Set<Abbonamento> abbonamenti = new HashSet<>();
 
+    @OneToMany(mappedBy = "trattaServita")
+    private Set<Mezzo> mezziServenti = new HashSet<>();
+
+
     @Override
     public String toString() {
         return "Tratta{" +
@@ -32,8 +36,6 @@ public class Tratta {
                 ", arrivo='" + arrivo + '\'' +
                 '}';
     }
-
-
 
     public Tratta() {}
 
@@ -81,5 +83,13 @@ public class Tratta {
 
     public void setAbbonamenti(Set<Abbonamento> abbonamenti) {
         this.abbonamenti = abbonamenti;
+    }
+
+    public Set<Mezzo> getMezziServenti() {
+        return mezziServenti;
+    }
+
+    public void setMezziServenti(Set<Mezzo> mezziServenti) {
+        this.mezziServenti = mezziServenti;
     }
 }

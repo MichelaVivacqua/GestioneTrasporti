@@ -7,6 +7,8 @@ import team4.entities.Biglietto;
 import team4.entities.Manutenzione;
 import team4.entities.Mezzo;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class MezzoDAO {
@@ -91,7 +93,7 @@ public class MezzoDAO {
             throw e;
         }
     }
-    public boolean isMezzoInManutenzione(EntityManager em, Long idMezzo) {
+    public boolean isMezzoInManutenzione(Long idMezzo) {
         String jpql = "SELECT m FROM Manutenzione m WHERE m.mezzo.id_Mezzo = :idMezzo AND m.data_fine IS NULL ORDER BY m.data_inizio DESC";
         List<Manutenzione> manutenzioni = em.createQuery(jpql, Manutenzione.class)
                 .setParameter("idMezzo", idMezzo)
@@ -100,8 +102,7 @@ public class MezzoDAO {
         return !manutenzioni.isEmpty();
     }
 
-
-    public Manutenzione getUltimaManutenzione(EntityManager em, Long idMezzo) {
+    public Manutenzione getUltimaManutenzione(Long idMezzo) {
         String jpql = "SELECT m FROM Manutenzione m WHERE m.mezzo.id_Mezzo = :idMezzo ORDER BY m.data_inizio DESC";
         List<Manutenzione> manutenzioni = em.createQuery(jpql, Manutenzione.class)
                 .setParameter("idMezzo", idMezzo)

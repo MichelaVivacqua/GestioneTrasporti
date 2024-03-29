@@ -3,6 +3,8 @@ package team4.entities;
 import jakarta.persistence.*;
 import team4.enums.TipoMezzo;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Entity
@@ -126,6 +128,15 @@ public class Mezzo {
         this.trattaServita = trattaServita;
     }
 
+    public void rimuoviTratta() {
+        if (this.trattaServita != null) {
+            this.trattaServita.getMezziServenti().remove(this);
+            this.trattaServita = null;
+        }
+        System.out.println("Mezzo rimosso dalla tratta");
+    }
+
+
     public List<Manutenzione> getManutenzioni() {
         return manutenzioni;
     }
@@ -151,4 +162,43 @@ public class Mezzo {
                 ", tempoEffettivo=" + tempoEffettivo + //TODO AGGIUNGERE TOSTRING MANUTENZIONE IN CORSO O ULTIMA MANUTENZIONE
                 '}';
     }
+
+    public String stringaPerPannello(){
+        String trattaInfo = "Non in servizio su nessuna linea";
+        if (this.getTrattaServita() != null) {
+            trattaInfo = "In servizio sulla linea " + this.getTrattaServita().getPartenza() + "-" + this.getTrattaServita().getArrivo();
+        }
+        return this.tipoMezzo.toString() + " id " + this.id_Mezzo + " " + this.capienza + " posti | " + trattaInfo + subStringStatoMezzo();
+    }
+
+
+    private String subStringStatoMezzo() {
+        LocalDate oggi = LocalDate.now();
+        LocalDate dataUltimaManutenzione = null;
+        LocalDate dataInizioUltimaManutenzione = null;
+        boolean inManutenzione = false;
+
+        for (Manutenzione manutenzione : this.manutenzioni) {
+            if ((manutenzione.getData_inizio().isBefore(oggi) || manutenzione.getData_inizio().isEqual(oggi)) &&
+                    (manutenzione.getData_fine() == null || manutenzione.getData_fine().isAfter(oggi))) {
+                inManutenzione = true;
+                dataInizioUltimaManutenzione = manutenzione.getData_inizio();
+                break; // Interrompe il ciclo se trova una manutenzione attiva
+            } else if (manutenzione.getData_fine() != null &&
+                    (dataUltimaManutenzione == null || manutenzione.getData_fine().isAfter(dataUltimaManutenzione))) {
+                dataUltimaManutenzione = manutenzione.getData_fine();
+            }
+        }
+
+        if (inManutenzione) {
+            long giorniDiManutenzione = ChronoUnit.DAYS.between(dataInizioUltimaManutenzione, oggi);
+            return " | In manutenzione da " + giorniDiManutenzione + " giorni";
+        } else if (dataUltimaManutenzione != null) {
+            long giorniDaUltimaManutenzione = ChronoUnit.DAYS.between(dataUltimaManutenzione, oggi);
+            return " | In servizio da " + giorniDaUltimaManutenzione + " giorni";
+        } else {
+            return " | Nessuna manutenzione registrata";
+        }
+    }
+
 }
