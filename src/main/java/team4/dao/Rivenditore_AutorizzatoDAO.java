@@ -28,6 +28,8 @@ public class Rivenditore_AutorizzatoDAO {
             }
         }
 
+
+
     public List<Rivenditore_Autorizzato> findAll() {
         return em.createQuery("SELECT r FROM Rivenditore_Autorizzato r", Rivenditore_Autorizzato.class)
                 .getResultList();

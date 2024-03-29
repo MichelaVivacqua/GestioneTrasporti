@@ -201,6 +201,21 @@ public class BigliettoDAO {
             return null;
         }
 
+        public Long  findBigliettoByDistributoreId(long distributoreId){
+            TypedQuery<Long> query = em.createQuery(
+                    "SELECT m.id FROM Biglietto m WHERE m.emessoDa.id = :distributoreId", Long.class);
+            query.setParameter("distributoreId", distributoreId);
+
+            List<Long> results = query.getResultList();
+            if (!results.isEmpty()) {
+                return results.get(0);
+            }
+
+            return null;
+        }
+
+
+
     public void update(Biglietto b) {
         EntityTransaction et = em.getTransaction();
         try {
@@ -230,6 +245,7 @@ public class BigliettoDAO {
             throw e;
         }
     }
+
 
 
     }

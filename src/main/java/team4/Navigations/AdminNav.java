@@ -58,6 +58,9 @@ public class AdminNav {
                 case 6:
                     rimuoviMezzo();
                     break;
+                case 7:
+                    rimuoviDistributore();
+                    break;
                 case 0:
                     System.out.println("Uscita dal programma.");
                     System.exit(0);
@@ -182,7 +185,6 @@ public class AdminNav {
     public static void rimuoviTratta() {
         System.out.println("INSERISCI ID TRATTA DA ELIMINARE");
         int trattaId = Integer.parseInt(scanner.nextLine());
-
         Tratta tratta = trattaDAO.findTrattaById(trattaId);      //! TROVO ID TRATTA
         System.out.println(tratta);
         //! TROVO L'ID DEL MEZZO ASSOCIATO
@@ -219,6 +221,21 @@ public class AdminNav {
     }
 
     public static void rimuoviDistributore() {
+        System.out.println("INSERISCI ID DISTRIBUTORE DA ELIMINARE");
+        int distributoreId= Integer.parseInt(scanner.nextLine());
+
+        Rivenditore_Autorizzato rivenditoreAutorizzato= rivenditoreAutorizzatoDAO.findById(distributoreId);
+
+        System.out.println(rivenditoreAutorizzato);
+
+        long bigliettoId= bigliettoDAO.findBigliettoByDistributoreId(distributoreId);
+        Biglietto biglietto= bigliettoDAO.findById(bigliettoId);
+        biglietto.setEmessoDa(null);
+        System.out.println(biglietto);
+        bigliettoDAO.update(biglietto);
+        rivenditoreAutorizzatoDAO.findByIdAndDelete(distributoreId);
+
+        System.out.println("FINITO IL METODO CONTROLLA DB");
 
     }
 
