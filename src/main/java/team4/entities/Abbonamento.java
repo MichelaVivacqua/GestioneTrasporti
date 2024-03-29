@@ -14,8 +14,14 @@ public class Abbonamento extends Biglietto implements Controllabile {
     @Column(name = "tipo_durata")
    private DurataTitolo durata;
 
-    @ManyToMany(mappedBy = "abbonamenti")
+    @ManyToMany
+    @JoinTable(
+            name = "abbonamento_tratta",
+            joinColumns = @JoinColumn(name = "abbonamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "tratta_id")
+    )
     private Set<Tratta> tratte = new HashSet<>();
+
 
     public Abbonamento() {}
 
@@ -32,9 +38,15 @@ public class Abbonamento extends Biglietto implements Controllabile {
     }
 
     public void addTratta(Tratta tratta) {
-        tratte.add(tratta);
+        this.tratte.add(tratta);
         tratta.getAbbonamenti().add(this);
     }
+
+    public void removeTratta(Tratta tratta) {
+        this.tratte.remove(tratta);
+        tratta.getAbbonamenti().remove(this);
+    }
+
 
     public Set<Tratta> getTratte() {
         return tratte;
@@ -42,11 +54,6 @@ public class Abbonamento extends Biglietto implements Controllabile {
 
     public void setTratte(Set<Tratta> tratte) {
         this.tratte = tratte;
-    }
-
-    public void removeTratta(Tratta tratta) {
-        tratte.remove(tratta);
-        tratta.getAbbonamenti().remove(this);
     }
 
     @Override

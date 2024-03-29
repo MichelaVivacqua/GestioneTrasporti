@@ -21,7 +21,7 @@ public class Biglietto {
     private LocalDate dataDiEmissione;
     private LocalDate dataDiVidimazione;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tesseraId")
     private Tessera tessera;
 
