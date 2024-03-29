@@ -132,6 +132,7 @@ public class Mezzo {
             this.trattaServita.getMezziServenti().remove(this);
             this.trattaServita = null;
         }
+        System.out.println("Mezzo rimosso dalla tratta");
     }
 
 
