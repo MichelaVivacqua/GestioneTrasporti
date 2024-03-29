@@ -82,7 +82,7 @@ public class MezzoDAO {
         try {
             tx.begin();
 
-            Mezzo deleteMezzo = em.merge(m); // Assicurati che l'entità sia gestita
+            Mezzo deleteMezzo = em.merge(m);
             em.remove(deleteMezzo);
             tx.commit();
             System.out.println("Mezzo eliminato");

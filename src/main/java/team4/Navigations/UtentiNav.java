@@ -169,7 +169,7 @@ public class UtentiNav {
                                     System.out.println("2. Mensile");
                                     int durataA = Integer.parseInt(scanner.nextLine());
                                     DurataTitolo durata = null;
-                                    Abbonamento abbonamento = null; // Dichiarazione della variabile abbonamento fuori dallo switch
+                                    Abbonamento abbonamento = null;
                                     Mezzo mezzo = mezzoDAO.findById(mezzoId);
                                     Rivenditore_Autorizzato emessoDa = rivenditoreDAO.findById(rivenditoreID);
                                     Tessera tessera = utente.getTessera();
@@ -180,14 +180,14 @@ public class UtentiNav {
                                             durata = DurataTitolo.SETTIMANALE;
                                             abbonamento = new Abbonamento(durata, mezzo, emessoDa, LocalDate.now(), tessera);
                                             abbonamento.setDataDiVidimazione(LocalDate.now());
-                                            abbonamento.addTratta(trattaSelezionata); // Correzione della formattazione
+                                            abbonamento.addTratta(trattaSelezionata);
                                             bigliettoDAO.emettiAbbonamento(abbonamento);
                                             break;
                                         case 2:
                                             durata = DurataTitolo.MENSILE;
                                             abbonamento = new Abbonamento(durata, mezzo, emessoDa, LocalDate.now(), tessera);
                                             abbonamento.setDataDiVidimazione(LocalDate.now());
-                                            abbonamento.addTratta(trattaSelezionata); // Correzione della formattazione
+                                            abbonamento.addTratta(trattaSelezionata);
                                             bigliettoDAO.emettiAbbonamento(abbonamento);
                                             break;
                                         case 3:

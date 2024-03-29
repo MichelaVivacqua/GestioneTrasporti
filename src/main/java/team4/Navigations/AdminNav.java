@@ -116,7 +116,7 @@ public class AdminNav {
 
         // Assegnazione del mezzo alla tratta
         mezzoSelezionato.setTrattaServita(trattaSelezionata);
-        mezzoDAO.update(mezzoSelezionato); // Assumi che questo metodo aggiorni il mezzo nel database, incluse le relazioni
+        mezzoDAO.update(mezzoSelezionato);
         System.out.println("Mezzo ID: " + mezzoId + " assegnato alla tratta ID: " + trattaId + " con successo.");
     }
 
@@ -165,15 +165,15 @@ public class AdminNav {
     private static void storicoManutenzioni() {
         System.out.println("Inserisci l'ID del mezzo di cui vuoi vedere lo storico delle manutenzioni:");
         try {
-            long mezzoId = Long.parseLong(scanner.nextLine()); // Legge l'ID inserito dall'utente
-            Mezzo mezzo = mezzoDAO.findById(mezzoId); // Cerca il mezzo tramite il DAO
+            long mezzoId = Long.parseLong(scanner.nextLine());
+            Mezzo mezzo = mezzoDAO.findById(mezzoId);
 
             if (mezzo == null) {
                 System.out.println("Mezzo non trovato.");
                 return;
             }
 
-            List<Manutenzione> manutenzioni = mezzo.getManutenzioni(); // Ottiene le manutenzioni del mezzo
+            List<Manutenzione> manutenzioni = mezzo.getManutenzioni();
 
             if (manutenzioni.isEmpty()) {
                 System.out.println("Nessuna manutenzione registrata per questo mezzo.");

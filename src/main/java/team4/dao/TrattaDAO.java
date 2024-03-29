@@ -58,7 +58,7 @@ public class TrattaDAO {
         try {
             tx.begin();
 
-            Tratta trattaToRemove = em.merge(tratta); // Assicurati che l'entità sia gestita
+            Tratta trattaToRemove = em.merge(tratta);
             em.remove(trattaToRemove);
             tx.commit();
             System.out.println("Tratta eliminata");

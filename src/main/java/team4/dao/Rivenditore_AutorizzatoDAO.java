@@ -66,7 +66,7 @@ public void save(RivenditoreAutorizzatoAutomatico distributore, boolean attivo) 
         e.commit();
         System.out.println("Distributore automatico con id: " + distributore.getId() + " creato!");
         } else {
-            System.out.println("\\u001B[31mImpossibile emettere i biglietti, distributore automatico non in funzione\\u001B[0m");
+            System.out.println("Impossibile emettere i biglietti, distributore automatico non in funzione");
         }
     } catch (Exception e) {
         System.out.println(e.getMessage());

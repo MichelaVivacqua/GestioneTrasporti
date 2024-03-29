@@ -241,7 +241,7 @@ public class BigliettoDAO {
         try {
             tx.begin();
 
-            Biglietto deleteBiglietto = em.merge(b); // Assicurati che l'entità sia gestita
+            Biglietto deleteBiglietto = em.merge(b);
             em.remove(deleteBiglietto);
             tx.commit();
             System.out.println("Biglietto eliminato");
