@@ -1,6 +1,7 @@
 package team4.Navigations;
 
 import team4.dao.*;
+import team4.exceptions.UtenteNonTrovatoException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;

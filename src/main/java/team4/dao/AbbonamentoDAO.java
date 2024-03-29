@@ -3,6 +3,8 @@ package team4.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import team4.entities.Abbonamento;
+import team4.entities.Mezzo;
+import team4.entities.Rivenditore_Autorizzato;
 import team4.entities.Tratta;
 
 import java.time.LocalDate;
@@ -99,5 +101,21 @@ public class AbbonamentoDAO {
         return tratte;
     }
 
+    public List<Abbonamento> trovaAbbonamentiEmessiDaRivenditoreInPeriodo(Rivenditore_Autorizzato rivenditore, LocalDate inizio, LocalDate fine) {
+        return em.createQuery(
+                        "SELECT a FROM Abbonamento a WHERE a.emessoDa = :rivenditore AND a.dataDiEmissione BETWEEN :inizio AND :fine",
+                        Abbonamento.class)
+                .setParameter("rivenditore", rivenditore)
+                .setParameter("inizio", inizio)
+                .setParameter("fine", fine)
+                .getResultList();
+    }
 
+    public List<Mezzo> trovaMezziPerTratta(Tratta tratta) {
+        return em.createQuery(
+                        "SELECT m FROM Mezzo m WHERE m.trattaServita = :tratta",
+                        Mezzo.class)
+                .setParameter("tratta", tratta)
+                .getResultList();
+    }
 }

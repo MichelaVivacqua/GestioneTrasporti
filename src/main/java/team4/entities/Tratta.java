@@ -20,12 +20,7 @@ public class Tratta {
     @Column(name = "arrivo")
     private String arrivo;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tratta_biglietto",
-            joinColumns = @JoinColumn(name = "tratta_id"),
-            inverseJoinColumns = @JoinColumn(name = "biglietto_id")
-    )
+    @ManyToMany(mappedBy = "tratte")
     private Set<Abbonamento> abbonamenti = new HashSet<>();
 
     @Override
