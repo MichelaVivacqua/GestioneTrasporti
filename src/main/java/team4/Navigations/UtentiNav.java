@@ -50,7 +50,7 @@ public class UtentiNav {
         System.out.println("UTENTE " + nome + " CREATO CON SUCCESSO");
     }
 
-    public static void cercaUtente() {
+    public static void cercaUtente() throws UtenteNonTrovatoException {
         System.out.println("Cerca per mezzo di:");
         System.out.println("1. Tessera");
         System.out.println("2. Id Utente");
@@ -72,7 +72,7 @@ public class UtentiNav {
         }
     }
 
-    public static void cercaPerIdUtente() {
+    public static void cercaPerIdUtente() throws UtenteNonTrovatoException {
         System.out.println("Inserisci l'Id dell'utente");
         int utenteId = Integer.parseInt(scanner.nextLine());
         System.out.println(utenteDAO.findById(utenteId));
