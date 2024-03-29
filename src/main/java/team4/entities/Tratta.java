@@ -18,7 +18,6 @@ public class Tratta {
     private String partenza;
 
     @Column(name = "arrivo")
-
     private String arrivo;
 
     @ManyToMany
@@ -38,6 +37,8 @@ public class Tratta {
                 ", arrivo='" + arrivo + '\'' +
                 '}';
     }
+
+
 
     public Tratta() {}
 

@@ -2,7 +2,6 @@ package team4.Navigations;
 
 import jakarta.persistence.EntityManager;
 import team4.Application;
-import team4.dao.Rivenditore_AutorizzatoDAO;
 import team4.dao.MezzoDAO;
 import team4.dao.Rivenditore_AutorizzatoDAO;
 import team4.dao.TrattaDAO;
@@ -35,6 +34,7 @@ public class AdminNav {
             System.out.println("2. Crea tratta");
             System.out.println("3. Crea mezzo");
             System.out.println("4. Crea distributore");
+            System.out.println("5. Rimuovi tratta");
             System.out.println("0. Esci");
             System.out.print("Seleziona un'opzione: ");
             int choice = scanner.nextInt();
@@ -54,6 +54,9 @@ public class AdminNav {
                     break;
                 case 4:
                     creaDistributore();
+                    break;
+                case 5:
+                    rimuoviTratta();
                     break;
                 case 0:
                     System.out.println("Uscita dal programma.");
@@ -79,47 +82,45 @@ public class AdminNav {
     private static void creaMezzo() {
         System.out.println("Inserisci il tipo del mezzo: ");
         System.out.println("1. BUS");
-        System.out.println("1. TRAM");
+        System.out.println("2. TRAM");
         int tipoMezzo = Integer.parseInt(scanner.nextLine());
 
         try {
             switch (tipoMezzo) {
                 case 1:
-                        TipoMezzo tpM = TipoMezzo.AUTOBUS;
-                        System.out.println("Inserisci la capienza del mezzo: ");
-                        int capienza = Integer.parseInt(scanner.nextLine());
-                        List<Tratta> tratte = trattaDAO.listaTratte();
-                        System.out.println("Inserisci l'ID della tratta servita: ");
-                        int trattaId = Integer.parseInt(scanner.nextLine());
-                        Tratta trattaServita = trattaDAO.findTrattaById(trattaId);
-                        System.out.println("Inserisci il numero di volte: ");
-                        int numeroDiVolte = Integer.parseInt(scanner.nextLine());
-                        System.out.println("Inserisci il tempo effettivo: ");
-                        int tempoEffettivo = Integer.parseInt(scanner.nextLine());
-                        Mezzo mezzo = new Mezzo(capienza, trattaServita, numeroDiVolte, tempoEffettivo);
-                        mezzo.setTipoMezzo(tpM);
-                        mezzoDAO.save(mezzo);
-                        System.out.println("Mezzo creato con successo.");
+                    TipoMezzo tpM = TipoMezzo.AUTOBUS;
+                    List<Tratta> tratte = trattaDAO.listaTratte();
+                    System.out.println("Inserisci l'ID della tratta servita: ");
+                    int trattaId = Integer.parseInt(scanner.nextLine());
+                    Tratta trattaServita = trattaDAO.findTrattaById(trattaId);
+                    System.out.println("Inserisci il numero di volte: ");
+                    int numeroDiVolte = Integer.parseInt(scanner.nextLine());
+                    System.out.println("Inserisci il tempo effettivo: ");
+                    int tempoEffettivo = Integer.parseInt(scanner.nextLine());
+                    Mezzo mezzo = new Mezzo(tpM, trattaServita, numeroDiVolte, tempoEffettivo);
+//                        mezzo.setTipoMezzo(tpM);
+                    mezzoDAO.save(mezzo);
+                    System.out.println("Mezzo creato con successo.");
 
                     break;
 
                 case 2:
 
-                        TipoMezzo tpM2 = TipoMezzo.TRAM;
-                        System.out.println("Inserisci la capienza del mezzo: ");
-                        int capienza2 = Integer.parseInt(scanner.nextLine());
-                        List<Tratta> tratte2 = trattaDAO.listaTratte();
-                        System.out.println("Inserisci l'ID della tratta servita: ");
-                        long trattaId2 = Integer.parseInt(scanner.nextLine());
-                        Tratta trattaServita2 = trattaDAO.findTrattaById(trattaId2);
-                        System.out.println("Inserisci il numero di volte: ");
-                        int numeroDiVolte2 = Integer.parseInt(scanner.nextLine());
-                        System.out.println("Inserisci il tempo effettivo: ");
-                        int tempoEffettivo2 = Integer.parseInt(scanner.nextLine());
-                        Mezzo mezzo2 = new Mezzo(capienza2, trattaServita2, numeroDiVolte2, tempoEffettivo2);
-                        mezzo2.setTipoMezzo(tpM2);
+                    TipoMezzo tpM2 = TipoMezzo.TRAM;
+                    System.out.println("Inserisci la capienza del mezzo: ");
+                    int capienza2 = Integer.parseInt(scanner.nextLine());
+                    List<Tratta> tratte2 = trattaDAO.listaTratte();
+                    System.out.println("Inserisci l'ID della tratta servita: ");
+                    long trattaId2 = Integer.parseInt(scanner.nextLine());
+                    Tratta trattaServita2 = trattaDAO.findTrattaById(trattaId2);
+                    System.out.println("Inserisci il numero di volte: ");
+                    int numeroDiVolte2 = Integer.parseInt(scanner.nextLine());
+                    System.out.println("Inserisci il tempo effettivo: ");
+                    int tempoEffettivo2 = Integer.parseInt(scanner.nextLine());
+                    Mezzo mezzo2 = new Mezzo(capienza2, trattaServita2, numeroDiVolte2, tempoEffettivo2);
+                    mezzo2.setTipoMezzo(tpM2);
                     mezzoDAO.save(mezzo2);
-                        System.out.println("Mezzo creato con successo.");
+                    System.out.println("Mezzo creato con successo.");
 
                     break;
                 case 3:
@@ -144,15 +145,15 @@ public class AdminNav {
         switch (sceltaDi) {
             case 1:
 
-                    System.out.println("Il distributore automatico è attivo? (true/false): ");
-                    boolean attivo = Boolean.parseBoolean(scanner.nextLine());
-                    if (attivo) {
-                        RivenditoreAutorizzatoAutomatico rivenditoreAutomatico = new RivenditoreAutorizzatoAutomatico(true);
-                        rivenditoreAutorizzatoDAO.save(rivenditoreAutomatico, true);
-                    } else {
-                        RivenditoreAutorizzatoAutomatico rivenditoreAutomatico = new RivenditoreAutorizzatoAutomatico(false);
-                        rivenditoreAutorizzatoDAO.save(rivenditoreAutomatico, false);
-                    }
+                System.out.println("Il distributore automatico è attivo? (true/false): ");
+                boolean attivo = Boolean.parseBoolean(scanner.nextLine());
+                if (attivo) {
+                    RivenditoreAutorizzatoAutomatico rivenditoreAutomatico = new RivenditoreAutorizzatoAutomatico(true);
+                    rivenditoreAutorizzatoDAO.save(rivenditoreAutomatico, true);
+                } else {
+                    RivenditoreAutorizzatoAutomatico rivenditoreAutomatico = new RivenditoreAutorizzatoAutomatico(false);
+                    rivenditoreAutorizzatoDAO.save(rivenditoreAutomatico, false);
+                }
 
                 break;
             case 2:
@@ -167,6 +168,47 @@ public class AdminNav {
 
 
     }
+
+
+    //! DISSOCIARE TRATTA ABBONAMENTO   --> RIMUOVI BIGLIETTO
+    //! DISSOCIARE BIGLIETTO        --> RIMUOVI MEZZO
+    //! DISSOCIARE MEZZO     --> RIMUOVI TRATTA
+
+
+    //! SETTO MEZZO DI VIDIMAZIONE ID SU NULL (BIGLIETTO)
+    //! RIMUOVO IL MEZZO /
+    //! SETTO TRATTA ID SU NULL (MEZZO)
+    //!
+    public static void rimuoviTratta() {
+        System.out.println("INSERISCI ID TRATTA DA ELIMINARE");
+        int trattaId = Integer.parseInt(scanner.nextLine());
+
+        Tratta tratta = trattaDAO.findTrattaById(trattaId);      //! TROVO ID TRATTA
+        System.out.println(tratta);
+        //! TROVO L'ID DEL MEZZO ASSOCIATO
+        //! TROVO MEZZO
+        long mezzoId = trattaDAO.findMezzoIdByTrattaId(trattaId);
+        Mezzo mezzo = mezzoDAO.findById(mezzoId);
+        mezzo.setTrattaServita(null);       //! SETTO MEZZU SU NULL
+        System.out.println(mezzo);
+        mezzoDAO.update(mezzo);
+        trattaDAO.update(tratta);
+        System.out.println(mezzo);
+        trattaDAO.deleteTratta(tratta);
+
+        System.out.println("FINITO IL METODO CONTROLLA DB");
+
+    }
+
+    public static void rimuoviMezzo() {
+
+    }
+
+    public static void rimuoviDistributore() {
+
+    }
+
+
 }
 
 

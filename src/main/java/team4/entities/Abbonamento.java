@@ -31,6 +31,8 @@ public class Abbonamento extends Biglietto implements Controllabile {
         return durata;
     }
 
+
+
     public void addTratta(Tratta tratta) {
         tratte.add(tratta);
         tratta.getAbbonamenti().add(this);

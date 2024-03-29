@@ -5,9 +5,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import team4.entities.Manutenzione;
 import team4.entities.Mezzo;
-import team4.entities.Tratta;
 
-import java.util.Collections;
 import java.util.List;
 
 public class MezzoDAO {
@@ -30,6 +28,19 @@ public class MezzoDAO {
             }
             throw e;
         }
+    }
+
+    public void update(Mezzo mezzo) {
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+            em.merge(mezzo);
+            et.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public List<Mezzo> findMezziForTratta(Long trattaId) {
@@ -62,6 +73,7 @@ public class MezzoDAO {
             throw e;
         }
     }
+
 
     public boolean isMezzoInManutenzione(EntityManager em, Long idMezzo) {
         String jpql = "SELECT m FROM Manutenzione m WHERE m.mezzo.id_Mezzo = :idMezzo AND m.data_fine IS NULL ORDER BY m.data_inizio DESC";
