@@ -17,9 +17,7 @@ public class Abbonamento extends Biglietto implements Controllabile {
     @ManyToMany(mappedBy = "abbonamenti")
     private Set<Tratta> tratte = new HashSet<>();
 
-    public Abbonamento() {
-
-    }
+    public Abbonamento() {}
 
     public void setDurata(DurataTitolo durata) {
         this.durata = durata;
@@ -33,18 +31,26 @@ public class Abbonamento extends Biglietto implements Controllabile {
         return durata;
     }
 
-    @Override
-    public boolean isValido() {
-        return false; // DA IMPLEMENTARE
-    }
-
     public void addTratta(Tratta tratta) {
         tratte.add(tratta);
         tratta.getAbbonamenti().add(this);
     }
 
+    public Set<Tratta> getTratte() {
+        return tratte;
+    }
+
+    public void setTratte(Set<Tratta> tratte) {
+        this.tratte = tratte;
+    }
+
     public void removeTratta(Tratta tratta) {
         tratte.remove(tratta);
         tratta.getAbbonamenti().remove(this);
+    }
+
+    @Override
+    public boolean isValido() {
+        return false;
     }
 }

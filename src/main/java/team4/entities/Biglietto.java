@@ -48,9 +48,7 @@ public class Biglietto {
         this.tessera = tessera;
     }
 
-    public Biglietto() {
-
-    }
+    public Biglietto() {}
 
     public Biglietto(Rivenditore_Autorizzato botteghino, LocalDate now, LocalDate now1) {
 
@@ -58,6 +56,14 @@ public class Biglietto {
 
     public Mezzo getMezzoDiVidimazione() {
         return mezzoDiVidimazione;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setMezzoDiVidimazione(Mezzo mezzoDiVidimazione) {

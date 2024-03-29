@@ -23,9 +23,9 @@ public class Tratta {
 
     @ManyToMany
     @JoinTable(
-            name = "tratta_abbonamento",
+            name = "tratta_biglietto",
             joinColumns = @JoinColumn(name = "tratta_id"),
-            inverseJoinColumns = @JoinColumn(name = "abbonamento_id")
+            inverseJoinColumns = @JoinColumn(name = "biglietto_id")
     )
     private Set<Abbonamento> abbonamenti = new HashSet<>();
 
