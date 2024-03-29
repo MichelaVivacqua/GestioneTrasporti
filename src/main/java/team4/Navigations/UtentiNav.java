@@ -118,8 +118,13 @@ public class UtentiNav {
                             System.out.println("Opzione non valida");
                     }
                 } else {
+
+
+
                     System.out.println("1. Crea abbonamento");
-                    System.out.println("2. Esci");
+                    System.out.println("2. Crea biglietto");
+                    System.out.println("3. Esci");
+
 
                     int sceltaAbbonamento = Integer.parseInt(scanner.nextLine());
                     switch (sceltaAbbonamento) {
@@ -201,6 +206,65 @@ public class UtentiNav {
 
                             break;
                         case 2:
+
+                            System.out.println("Seleziona tratta:");
+                            List<Tratta> tratte2 = trattaDAO.listaTratte();
+
+                            System.out.println("Inserisci l'ID della tratta selezionata:");
+                            long trattaId2 = Long.parseLong(scanner.nextLine());         //!Tratta
+
+                            Tratta trattaSelezionata2 = trattaDAO.findTrattaById(trattaId2);
+                            if (trattaSelezionata2 != null) {
+
+                                List<Mezzo> mezzi = mezzoDAO.findMezziForTratta(trattaSelezionata2.getId());
+                                if (mezzi.isEmpty()) {
+                                    System.out.println("Non ci sono mezzi disponibili per questa tratta.");
+                                } else {
+                                    System.out.println("Mezzi disponibili per la tratta selezionata:");
+                                    for (Mezzo mezzo : mezzi) {
+                                        System.out.println("ID: " + mezzo.getId() + " Mezzo:  " + mezzo.getTipoMezzo() + " Capienza:  " + mezzo.getCapienza());
+                                    }
+
+                                    System.out.println("Inserisci l'ID del mezzo selezionato:");
+                                    int mezzoId = Integer.parseInt(scanner.nextLine());       //! Mezzo
+
+                                    System.out.println("Seleziona un rivenditore");
+
+                                    Rivenditore_AutorizzatoDAO rivenditoreDAO = new Rivenditore_AutorizzatoDAO(em);
+                                    List<Rivenditore_Autorizzato> rivenditori = rivenditoreDAO.findAll();
+                                    for (Rivenditore_Autorizzato rivenditore : rivenditori) {
+                                        if (rivenditore instanceof RivenditoreAutorizzatoAutomatico) {
+                                            RivenditoreAutorizzatoAutomatico automatico = (RivenditoreAutorizzatoAutomatico) rivenditore;
+                                            System.out.println("ID: " + automatico.getId() + ", Tipo distributore: Automatico, Attivo: " + automatico.isAttivo());
+                                        } else {
+                                            System.out.println("ID: " + rivenditore.getId() + ", Tipo distributore: Non automatico");
+                                        }
+                                    }
+                                    int rivenditoreID = Integer.parseInt(scanner.nextLine());    //! Rivenditore
+
+
+
+                                    DurataTitolo durata= DurataTitolo.GIORNALIERO;
+                                    Mezzo mezzo = mezzoDAO.findById(mezzoId);
+                                    Rivenditore_Autorizzato emessoDa = rivenditoreDAO.findById(rivenditoreID);
+                                    Tessera tessera = utente.getTessera();
+
+                                  Biglietto  biglietto= new Biglietto(mezzo,emessoDa,LocalDate.now(),tessera);
+
+
+                                    bigliettoDAO.emettiBiglietto(biglietto);
+
+
+                                    System.out.println("BIGLIETTO CREATO");
+                                    return;
+                                }
+                            } else {
+                                System.out.println("Tratta non trovata");
+                            }
+
+
+                            break;
+                        case 3:
                             return;
                         default:
                             System.out.println("Opzione non valida");

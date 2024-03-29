@@ -188,6 +188,8 @@ public class AdminNav {
         int trattaId = Integer.parseInt(scanner.nextLine());
         Tratta tratta = trattaDAO.findTrattaById(trattaId);      //! TROVO ID TRATTA
         System.out.println(tratta);
+
+
         //! TROVO L'ID DEL MEZZO ASSOCIATO
         //! TROVO MEZZO
         long mezzoId = trattaDAO.findMezzoIdByTrattaId(trattaId);
@@ -197,6 +199,13 @@ public class AdminNav {
         mezzoDAO.update(mezzo);
         trattaDAO.update(tratta);
         System.out.println(mezzo);
+
+        List<Abbonamento> abbonamenti = abbonamentoDAO.findAbbonamentiByTratta(tratta);
+        for (Abbonamento abbonamento : abbonamenti) {
+            abbonamento.removeTratta(tratta);
+            abbonamentoDAO.update(abbonamento);
+        }
+
         trattaDAO.deleteTratta(tratta);
         System.out.println("FINITO IL METODO CONTROLLA DB");
 
@@ -209,16 +218,21 @@ public class AdminNav {
         Mezzo mezzo = mezzoDAO.findById(mezzoId);       //! TROVO ID MEZZO
         System.out.println(mezzo);
 
-        long bigliettoId = bigliettoDAO.findBigliettoByMezzoId(mezzoId);
-        Biglietto biglietto = bigliettoDAO.findById(bigliettoId);
 
-        biglietto.setMezzoDiVidimazione(null);
-        System.out.println(biglietto);
-        bigliettoDAO.update(biglietto);
-        mezzoDAO.deleteMezzo(mezzo);
+        if (mezzo != null) {
+            List<Biglietto> biglietti = bigliettoDAO.findBigliettoByMezzoId(mezzoId);
+            for (Biglietto biglietto : biglietti) {
+                biglietto.setMezzoDiVidimazione(null);
+                bigliettoDAO.update(biglietto);
+            }
+
+            mezzoDAO.deleteMezzo(mezzo);
+
+            System.out.println("Mezzo eliminato con successo.");
 
 
-        System.out.println("FINITO IL METODO CONTROLLA DB");
+            System.out.println("FINITO IL METODO CONTROLLA DB");
+        }
     }
 
     public static void rimuoviDistributore() {
@@ -229,11 +243,12 @@ public class AdminNav {
 
         System.out.println(rivenditoreAutorizzato);
 
-        long bigliettoId = bigliettoDAO.findBigliettoByDistributoreId(distributoreId);
-        Biglietto biglietto = bigliettoDAO.findById(bigliettoId);
-        biglietto.setEmessoDa(null);
-        System.out.println(biglietto);
-        bigliettoDAO.update(biglietto);
+        List<Biglietto> biglietti = bigliettoDAO.findBigliettiByDistributoreId(distributoreId);
+        for (Biglietto biglietto : biglietti) {
+            biglietto.setEmessoDa(null);
+            bigliettoDAO.update(biglietto);
+        }
+
         rivenditoreAutorizzatoDAO.findByIdAndDelete(distributoreId);
 
         System.out.println("FINITO IL METODO CONTROLLA DB");

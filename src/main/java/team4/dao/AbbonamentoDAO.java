@@ -2,15 +2,14 @@ package team4.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import team4.entities.Abbonamento;
 import team4.entities.Mezzo;
 import team4.entities.Rivenditore_Autorizzato;
 import team4.entities.Tratta;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class AbbonamentoDAO {
     private EntityManager em;
@@ -59,6 +58,27 @@ public class AbbonamentoDAO {
         }
     }
 
+    public void update(Abbonamento abbonamento) {
+
+        try {
+           EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+
+            em.merge(abbonamento);
+
+            transaction.commit();
+        } catch (RuntimeException e) {
+            throw e;
+        }
+    }
+
+    public List<Abbonamento> findAbbonamentiByTratta(Tratta tratta) {
+        TypedQuery<Abbonamento> query = em.createQuery(
+                "SELECT a FROM Abbonamento a JOIN a.tratte t WHERE t = :tratta", Abbonamento.class);
+        query.setParameter("tratta", tratta);
+        return query.getResultList();
+    }
+
     public void rimuoviTrattaDaAbbonamento(Long abbonamentoId, Tratta tratta) {
         EntityTransaction tx = em.getTransaction();
         try {
@@ -93,6 +113,7 @@ public class AbbonamentoDAO {
             throw e;
         }
     }
+
     public List<Tratta> getTratteByAbbonamentoId(Long abbonamentoId) {
         List<Tratta> tratte = em.createQuery(
                         "SELECT t FROM Tratta t JOIN t.abbonamenti a WHERE a.id = :abbonamentoId", Tratta.class)

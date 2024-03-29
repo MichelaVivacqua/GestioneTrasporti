@@ -17,7 +17,8 @@ public class Mezzo {
     @OneToMany(mappedBy = "mezzo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Manutenzione> manutenzioni;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+//    (cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "tratta_id")
     private Tratta trattaServita;
 

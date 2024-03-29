@@ -2,6 +2,7 @@ package team4.entities;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
+import team4.enums.DurataTitolo;
 
 
 @Entity
@@ -21,6 +22,7 @@ public class Biglietto {
     private LocalDate dataDiEmissione;
     private LocalDate dataDiVidimazione;
 
+//
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tesseraId")
     private Tessera tessera;
@@ -42,10 +44,13 @@ public class Biglietto {
     }
 
     public Biglietto(Mezzo mezzoDiVidimazione, Rivenditore_Autorizzato emessoDa, LocalDate dataDiEmissione, Tessera tessera) {
+
         this.mezzoDiVidimazione = mezzoDiVidimazione;
         this.emessoDa = emessoDa;
         this.dataDiEmissione = dataDiEmissione;
         this.tessera = tessera;
+
+
     }
 
     public Biglietto() {}
