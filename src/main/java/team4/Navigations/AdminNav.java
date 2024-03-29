@@ -26,20 +26,22 @@ public class AdminNav {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            System.out.println("Menu: ");
             System.out.println("1. Verifica manutenzione tramite ID del mezzo");
             System.out.println("2. Crea tratta");
             System.out.println("3. Crea mezzo");
             System.out.println("4. Crea distributore");
             System.out.println("5. Rimuovi tratta");
             System.out.println("6. Rimuovi mezzo");
-            System.out.println("0. Esci");
+            System.out.println("7. Rimuovi distributore");
+            System.out.println("0. Return");
             System.out.print("Seleziona un'opzione: ");
-            int choice = scanner.nextInt();
+            int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1:
                     System.out.print("Inserisci l'ID del mezzo: ");
-                    long mezzoId = scanner.nextLong();
+                    long mezzoId = Long.parseLong(scanner.nextLine());
                     String dataManutenzione = String.valueOf(mezzoDAO.isMezzoInManutenzione(em, mezzoId));
                     System.out.println("La data di manutenzione per il mezzo con ID " + mezzoId + " è: " + dataManutenzione);
                     break;
@@ -62,8 +64,7 @@ public class AdminNav {
                     rimuoviDistributore();
                     break;
                 case 0:
-                    System.out.println("Uscita dal programma.");
-                    System.exit(0);
+                    return;
                 default:
                     System.out.println("Scelta non valida. Riprova.");
             }
@@ -72,11 +73,11 @@ public class AdminNav {
 
     private static void creaTratta() {
         System.out.println("Inserisci la partenza della tratta: ");
-        String partenza = scanner.next();
+        String partenza = scanner.nextLine();
         System.out.println("Inserisci l'arrivo della tratta: ");
-        String arrivo = scanner.next();
+        String arrivo = scanner.nextLine();
         System.out.println("Inserisci la durata della tratta: ");
-        int durata = scanner.nextInt();
+        int durata = Integer.parseInt(scanner.nextLine());
         Tratta tratta = new Tratta(durata, partenza, arrivo);
         trattaDAO.saveTratta(tratta);
         System.out.println("Tratta creata con successo.");
@@ -86,10 +87,10 @@ public class AdminNav {
         System.out.println("Inserisci il tipo del mezzo: ");
         System.out.println("1. BUS");
         System.out.println("2. TRAM");
-        int tipoMezzo = Integer.parseInt(scanner.nextLine());
 
         try {
-            switch (tipoMezzo) {
+                 int tipoMezzo = Integer.parseInt(scanner.nextLine());
+                  switch (tipoMezzo) {
                 case 1:
                     TipoMezzo tpM = TipoMezzo.AUTOBUS;
                     List<Tratta> tratte = trattaDAO.listaTratte();
@@ -110,18 +111,18 @@ public class AdminNav {
                 case 2:
 
                     TipoMezzo tpM2 = TipoMezzo.TRAM;
-                    System.out.println("Inserisci la capienza del mezzo: ");
-                    int capienza2 = Integer.parseInt(scanner.nextLine());
+//                    System.out.println("Inserisci la capienza del mezzo: ");
+//                    int capienza2 = Integer.parseInt(scanner.nextLine());
                     List<Tratta> tratte2 = trattaDAO.listaTratte();
                     System.out.println("Inserisci l'ID della tratta servita: ");
-                    long trattaId2 = Integer.parseInt(scanner.nextLine());
+                    int trattaId2 = Integer.parseInt(scanner.nextLine());
                     Tratta trattaServita2 = trattaDAO.findTrattaById(trattaId2);
                     System.out.println("Inserisci il numero di volte: ");
                     int numeroDiVolte2 = Integer.parseInt(scanner.nextLine());
                     System.out.println("Inserisci il tempo effettivo: ");
                     int tempoEffettivo2 = Integer.parseInt(scanner.nextLine());
-                    Mezzo mezzo2 = new Mezzo(capienza2, trattaServita2, numeroDiVolte2, tempoEffettivo2);
-                    mezzo2.setTipoMezzo(tpM2);
+                    Mezzo mezzo2 = new Mezzo(tpM2, trattaServita2, numeroDiVolte2, tempoEffettivo2);
+//                    mezzo2.setTipoMezzo(tpM2);
                     mezzoDAO.save(mezzo2);
                     System.out.println("Mezzo creato con successo.");
 
@@ -208,8 +209,8 @@ public class AdminNav {
         Mezzo mezzo = mezzoDAO.findById(mezzoId);       //! TROVO ID MEZZO
         System.out.println(mezzo);
 
-        long bigliettoId= bigliettoDAO.findBigliettoByMezzoId(mezzoId);
-        Biglietto biglietto= bigliettoDAO.findById(bigliettoId);
+        long bigliettoId = bigliettoDAO.findBigliettoByMezzoId(mezzoId);
+        Biglietto biglietto = bigliettoDAO.findById(bigliettoId);
 
         biglietto.setMezzoDiVidimazione(null);
         System.out.println(biglietto);
@@ -222,14 +223,14 @@ public class AdminNav {
 
     public static void rimuoviDistributore() {
         System.out.println("INSERISCI ID DISTRIBUTORE DA ELIMINARE");
-        int distributoreId= Integer.parseInt(scanner.nextLine());
+        int distributoreId = Integer.parseInt(scanner.nextLine());
 
-        Rivenditore_Autorizzato rivenditoreAutorizzato= rivenditoreAutorizzatoDAO.findById(distributoreId);
+        Rivenditore_Autorizzato rivenditoreAutorizzato = rivenditoreAutorizzatoDAO.findById(distributoreId);
 
         System.out.println(rivenditoreAutorizzato);
 
-        long bigliettoId= bigliettoDAO.findBigliettoByDistributoreId(distributoreId);
-        Biglietto biglietto= bigliettoDAO.findById(bigliettoId);
+        long bigliettoId = bigliettoDAO.findBigliettoByDistributoreId(distributoreId);
+        Biglietto biglietto = bigliettoDAO.findById(bigliettoId);
         biglietto.setEmessoDa(null);
         System.out.println(biglietto);
         bigliettoDAO.update(biglietto);
