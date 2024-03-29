@@ -83,7 +83,8 @@ public class Application {
 //        LocalDate dataInizio1 = LocalDate.now().minusDays(20);
 //        LocalDate dataFine1 = LocalDate.now().minusDays(10);
 //        LocalDate dataInizio2 = LocalDate.now().minusDays(20);
-//
+//22
+
 //        Manutenzione manutenzione1 = new Manutenzione(dataInizio1, dataFine1, mezzo1); // MANUTENZIONE FINITA
 //        Manutenzione manutenzione2 = new Manutenzione(mezzo2); // METODO MANUTENZIONE CON SOLO IL MEZZO COME ARGOMENTO CREA UNA MANUTENZIONE CON DATA CORRENTE E DATA FINE NULL
 //

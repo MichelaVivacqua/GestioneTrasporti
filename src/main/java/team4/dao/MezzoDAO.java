@@ -115,4 +115,9 @@ public class MezzoDAO {
                 .getResultList();
     }
 
+    public List<Mezzo> listaMezziNonAssegnati() {
+        return em.createQuery("SELECT m FROM Mezzo m WHERE m.trattaServita IS NULL", Mezzo.class)
+                .getResultList();
+    }
+
 }

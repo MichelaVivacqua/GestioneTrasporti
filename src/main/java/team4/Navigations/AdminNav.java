@@ -31,11 +31,12 @@ public class AdminNav {
             System.out.println("1. Pannello Manutenzione mezzi");
             System.out.println("2. Crea tratta");
             System.out.println("3. Crea mezzo");
-            System.out.println("4. Crea distributore");
-            System.out.println("5. Rimuovi tratta");
-            System.out.println("6. Rimuovi mezzo");
-            System.out.println("7. Rimuovi distributore");
-            System.out.println("0. Return");
+            System.out.println("4. Assegna mezzo libero a tratta");
+            System.out.println("5. Crea distributore");
+            System.out.println("6. Rimuovi tratta");
+            System.out.println("7. Rimuovi mezzo");
+            System.out.println("8. Rimuovi distributore");
+            System.out.println("9. Return");
             System.out.print("Seleziona un'opzione: ");
             int choice = Integer.parseInt(scanner.nextLine());
 
@@ -50,24 +51,75 @@ public class AdminNav {
                     creaMezzo();
                     break;
                 case 4:
-                    creaDistributore();
+                    assegnaATratta();
                     break;
                 case 5:
-                    rimuoviTratta();
+                    creaDistributore();
                     break;
                 case 6:
-                    rimuoviMezzo();
+                    rimuoviTratta();
                     break;
                 case 7:
+                    rimuoviMezzo();
+                    break;
+                case 8:
                     rimuoviDistributore();
                     break;
-                case 0:
+                case 9:
                     return;
                 default:
                     System.out.println("Scelta non valida. Riprova.");
             }
         }
     }
+
+    private static void assegnaATratta() {
+        List<Mezzo> mezziNonAssegnati = mezzoDAO.listaMezziNonAssegnati();
+        if (mezziNonAssegnati.isEmpty()) {
+            System.out.println("Non ci sono mezzi disponibili per l'assegnazione.");
+            return;
+        }
+
+        System.out.println("Mezzi non assegnati a una tratta:");
+        for (Mezzo mezzo : mezziNonAssegnati) {
+            System.out.println(mezzo.getId() + " - " + mezzo.getTipoMezzo() + ", Capienza: " + mezzo.getCapienza());
+        }
+
+        System.out.println("Inserisci l'ID del mezzo da assegnare a una tratta:");
+        long mezzoId = Long.parseLong(scanner.nextLine());
+        Mezzo mezzoSelezionato = mezziNonAssegnati.stream().filter(m -> m.getId() == mezzoId).findFirst().orElse(null);
+
+        if (mezzoSelezionato == null) {
+            System.out.println("Mezzo non valido o già assegnato.");
+            return;
+        }
+
+        List<Tratta> tratte = trattaDAO.listaTratte();
+        if (tratte.isEmpty()) {
+            System.out.println("Non ci sono tratte disponibili.");
+            return;
+        }
+
+        System.out.println("Tratte disponibili:");
+        for (Tratta tratta : tratte) {
+            System.out.println(tratta.getId() + " - Da: " + tratta.getPartenza() + " a: " + tratta.getArrivo() + ", Durata: " + tratta.getDurata() + " minuti");
+        }
+
+        System.out.println("Inserisci l'ID della tratta a cui assegnare il mezzo:");
+        long trattaId = Long.parseLong(scanner.nextLine());
+        Tratta trattaSelezionata = tratte.stream().filter(t -> t.getId() == trattaId).findFirst().orElse(null);
+
+        if (trattaSelezionata == null) {
+            System.out.println("Tratta non valida.");
+            return;
+        }
+
+        // Assegnazione del mezzo alla tratta
+        mezzoSelezionato.setTrattaServita(trattaSelezionata);
+        mezzoDAO.update(mezzoSelezionato); // Assumi che questo metodo aggiorni il mezzo nel database, incluse le relazioni
+        System.out.println("Mezzo ID: " + mezzoId + " assegnato alla tratta ID: " + trattaId + " con successo.");
+    }
+
 
     private static void creaTratta() {
         System.out.println("Inserisci la partenza della tratta: ");
@@ -82,6 +134,7 @@ public class AdminNav {
     }
 
     private static void pannelloManutenzioneMezzi(){
+        System.out.println("--------------------------------------------------------------------------------------------");
         List<Mezzo> listaMezzi = mezzoDAO.listaMezzi();
         for (Mezzo mezzo : listaMezzi) {
             System.out.println(mezzo.stringaPerPannello());
@@ -89,9 +142,9 @@ public class AdminNav {
         System.out.println("Seleziona una di queste opzioni: ");
         System.out.println("1. Manda un mezzo in manutenzione");
         System.out.println("2. Manda un mezzo in servizio");
-        System.out.println("3. Indietro");
+        System.out.println("3. Storico Manutenzioni");
+        System.out.println("4. Indietro");
         int choice = Integer.parseInt(scanner.nextLine());
-
         switch (choice) {
             case 1:
                 mandaMezzoInManutenzione();
@@ -100,12 +153,43 @@ public class AdminNav {
                 concludiManutenzioneMezzo();
                 break;
             case 3:
+                storicoManutenzioni();
+            case 4:
                 System.out.println("Ritorno al menu");
                 break;
             default:
                 System.out.println("Scelta non valida. Riprova.");
         }
     }
+
+    private static void storicoManutenzioni() {
+        System.out.println("Inserisci l'ID del mezzo di cui vuoi vedere lo storico delle manutenzioni:");
+        try {
+            long mezzoId = Long.parseLong(scanner.nextLine()); // Legge l'ID inserito dall'utente
+            Mezzo mezzo = mezzoDAO.findById(mezzoId); // Cerca il mezzo tramite il DAO
+
+            if (mezzo == null) {
+                System.out.println("Mezzo non trovato.");
+                return;
+            }
+
+            List<Manutenzione> manutenzioni = mezzo.getManutenzioni(); // Ottiene le manutenzioni del mezzo
+
+            if (manutenzioni.isEmpty()) {
+                System.out.println("Nessuna manutenzione registrata per questo mezzo.");
+                return;
+            }
+
+            System.out.println("Storico delle manutenzioni per il mezzo ID: " + mezzoId);
+            for (Manutenzione manutenzione : manutenzioni) {
+                System.out.println("Inizio manutenzione: " + manutenzione.getData_inizio() +
+                        ", Fine manutenzione: " + (manutenzione.getData_fine() != null ? manutenzione.getData_fine().toString() : "In corso"));
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("ID non valido. Inserire un numero.");
+        }
+    }
+
 
     private static void mandaMezzoInManutenzione() {
         System.out.println("Inserisci l'ID del mezzo da mandare in manutenzione:");
