@@ -27,7 +27,7 @@ public class AdminNav {
 
         while (true) {
             System.out.println("Menu: ");
-            System.out.println("1. Verifica manutenzione tramite ID del mezzo");
+            System.out.println("1. Pannello Manutenzione mezzi");
             System.out.println("2. Crea tratta");
             System.out.println("3. Crea mezzo");
             System.out.println("4. Crea distributore");
@@ -40,10 +40,7 @@ public class AdminNav {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Inserisci l'ID del mezzo: ");
-                    long mezzoId = Long.parseLong(scanner.nextLine());
-                    String dataManutenzione = String.valueOf(mezzoDAO.isMezzoInManutenzione(em, mezzoId));
-                    System.out.println("La data di manutenzione per il mezzo con ID " + mezzoId + " è: " + dataManutenzione);
+                    pannelloManutenzioneMezzi();
                     break;
                 case 2:
                     creaTratta();
@@ -81,6 +78,17 @@ public class AdminNav {
         Tratta tratta = new Tratta(durata, partenza, arrivo);
         trattaDAO.saveTratta(tratta);
         System.out.println("Tratta creata con successo.");
+    }
+
+    private static void pannelloManutenzioneMezzi(){
+        List<Mezzo> listaMezzi = mezzoDAO.listaMezzi();
+        for (Mezzo mezzo : listaMezzi) {
+            System.out.println(mezzo.stringaPerPannello());
+        }
+        System.out.println("Seleziona una di queste opzioni: ");
+        System.out.println("1. Manda un mezzo in manutenzione");
+        System.out.println("2. Manda un mezzo in servizio");
+        System.out.println("3. Indietro");
     }
 
     private static void creaMezzo() {
